@@ -16,8 +16,8 @@ else
     DLIB=-fPIC -shared
 endif
 
-CFLAGS=$(STD) $(OPT) $(WFLAGS) $(INCDIR)
-LFLAGS=$(STD) $(OPT) $(LIBDIR) $(LIBS) $(DLIB) -v
+CFLAGS=$(STD) $(OPT) $(WFLAGS) $(INCDIR) $(DLIB)
+LFLAGS=$(STD) $(OPT) $(LIBDIR) $(LIBS) $(DLIB)
 
 all: bin/hello bin/example bin/sandsim bin/mandelbrot bin/gameoflife bin/gradient bin/pendulum
 
