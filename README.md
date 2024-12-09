@@ -105,6 +105,8 @@ make clean
 
 ## API
 
+### Engine
+
 ```C
 typedef struct Pixel {
     unsigned char r, g, b, a;
@@ -231,3 +233,23 @@ double rbxeTime(void);
 
 Returns time from the moment RBXE was initialized in seconds.
 
+
+### Font (Bitmap)
+
+```C
+void rbxeFontInit(void);
+```
+
+Initialize the font engine.
+
+```C
+void rbxeFontDrawChar(int x, int y, const unsigned char ch, Pixel color, Pixel bg);
+```
+
+Draw a single character.
+
+```C
+void rbxeFontDrawString(int x, int y, char* str, Pixel fg, Pixel bg);
+```
+
+Draw a string.
