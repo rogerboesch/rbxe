@@ -11,8 +11,7 @@ is compatible from C89 to C++20 as a header only solution.
 #define RBXE_APPLICATION
 #include <rbxe.h>
 
-int main(void)
-{
+int main(void) {
     Pixel* pixbuf = rbxeStart("title", 800, 600, 100, 75);
 
     while (rbxeRun(pixbuf)) {
@@ -216,72 +215,3 @@ double rbxeTime(void);
 
 Returns time from the moment RBXE was initialized in seconds.
 
-
-## Flags
-
-The engine is not entirely comatible with any other OpenGL code simultaneosly, as it
-does not give direct handles for textures and vertex buffers. Nevertheless, it
-provides a flag to give the user control over RBXE's default shader layout
-location, so it can coexist with other quad-like shaders, making it posible to
-create framebuffers and even multi-pass post-processing shading effects.
-
-```
-#define RBXE_SHADER_LAYOUT_LOCATION N
-```
-
-Define ```RBXE_SHADER_LAYOUT_LOCATION``` with the value that most
-suits your code, preventing RBXE from interfering with your own shaders.
-
-
-## Example
-
-This program opens up a 800 x 600 window in a 10:1 pixel scale.
-Each frame it clears the pixel buffer to white, then plots the
-center pixel red and the pixel pointed by the mouse blue.
-
-```C
-#define RBXE_APPLICATION
-#include <rbxe.h>
-#include <stdio.h>
-#include <string.h>
-
-#define WIDTH 800
-#define HEIGHT 600
-#define SCALE 1 / 10
-
-int main(void) {
-    int mouseX, mouseY;
-    const int width = WIDTH * SCALE, height = HEIGHT * SCALE;
-    const int halfWidth = width / 2, halfHeight = height / 2;
-    const size_t buflen = width * height * sizeof(Px);
-    const Px red = {255, 0, 0, 255}, blue = {0, 0, 255, 0};
-    
-    Pixel* pixbuf = rbxeStart("Example", WIDTH, HEIGHT, width, height);
-
-    if (!pixbuf) {
-        fprintf(stderr, "Could not init RBXE\n");
-        return 1;
-    }
-
-    while (rbxeRun(pixbuf)) {
-        rbxeMousePos(&mouseX, &mouseY);
-
-        if (rbxeKeyPressed(KEY_ESCAPE)) {
-            break;
-        }
-
-        memset(pixbuf, 255, buflen);
-        pixbuf[halfHeight * width + halfWidth] = red;
-
-        if (mouseX >= 0 && mouseX < width && mouseY >= 0 && mouseY < height) {
-            pixbuf[mouseY * width + mouseX] = blue;
-        }
-    }
-
-    return rbxeEnd(pixbuf);
-}
-
-```
-
-You can access pixel channels independently and easily. The examples folder in this repo
-shows various ways of plotting and drawing with the engine.
