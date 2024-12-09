@@ -281,7 +281,10 @@ static void rbxeKeyboard(GLFWwindow* win, int key, int code, int action, int mod
         if (mod == GLFW_MOD_CAPS_LOCK || mod == GLFW_MOD_SHIFT || key < 65) {
             rbxe.input.memChar = key;
         }
-        else rbxe.input.memChar = key + 32;
+        else {
+            rbxe.input.memChar = key + 32;
+        }
+
         rbxe.input.queuedChar = 1;
     }
 
@@ -406,7 +409,7 @@ Pixel* rbxeStart(const char* title,  const int winwidth, const int winheight, co
 
     /* init glfw */
     if (!glfwInit()) {
-        fprintf(stderr, "rbxe failed to initiate glfw.\n");
+        fprintf(stderr, "RBXE failed to initiate glfw.\n");
         return NULL;
     }
 
@@ -422,9 +425,9 @@ Pixel* rbxeStart(const char* title,  const int winwidth, const int winheight, co
     glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 #endif
 
-    window = glfwCreateWindow(winwidth, winheight, title, NULL, NULL);
+    window = glfwCreateWindow(winwidth, winheight, title, glfwGetPrimaryMonitor(), NULL);
     if (!window) {
-        fprintf(stderr, "rbxe failed to open glfw window.\n");
+        fprintf(stderr, "RBXE failed to open glfw window.\n");
         glfwTerminate();
         return NULL;
     }
@@ -441,7 +444,7 @@ Pixel* rbxeStart(const char* title,  const int winwidth, const int winheight, co
 #ifndef __APPLE__
     glewExperimental = GL_TRUE;
     if (glewInit() != GLEW_OK) {
-        fprintf(stderr, "rbxe failed to initiate glew.\n");
+        fprintf(stderr, "RBXE failed to initiate glew.\n");
         return NULL;
     }
 #endif
@@ -454,7 +457,7 @@ Pixel* rbxeStart(const char* title,  const int winwidth, const int winheight, co
     /* allocate pixel framebuffer */
     pixbuf = (Pixel*)calloc(scrsize, sizeof(Pixel));
     if (!pixbuf) {
-        fprintf(stderr, "rbxe failed to allocate pixel framebuffer.\n");
+        fprintf(stderr, "RBXE failed to allocate pixel framebuffer.\n");
         return NULL;
     }
 
@@ -510,10 +513,7 @@ Pixel* rbxeStart(const char* title,  const int winwidth, const int winheight, co
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     
-    glTexImage2D(
-        GL_TEXTURE_2D, 0, GL_RGBA, rbxe.scrres.width, rbxe.scrres.height, 
-        0, GL_RGBA, GL_UNSIGNED_BYTE, pixbuf
-    );
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, rbxe.scrres.width, rbxe.scrres.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixbuf);
 
     return pixbuf;
 }
