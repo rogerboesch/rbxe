@@ -64,6 +64,22 @@ Where ```width``` is the fourth argument given to ```rbxeStart()```.
 * [GLFW](https://github.com/glfw/glfw)
 * [GLEW](https://github.com/nigels-com/glew) (only on Linux and Windows)
 
+### MacOS
+
+To install **GLEW**:
+
+```shell
+brew install glew
+```
+
+### Linux
+
+To install **GLEW** and **GLFW**
+
+```shell
+sudo apt-get install libglew-dev
+sudo apt-get install libglfw3-dev
+```
 
 ## Build Scripts
 

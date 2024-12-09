@@ -17,7 +17,7 @@ else
 endif
 
 CFLAGS=$(STD) $(OPT) $(WFLAGS) $(INCDIR)
-LFLAGS=$(STD) $(OPT) $(LIBDIR) $(LIBS) $(DLIB)
+LFLAGS=$(STD) $(OPT) $(LIBDIR) $(LIBS) $(DLIB) -v
 
 all: bin/hello bin/example bin/sandsim bin/mandelbrot bin/gameoflife bin/gradient bin/pendulum
 
