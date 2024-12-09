@@ -12,7 +12,7 @@ ifeq ($(OS),Darwin)
     LIBS+=-framework OpenGL
 else
 	INCDIR=-I.
-    LIBS+=-lm -lGL -lGLEW
+    LIBS+=-lm -lGL -lGLU -lGLEW
     DLIB=-fPIC -shared
 endif
 
