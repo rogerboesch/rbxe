@@ -1,6 +1,8 @@
 #define RBXE_APPLICATION
 
 #include <rbxe.h>
+#include <rbxe-font.h>
+
 #include <stdio.h>
 #include <string.h>
 
@@ -10,21 +12,24 @@
 
 #define WIDTH 800
 #define HEIGHT 600
-#define SCALE 1 / 10
+#define SCALE 1 / 2
 
 int main(void) {
     int mouseX, mouseY;
     const int width = WIDTH * SCALE, height = HEIGHT * SCALE;
     const int halfWidth = width / 2, halfHeight = height / 2;
     const size_t buflen = width * height * sizeof(Pixel);
-    const Pixel red = {255, 0, 0, 255}, blue = {0, 0, 255, 0};
-    
+    const Pixel red = {255, 0, 0, 255}, green = {0, 255, 0, 255}, blue = {0, 0, 255, 0};
+    const Pixel black = {0, 0, 0, 255}, white = {255, 255, 255, 255};
+
     Pixel* pixbuf = rbxeStart("Example", WIDTH, HEIGHT, width, height);
 
     if (!pixbuf) {
         fprintf(stderr, "Could not init RBXE\n");
         return 1;
     }
+
+    rbxeFontInit();
 
     while (rbxeRun(pixbuf)) {
         rbxeMousePos(&mouseX, &mouseY);
@@ -39,6 +44,8 @@ int main(void) {
         if (mouseX >= 0 && mouseX < width && mouseY >= 0 && mouseY < height) {
             pixbuf[mouseY * width + mouseX] = blue;
         }
+
+        rbxeFontDrawString(10, 10, "Hello World", black, white);
     }
 
     return rbxeEnd(pixbuf);

@@ -29,7 +29,7 @@ obj/hello.o : examples/hello.c rbxe.h | makedir
 bin/example : obj/example.o
 	$(CC) obj/example.o -o bin/example $(LFLAGS)
 
-obj/example.o : examples/example.c rbxe.h | makedir
+obj/example.o : examples/example.c rbxe-font.h rbxe.h | makedir
 	$(CC) -c examples/example.c -o obj/example.o $(CFLAGS)
 
 bin/sandsim : obj/sandsim.o

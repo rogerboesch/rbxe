@@ -17,6 +17,7 @@ void rbxeRender(const Pixel* pixbuf);
 int rbxeEnd(Pixel* pixbuf);
 Pixel* rbxeStart(const char* title, const int winwidth, const int winheight, const int scrwidth, const int scrheight);
 
+Pixel* rbxeGetBuffer(void);
 void rbxeScreenSize(int* widthptr, int* heightptr);
 void rbxeWindowSize(int* widthptr, int* heightptr);
 void rbxeBackgroundColor(const Pixel px);
@@ -172,7 +173,7 @@ void rbxeMouseVisible(const int visible);
 #define MOUSE_RIGHT         MOUSE_2
 #define MOUSE_MIDDLE        MOUSE_3
 
-/* Roger Boesch's PiXel Engine implementation -------------------------------- */
+/* Pixel Engine implementation -------------------------------- */
 
 #ifdef RBXE_APPLICATION
 
@@ -230,6 +231,8 @@ static const char* fragmentShader = RBXE_SHADER_HEADER RBXE_SHADER_FRAGMENT;
 
 static struct rbxeInfo {
     GLFWwindow* window;
+    Pixel* data;
+
     struct rbxeRes {
         int width;
         int height;
@@ -245,7 +248,7 @@ static struct rbxeInfo {
         unsigned char keys[KEY_LAST];
         unsigned char pressedKeys[KEY_LAST];
     } input;
-} rbxe = {NULL, {400, 300}, {800, 600}, {1.0, 1.0}, {GLFW_RELEASE, 1, 0, {0}, {0}}};
+} rbxe = {NULL, NULL, {400, 300}, {800, 600}, {1.0, 1.0}, {GLFW_RELEASE, 1, 0, {0}, {0}}};
 
 /* implementation only static functions */
 
@@ -300,6 +303,12 @@ static void rbxeWindow(GLFWwindow* window, int width, int height) {
     rbxe.winres.width = width;
     rbxe.winres.height = height;
     rbxeFrame();
+}
+
+/* Get pixel buffer */
+
+Pixel* rbxeGetBuffer(void) {
+    return rbxe.data;
 }
 
 /* window and screen size getters */
@@ -467,7 +476,8 @@ Pixel* rbxeStart(const char* title,  const int winwidth, const int winheight, co
     rbxe.winres.height = winheight;
     rbxe.scrres.width = scrwidth;
     rbxe.scrres.height = scrheight;
-    
+    rbxe.data = pixbuf;
+
     /* compile and link shaders */
     shader = glCreateProgram();
     
