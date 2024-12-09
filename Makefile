@@ -15,7 +15,7 @@ else
     LIBS+=-lm -lGL -lGLU -lGLEW
 endif
 
-CFLAGS=$(STD) $(OPT) $(WFLAGS) $(INCDIR)
+CFLAGS=$(STD) $(OPT) $(WFLAGS) $(INCDIR) $(LIBS)
 LFLAGS=$(STD) $(OPT) $(LIBDIR) $(LIBS)
 
 all: bin/hello bin/example bin/sandsim bin/mandelbrot bin/gameoflife bin/gradient bin/pendulum
