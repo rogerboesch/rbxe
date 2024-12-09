@@ -11,6 +11,7 @@ ifeq ($(OS),Darwin)
 	LIBDIR=-L/opt/homebrew/Cellar/glfw/3.4/lib
     LIBS+=-framework OpenGL
 else
+	INCDIR=-I.
     LIBS+=-lm -lGL -lGLEW
     DLIB=-fPIC -shared
 endif
