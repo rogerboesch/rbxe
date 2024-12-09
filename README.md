@@ -12,7 +12,7 @@ is compatible from C89 to C++20 as a header only solution.
 #include <rbxe.h>
 
 int main(void) {
-    Pixel* pixbuf = rbxeStart("title", 800, 600, 100, 75);
+    Pixel* pixbuf = rbxeStart("Hello World", 800, 600, 100, 75);
 
     while (rbxeRun(pixbuf)) {
         if (rbxeKeyPressed(KEY_ESCAPE)) {
