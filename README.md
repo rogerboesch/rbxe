@@ -243,7 +243,7 @@ void rbxeFontInit(void);
 Initialize the font engine.
 
 ```C
-void rbxeFontDrawChar(int x, int y, const unsigned char ch, Pixel color, Pixel bg);
+void rbxeFontDrawChar(int x, int y, const unsigned char ch, Pixel fg, Pixel bg);
 ```
 
 Draw a single character.

@@ -5,7 +5,7 @@
 #include <rbxe.h>
 
 void rbxeFontInit(void);
-void rbxeFontDrawChar(int x, int y, const unsigned char ch, Pixel color, Pixel bg);
+void rbxeFontDrawChar(int x, int y, const unsigned char ch, Pixel fg, Pixel bg);
 void rbxeFontDrawString(int x, int y, char* str, Pixel fg, Pixel bg);
 
 #ifdef RBXE_APPLICATION
