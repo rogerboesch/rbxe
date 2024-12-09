@@ -293,26 +293,30 @@ void rbxeFontInit(void) {
 
 void rbxeFontDrawChar(int x, int y, const unsigned char ch, Pixel fg, Pixel bg) {
     int width, height;
+    unsigned char* buffer;
+    int w, h, offset;
+    unsigned char* dest;
+	int xStart, ix, iy;
+    unsigned char line;
+
+    buffer = (unsigned char *)rbxeGetBuffer();
     rbxeScreenSize(&width, &height);
 
-    unsigned char* buffer;
-    buffer = (unsigned char *)rbxeGetBuffer();
-
-    int w = 8;
-    int h = 8;
-    int offset = (int)ch * 8;
+    w = 8;
+    h = 8;
+    offset = (int)ch * 8;
 
 	if (ch > 164) {
 		offset = 0;
 	}
 	
-    unsigned char* dest = buffer + (y+8) * (width*4) + (x*4);
+    dest = buffer + (y+8) * (width*4) + (x*4);
 
-	int xStart = x;
-    int iy = 0, ix = 0;
+	xStart = x;
+    iy = 0, ix = 0;
 
     for (iy = 0; iy < h; iy++) {
-        unsigned char line = rbxeFont[offset+iy];
+        line = rbxeFont[offset+iy];
 
         for (ix = w-1; ix >= 0; ix--) {
 			if (x >= 0 && x < width && y >= 0 && y < height) {

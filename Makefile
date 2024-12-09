@@ -18,7 +18,7 @@ endif
 CFLAGS=$(STD) $(OPT) $(WFLAGS) $(INCDIR)
 LFLAGS=$(STD) $(OPT) $(LIBDIR) $(LIBS)
 
-all: bin/hello bin/example bin/sandsim bin/mandelbrot bin/gameoflife bin/gradient bin/pendulum
+all: bin/hello bin/example bin/font bin/sandsim bin/mandelbrot bin/gameoflife bin/gradient bin/pendulum
 
 bin/hello : obj/hello.o
 	$(CC) obj/hello.o -o bin/hello $(LFLAGS)
@@ -29,8 +29,14 @@ obj/hello.o : examples/hello.c rbxe.h | makedir
 bin/example : obj/example.o
 	$(CC) obj/example.o -o bin/example $(LFLAGS)
 
-obj/example.o : examples/example.c rbxe-font.h rbxe.h | makedir
+obj/example.o : examples/example.c rbxe.h | makedir
 	$(CC) -c examples/example.c -o obj/example.o $(CFLAGS)
+
+bin/font : obj/font.o
+	$(CC) obj/font.o -o bin/font $(LFLAGS)
+
+obj/font.o : examples/font.c rbxe-font.h rbxe.h | makedir
+	$(CC) -c examples/font.c -o obj/font.o $(CFLAGS)
 
 bin/sandsim : obj/sandsim.o
 	$(CC) obj/sandsim.o -o bin/sandsim $(LFLAGS)
