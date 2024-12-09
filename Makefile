@@ -11,7 +11,7 @@ OS=$(shell uname -s)
 ifeq ($(OS),Darwin)
     LIBS+=-framework OpenGL
 else
-    LIBS+=-lm -lGL -lGLEW
+    LIBS+=-lm -lGL -llibGLEW.a
 endif
 
 CFLAGS=$(STD) $(OPT) $(WFLAGS) $(INCDIR)
