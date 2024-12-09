@@ -21,46 +21,46 @@ LFLAGS=$(STD) $(OPT) $(LIBDIR) $(LIBS)
 all: bin/hello bin/example bin/sandsim bin/mandelbrot bin/gameoflife bin/gradient bin/pendulum
 
 bin/hello : obj/hello.o
-	$(CC) $(LFLAGS) obj/hello.o -o bin/hello
+	$(CC) obj/hello.o -o bin/hello $(LFLAGS)
 
 obj/hello.o : examples/hello.c rbxe.h | makedir
-	$(CC) $(CFLAGS) -c examples/hello.c -o obj/hello.o
+	$(CC) -c examples/hello.c -o obj/hello.o $(CFLAGS)
 
 bin/example : obj/example.o
-	$(CC) $(LFLAGS) obj/example.o -o bin/example
+	$(CC) obj/example.o -o bin/example $(LFLAGS)
 
 obj/example.o : examples/example.c rbxe.h | makedir
-	$(CC) $(CFLAGS) -c examples/example.c -o obj/example.o
+	$(CC) -c examples/example.c -o obj/example.o $(CFLAGS)
 
 bin/sandsim : obj/sandsim.o
-	$(CC) $(LFLAGS) obj/sandsim.o -o bin/sandsim
+	$(CC) obj/sandsim.o -o bin/sandsim $(LFLAGS)
 
 obj/sandsim.o : examples/sandsim.c rbxe.h | makedir
-	$(CC) $(CFLAGS) -c examples/sandsim.c -o obj/sandsim.o
+	$(CC) -c examples/sandsim.c -o obj/sandsim.o $(CFLAGS)
 
 bin/mandelbrot : obj/mandelbrot.o
-	$(CC) $(LFLAGS) $(LIBS) obj/mandelbrot.o -o bin/mandelbrot
+	$(CC) $(LIBS) obj/mandelbrot.o -o bin/mandelbrot $(LFLAGS)
 
 obj/mandelbrot.o : examples/mandelbrot.c rbxe.h | makedir
-	$(CC) $(CFLAGS) -c examples/mandelbrot.c -o obj/mandelbrot.o
+	$(CC) -c examples/mandelbrot.c -o obj/mandelbrot.o $(CFLAGS)
 
 bin/gameoflife : obj/gameoflife.o
-	$(CC) $(LFLAGS) $(LIBS) obj/gameoflife.o -o bin/gameoflife
+	$(CC) $(LIBS) obj/gameoflife.o -o bin/gameoflife $(LFLAGS)
 
 obj/gameoflife.o : examples/gameoflife.c rbxe.h | makedir
-	$(CC) $(CFLAGS) -c examples/gameoflife.c -o obj/gameoflife.o
+	$(CC) -c examples/gameoflife.c -o obj/gameoflife.o $(CFLAGS)
 
 bin/gradient : obj/gradient.o
-	$(CC) $(LFLAGS) obj/gradient.o -o bin/gradient
+	$(CC) obj/gradient.o -o bin/gradient $(LFLAGS)
 
 obj/gradient.o : examples/gradient.c rbxe.h | makedir
-	$(CC) $(CFLAGS) -c examples/gradient.c -o obj/gradient.o
+	$(CC) -c examples/gradient.c -o obj/gradient.o $(CFLAGS)
 
 bin/pendulum : obj/pendulum.o
-	$(CC) $(LFLAGS) obj/pendulum.o -o bin/pendulum
+	$(CC) obj/pendulum.o -o bin/pendulum $(LFLAGS)
 
 obj/pendulum.o : examples/pendulum.c rbxe.h | makedir
-	$(CC) $(CFLAGS) -c examples/pendulum.c -o obj/pendulum.o
+	$(CC) -c examples/pendulum.c -o obj/pendulum.o $(CFLAGS)
 
 makedir:
 	mkdir -p bin
