@@ -3,15 +3,15 @@ CC=gcc
 STD=-std=c89
 OPT=-O2
 WFLAGS=-Wall -Wextra -pedantic
-INCDIR=-I/opt/homebrew/Cellar/glfw/3.4/include -I.
-LIBDIR=-L/opt/homebrew/Cellar/glfw/3.4/lib
 LIBS=-lglfw
 
 OS=$(shell uname -s)
 ifeq ($(OS),Darwin)
+	INCDIR=-I/opt/homebrew/Cellar/glfw/3.4/include -I.
+	LIBDIR=-L/opt/homebrew/Cellar/glfw/3.4/lib
     LIBS+=-framework OpenGL
 else
-    LIBS+=-lm -lGL -llibGLEW.a
+    LIBS+=-lm -lGL -lglfw
 endif
 
 CFLAGS=$(STD) $(OPT) $(WFLAGS) $(INCDIR)
