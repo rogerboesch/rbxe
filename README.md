@@ -29,7 +29,7 @@ int main(void) {
 ## Header-Only
 
 As a header only solution, you need to define 
-RBXE_APPLICATION before including rbxe.h to access the
+```RBXE_APPLICATION``` before including rbxe.h to access the
 implementation details. 
 
 ```C
