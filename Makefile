@@ -11,11 +11,12 @@ ifeq ($(OS),Darwin)
 	LIBDIR=-L/opt/homebrew/Cellar/glfw/3.4/lib
     LIBS+=-framework OpenGL
 else
-    LIBS+=-lm -lGL -lglfw
+    LIBS+=-lm -lGL -lGLEW
+    DLIB=-fPIC -shared
 endif
 
 CFLAGS=$(STD) $(OPT) $(WFLAGS) $(INCDIR)
-LFLAGS=$(STD) $(OPT) $(LIBDIR) $(LIBS)
+LFLAGS=$(STD) $(OPT) $(LIBDIR) $(LIBS) $(DLIB)
 
 all: bin/hello bin/example bin/sandsim bin/mandelbrot bin/gameoflife bin/gradient bin/pendulum
 
