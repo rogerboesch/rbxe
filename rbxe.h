@@ -22,6 +22,10 @@ void rbxeScreenSize(int* widthptr, int* heightptr);
 void rbxeWindowSize(int* widthptr, int* heightptr);
 void rbxeBackgroundColor(const Pixel px);
 
+/* Drawing */
+void rbxeClear(const int value);
+void rbxeSetPixel(const int x, const int y, const Pixel color);
+
 /* time input */
 double rbxeTime(void);
 
@@ -561,6 +565,17 @@ int rbxeEnd(Pixel* pixbuf) {
     }
 
     return EXIT_FAILURE;
+}
+
+/* Drawing */
+
+void rbxeClear(const int value) {
+    int buflen = rbxe.scrres.width*rbxe.scrres.height*sizeof(Pixel);
+    memset(rbxe.data, value, buflen);
+}
+
+void rbxeSetPixel(const int x, const int y, const Pixel color) {
+    rbxe.data[y * rbxe.scrres.width + x] = color;
 }
 
 #endif /* RBXE_APPLICATION */

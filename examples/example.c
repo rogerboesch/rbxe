@@ -17,7 +17,6 @@ int main(void) {
     int mouseX, mouseY;
     const int width = WIDTH * SCALE, height = HEIGHT * SCALE;
     const int halfWidth = width / 2, halfHeight = height / 2;
-    const size_t buflen = width * height * sizeof(Pixel);
     const Pixel red = {255, 0, 0, 255}, blue = {0, 0, 255, 0};
 
     Pixel* pixbuf = rbxeStart("Example", WIDTH, HEIGHT, width, height);
@@ -34,11 +33,11 @@ int main(void) {
             break;
         }
 
-        memset(pixbuf, 255, buflen);
-        pixbuf[halfHeight * width + halfWidth] = red;
+        rbxeClear(255);
+        rbxeSetPixel(halfWidth, halfHeight, red);
 
         if (mouseX >= 0 && mouseX < width && mouseY >= 0 && mouseY < height) {
-            pixbuf[mouseY * width + mouseX] = blue;
+            rbxeSetPixel(mouseX, mouseY, blue);
         }
     }
 
