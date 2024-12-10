@@ -27,6 +27,7 @@ void rbxeBackgroundColor(const Pixel px);
 void rbxeClear(const int value);
 void rbxeSetPixel(const int x, const int y, const Pixel color);
 void rbxePlotLine(int x1, int y1, int x2, int y2, const Pixel color);
+void rbxePlotCircle(int xc, int yc, int r, const Pixel color);
 
 /* time input */
 double rbxeTime(void);
@@ -579,6 +580,7 @@ void rbxeClear(const int value) {
 }
 
 void rbxeSetPixel(const int x, const int y, const Pixel color) {
+    if (x < 0 || x >= rbxe.scrres.width || y < 0 || y > rbxe.scrres.height) return;
     rbxe.data[y * rbxe.scrres.width + x] = color;
 }
 
@@ -615,6 +617,32 @@ void rbxePlotLine(int x1, int y1, int x2, int y2, const Pixel color) {
             y1 = y1 + sy;
         }
     }
+}
+
+void rbxePlotCircle(int xc, int yc, int r, const Pixel color) {
+	int x = 0;
+	int y = r;
+	int p = 3 - 2 * r;
+	
+	if (!r)
+		return;
+	
+	while (y >= x) {
+		/* only formulate 1/8 of circle */
+		rbxeSetPixel(xc - x, yc - y, color); /* upper left left */
+		rbxeSetPixel(xc - y, yc - x, color); /* upper upper left */
+		rbxeSetPixel(xc + y, yc - x, color); /* upper upper right */
+		rbxeSetPixel(xc + x, yc - y, color); /* upper right right */
+		rbxeSetPixel(xc - x, yc + y, color); /* lower left left */
+		rbxeSetPixel(xc - y, yc + x, color); /* lower lower left */
+		rbxeSetPixel(xc + y, yc + x, color); /* lower lower right */
+		rbxeSetPixel(xc + x, yc + y, color); /* lower right right */
+		
+		if (p < 0)
+			p += 4 * x++ + 6;
+		else
+			p += 4 * (x++ - y--) + 10;
+	}
 }
 
 #endif /* RBXE_APPLICATION */

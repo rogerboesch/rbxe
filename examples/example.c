@@ -30,6 +30,7 @@ int main(void) {
 
         rbxeClear(255);
         rbxeSetPixel(halfWidth, halfHeight, red);
+        rbxePlotCircle(halfWidth, halfHeight, 20, red);
 
         if (mouseX >= 0 && mouseX < width && mouseY >= 0 && mouseY < height) {
             rbxeSetPixel(mouseX, mouseY, blue);

@@ -222,8 +222,13 @@ Set a pixel at ```x``` and ```y``` position with the specified ```color```.
 void rbxePlotLine(int x1, int y1, int x2, int y2, const Pixel color);
 ```
 
-Draws a line from ```x1```,```y1``` to ```x2```,```y2``` with the specified ```color```.
+Plots a line from ```x1```,```y1``` to ```x2```,```y2``` with the specified ```color```.
 
+```C
+void rbxePlotCircle(int xc, int yc, int r, const Pixel color);
+```
+
+Plot a circle at ```xc```,```yc``` with radius ```r``` and the specified ```color```.
 
 ### Font (Bitmap)
 
