@@ -1,5 +1,21 @@
 {
     "files.associations": {
-        "ios": "cpp"
+        "ios": "cpp",
+        "math.h": "c",
+        "stdlib.h": "c",
+        "rbxe.h": "c",
+        "rbxe-sprite.h": "c",
+        "__hash_table": "c",
+        "__split_buffer": "c",
+        "array": "c",
+        "bitset": "c",
+        "deque": "c",
+        "initializer_list": "c",
+        "queue": "c",
+        "stack": "c",
+        "string": "c",
+        "string_view": "c",
+        "unordered_map": "c",
+        "vector": "c"
     }
 }

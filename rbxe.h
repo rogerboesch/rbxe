@@ -6,6 +6,9 @@
 
 #define ABS(n) ((n) > 0 ? (n) : -(n))
 
+#define TRUE    1
+#define FALSE   0
+
 typedef struct Pixel {
     unsigned char r, g, b, a;
 } Pixel;
@@ -566,10 +569,10 @@ int rbxeEnd(void) {
         free(rbxe.data);
         rbxe.data = NULL;
 
-        return EXIT_SUCCESS;
+        return TRUE;
     }
 
-    return EXIT_FAILURE;
+    return FALSE;
 }
 
 /* Drawing */

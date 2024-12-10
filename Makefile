@@ -7,18 +7,18 @@ LIBS=-lglfw
 
 OS=$(shell uname -s)
 ifeq ($(OS),Darwin)
-	INCDIR=-I/opt/homebrew/Cellar/glfw/3.4/include -I.
+	INCDIR=-I/opt/homebrew/Cellar/glfw/3.4/include -I. -I3rdparty
 	LIBDIR=-L/opt/homebrew/Cellar/glfw/3.4/lib
     LIBS+=-framework OpenGL
 else
-	INCDIR=-I.
+	INCDIR=-I. -I3rdparty
     LIBS+=-lm -lGL -lGLU -lGLEW
 endif
 
 CFLAGS=$(STD) $(OPT) $(WFLAGS) $(INCDIR)
 LFLAGS=$(STD) $(OPT) $(LIBDIR) $(LIBS)
 
-all: bin/hello bin/example bin/font bin/sandsim bin/mandelbrot bin/gameoflife bin/gradient bin/pendulum
+all: bin/hello bin/example bin/font bin/sandsim bin/mandelbrot bin/gameoflife bin/gradient bin/pendulum bin/sprite
 
 bin/hello : obj/hello.o
 	$(CC) obj/hello.o -o bin/hello $(LFLAGS)
@@ -68,9 +68,16 @@ bin/pendulum : obj/pendulum.o
 obj/pendulum.o : examples/pendulum.c rbxe.h | makedir
 	$(CC) -c examples/pendulum.c -o obj/pendulum.o $(CFLAGS)
 
+bin/sprite : obj/sprite.o
+	$(CC) obj/sprite.o -o bin/sprite $(LFLAGS)
+
+obj/sprite.o : examples/sprite.c rbxe.h rbxe-sprite.h | makedir
+	$(CC) -c examples/sprite.c -o obj/sprite.o $(CFLAGS)
+
 makedir:
 	mkdir -p bin
 	mkdir -p obj
+	cp assets/* bin/
 
 clean:
 	rm -r bin

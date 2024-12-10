@@ -359,5 +359,5 @@ void rbxeFontDrawString(int x, int y, char* str, Pixel fg, Pixel bg) {
 	}
 }
 
-#endif
-#endif
+#endif /* RBXE_APPLICATION */
+#endif /* RB_PIXEL_ENGINE_FONT_H */

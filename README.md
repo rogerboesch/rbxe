@@ -251,6 +251,11 @@ void rbxeFontDrawString(int x, int y, char* str, Pixel fg, Pixel bg);
 Draw a string.
 
 
+### Sprites
+
+**Not yet ready, Under development**
+
+
 ### Direct buffer access
 
 It is higly recommened that you use the mentioned drawing funcctions to access the pixel buffer.
