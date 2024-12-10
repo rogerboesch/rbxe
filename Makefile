@@ -45,13 +45,13 @@ obj/sandsim.o : examples/sandsim.c rbxe.h | makedir
 	$(CC) -c examples/sandsim.c -o obj/sandsim.o $(CFLAGS)
 
 bin/mandelbrot : obj/mandelbrot.o
-	$(CC) $(LIBS) obj/mandelbrot.o -o bin/mandelbrot $(LFLAGS)
+	$(CC) obj/mandelbrot.o -o bin/mandelbrot $(LFLAGS)
 
 obj/mandelbrot.o : examples/mandelbrot.c rbxe.h | makedir
 	$(CC) -c examples/mandelbrot.c -o obj/mandelbrot.o $(CFLAGS)
 
 bin/gameoflife : obj/gameoflife.o
-	$(CC) $(LIBS) obj/gameoflife.o -o bin/gameoflife $(LFLAGS)
+	$(CC) obj/gameoflife.o -o bin/gameoflife $(LFLAGS)
 
 obj/gameoflife.o : examples/gameoflife.c rbxe.h | makedir
 	$(CC) -c examples/gameoflife.c -o obj/gameoflife.o $(CFLAGS)

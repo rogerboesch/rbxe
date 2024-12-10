@@ -41,7 +41,7 @@ static void pxUpdate(Pixel* pixbuf, Pixel* buf, const int width, const int heigh
 int main(const int argc, char** argv) {
     Pixel* pixbuf, *buf;
     const Pixel red = {255, 0, 0, 255};
-    int mousex, mousey, width = 320, height = 240;
+    int mouseX, mouseY, width = 320, height = 240;
     
     if (argc > 1) {
         width = atoi(argv[1]);
@@ -54,7 +54,7 @@ int main(const int argc, char** argv) {
     pxInit(pixbuf, width * height);
 
     while (rbxeRun(pixbuf)) {
-        rbxeMousePos(&mousex, &mousey);
+        rbxeMousePos(&mouseX, &mouseY);
 
         if (rbxeKeyPressed(KEY_ESCAPE) || rbxeKeyPressed(KEY_Q)) {
             break;
@@ -66,8 +66,8 @@ int main(const int argc, char** argv) {
         
         pxUpdate(pixbuf, buf, width, height);
         
-        if (mousex >= 0 && mousex < width && mousey >= 0 && mousey < height) {
-            pixbuf[mousey * width + mousex] = red;
+        if (mouseX >= 0 && mouseX < width && mouseY >= 0 && mouseY < height) {
+            rbxeSetPixel(mouseX, mouseY, red);
         }
     }
     

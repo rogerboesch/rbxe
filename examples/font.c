@@ -17,7 +17,6 @@
 int main(void) {
     int mouseX, mouseY;
     const int width = WIDTH * SCALE, height = HEIGHT * SCALE;
-    const size_t buflen = width * height * sizeof(Pixel);
     const Pixel black = {0, 0, 0, 255}, white = {255, 255, 255, 255};
     char str[255];
 
@@ -37,8 +36,8 @@ int main(void) {
             break;
         }
 
-        memset(pixbuf, 255, buflen);
-
+        rbxeClear(255);
+ 
         if (mouseX >= 0 && mouseX < width && mouseY >= 0 && mouseY < height) {
             sprintf(str, "%d,%d", mouseX, mouseY);
             rbxeFontDrawString(10, 10, str, black, white);

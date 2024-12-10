@@ -12,19 +12,19 @@ static Pixel rbxeGradientAt(int x, int y) {
     return px;
 }
 
-static void rbxeDrawGradient(Pixel* pixbuf) {
+static void rbxeDrawGradient(void) {
     int x, y;
 
     for (y = 0; y < HEIGHT; ++y) {
         for (x = 0; x < WIDTH; ++x) {
-            pixbuf[y * WIDTH + x] = rbxeGradientAt(x, y);
+            rbxeSetPixel(x, y, rbxeGradientAt(x, y));
         }
     }
 }
 
 int main(void) {
     Pixel* pixbuf = rbxeStart("Gradient", 800, 600, WIDTH, HEIGHT);
-    rbxeDrawGradient(pixbuf);
+    rbxeDrawGradient();
 
     while (rbxeRun(pixbuf)) {
         if(rbxeKeyPressed(KEY_ESCAPE)) {

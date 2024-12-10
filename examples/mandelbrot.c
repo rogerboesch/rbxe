@@ -36,14 +36,9 @@ static double vec2_dot(const vec2 a, const vec2 b) {
     return a.x * b.x + a.y * b.y;
 }
 
-static void pxDraw(Pixel* px, const double n, const double t) {
-    px->r = (unsigned)(CLAMP(sin(t) * n * 0.8 + 0.2) * 255.0);
-    px->g = (unsigned)(CLAMP(sin(t * 0.333333) * n) * 255.0);
-    px->b = (unsigned)(CLAMP(cos(t * 0.7) * n * 0.8 + 0.2) * 255.0);
-}
-
-static void pxUpdate(Pixel* pixbuf, const int width, const int height, vec2 pos, double t) {
+static void pxUpdate(const int width, const int height, vec2 pos, double t) {
     int i, x, y;
+    Pixel color;
 
     pos.x = (pos.x + pos.x * zoom) * 0.5;
     pos.y = (pos.y + pos.y * zoom) * 0.5;
@@ -66,8 +61,13 @@ static void pxUpdate(Pixel* pixbuf, const int width, const int height, vec2 pos,
                     break;
                 }
             }
-            
-            pxDraw(pixbuf + width * y + x, n, t);
+
+            color.r = (unsigned)(CLAMP(sin(t) * n * 0.8 + 0.2) * 255.0);
+            color.g = (unsigned)(CLAMP(sin(t * 0.333333) * n) * 255.0);
+            color.b = (unsigned)(CLAMP(cos(t * 0.7) * n * 0.8 + 0.2) * 255.0);
+            color.a = 255;
+
+            rbxeSetPixel(x, y, color);
         }
     }
 }
@@ -84,7 +84,7 @@ int main(const int argc, const char** argv) {
     }
   
     pixbuf = rbxeStart("Mandelbrot", 800, 600, width, height);
-    memset(pixbuf, 255, width * height * sizeof(Pixel));
+    rbxeClear(255);
     t = rbxeTime();
 
     while (rbxeRun(pixbuf)) { 
@@ -114,7 +114,7 @@ int main(const int argc, const char** argv) {
             zoom -= dT * 0.01 * zoom;
         }
         
-        pxUpdate(pixbuf, width, height, pos, t);
+        pxUpdate(width, height, pos, t);
     }
 
     return rbxeEnd(pixbuf);

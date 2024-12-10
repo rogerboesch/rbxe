@@ -4,6 +4,8 @@
 #ifndef PIXEL_TYPE_DEFINED
 #define PIXEL_TYPE_DEFINED
 
+#define ABS(n) ((n) > 0 ? (n) : -(n))
+
 typedef struct Pixel {
     unsigned char r, g, b, a;
 } Pixel;
@@ -25,6 +27,7 @@ void rbxeBackgroundColor(const Pixel px);
 /* Drawing */
 void rbxeClear(const int value);
 void rbxeSetPixel(const int x, const int y, const Pixel color);
+void rbxePlotLine(int x1, int y1, int x2, int y2, const Pixel color);
 
 /* time input */
 double rbxeTime(void);
@@ -576,6 +579,41 @@ void rbxeClear(const int value) {
 
 void rbxeSetPixel(const int x, const int y, const Pixel color) {
     rbxe.data[y * rbxe.scrres.width + x] = color;
+}
+
+void rbxePlotLine(int x1, int y1, int x2, int y2, const Pixel color) {
+    const int dx = ABS(x2 - x1);
+    const int dy = -ABS(y2 - y1);
+    const int sx = x1 < x2 ? 1 : -1;
+    const int sy = y1 < y2 ? 1 : -1;
+    int e2, error = dx + dy;
+    
+    while (1) {
+        rbxeSetPixel(x1, y1, color);
+
+        if (x1 == x2 && y1 == y2) {
+            break;
+        }
+
+        e2 = error * 2;
+        if (e2 >= dy) {
+            if (x1 == x2) {
+                break;
+            }
+
+            error = error + dy;
+            x1 = x1 + sx;
+        }
+
+        if (e2 <= dx) {
+            if (y1 == y2) {
+                break;
+            }
+
+            error = error + dx;
+            y1 = y1 + sy;
+        }
+    }
 }
 
 #endif /* RBXE_APPLICATION */

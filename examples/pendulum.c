@@ -33,45 +33,9 @@ static ivec2 ivec2_create(int x, int y) {
     return p;
 }
 
-static void pxPlotLine(bmp4 bmp, ivec2 p0, ivec2 p1, Pixel color) {
-    const int dx = ABS(p1.x - p0.x);
-    const int dy = -ABS(p1.y - p0.y);
-    const int sx = p0.x < p1.x ? 1 : -1;
-    const int sy = p0.y < p1.y ? 1 : -1;
-    int e2, error = dx + dy;
-    
-    while (1) {
-        bmp.pixbuf[p0.y * bmp.width + p0.x] = color;
-
-        if (p0.x == p1.x && p0.y == p1.y) {
-            break;
-        }
-
-        e2 = error * 2;
-        if (e2 >= dy) {
-            if (p0.x == p1.x) {
-                break;
-            }
-
-            error = error + dy;
-            p0.x = p0.x + sx;
-        }
-
-        if (e2 <= dx) {
-            if (p0.y == p1.y) {
-                break;
-            }
-
-            error = error + dx;
-            p0.y = p0.y + sy;
-        }
-    }
-}
-
 int main(const int argc, const char** argv) {
     const Pixel red = {255, 0, 0, 255}, green = {0, 255, 0, 255};
     
-    size_t size;
     vec2 xy, dif, cross;
     ivec2 p, center, idif;
     bmp4 fb = {NULL, 200, 150};
@@ -84,7 +48,6 @@ int main(const int argc, const char** argv) {
 
     fb.pixbuf = rbxeStart("Pendulum", 800, 600, fb.width, fb.height);
 
-    size = fb.width * fb.height * sizeof(Pixel);
     center = ivec2_create(fb.width / 2, fb.height / 2);
     p = ivec2_create(center.x + fb.width / 8, center.y);
     xy = vec2_create((float)p.x, (float)p.y);
@@ -111,16 +74,16 @@ int main(const int argc, const char** argv) {
         p.x = (int)xy.x;
         p.y = (int)xy.y;
 
-        memset(fb.pixbuf, 155, size);
-        
+        rbxeClear(155);
+
         if (p.x >= 0 && p.y >= 0 && p.x < fb.width && p.y < fb.height) {
             ivec2 d = ivec2_create(
                 (int)(xy.x - cross.x * v * 0.25F),
                 (int)(xy.y + cross.y * v * 0.25F)
             );
 
-            pxPlotLine(fb, center, p, red);
-            pxPlotLine(fb, p, d, green);
+            rbxePlotLine(center.x, center.y, p.x, p.y, red);
+            rbxePlotLine(p.x, p.y, d.x, d.y, green);
         }
     }
 
