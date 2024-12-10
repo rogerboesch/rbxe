@@ -77,6 +77,12 @@ void rbxeSpriteRender(Sprite* sprite) {
 
     rbxeScreenSize(&width, &height);
 
+    /* 
+    TODO:
+    - Use position of sprite in dest
+    - Use correct frame (see animation_id)
+    - Render vertically flipped in pixel buffer
+    */
     source = sprite->data;    
     dest = (unsigned char*)rbxeGetBuffer();   
 

@@ -1,6 +1,6 @@
 # Makefile to create all examples
 CC=gcc
-STD=-std=c89
+STD=-std=gnu99
 OPT=-O2
 WFLAGS=-Wall -Wextra -pedantic
 LIBS=-lglfw
