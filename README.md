@@ -147,24 +147,6 @@ Deallocates the pixel buffer and closes the render window along with OpenGL
 libraries.
 
 ```C
-void rbxeClear(const int value);
-```
-
-Clears the buffer with the given ```value```.
-
-```C
-void rbxeSetPixel(const int x, const int y, const Pixel color);
-```
-
-Set a pixel at ```x``` and ```y``` position with the specified ```color```.
-
-```C
-void rbxePlotLine(int x1, int y1, int x2, int y2, const Pixel color);
-```
-
-Draws a line from ```x1```,```y1``` to ```x2```,```y2``` with the specified ```color```.
-
-```C
 void rbxeScreenSize(int* width, int* height);
 void rbxeWindowSize(int* width, int* height);
 ```
@@ -229,6 +211,26 @@ double rbxeTime(void);
 ```
 
 Returns time from the moment RBXE was initialized in seconds.
+
+### Drawing
+
+```C
+void rbxeClear(const int value);
+```
+
+Clears the buffer with the given ```value```.
+
+```C
+void rbxeSetPixel(const int x, const int y, const Pixel color);
+```
+
+Set a pixel at ```x``` and ```y``` position with the specified ```color```.
+
+```C
+void rbxePlotLine(int x1, int y1, int x2, int y2, const Pixel color);
+```
+
+Draws a line from ```x1```,```y1``` to ```x2```,```y2``` with the specified ```color```.
 
 
 ### Font (Bitmap)
