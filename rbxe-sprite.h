@@ -8,7 +8,7 @@
 typedef struct Sprite {
 	int id;
 	int animation_nr;
-    vec2 position;
+    ivec2 position;
 	int is_active;
     int health;
 
@@ -22,7 +22,7 @@ typedef struct Sprite {
 
 Sprite* rbxeSpriteLoad(char* filename, int cell_width, int cell_height);
 void rbxeSpriteRender(Sprite* sprite);
-void rbxeSpriteSetPosition(Sprite* sprite, vec2 position);
+void rbxeSpriteSetPosition(Sprite* sprite, ivec2 position);
 void rbxeSpriteSetActive(Sprite* sprite, int active);
 void rbxeSpriteSetHealth(Sprite* sprite, int health);
 
@@ -33,7 +33,7 @@ static int unique_id = 0;
 void rbxeSpriteDump(Sprite* sprite) {
     fprintf(stdout, "Sprite %d\n", sprite->id);
     fprintf(stdout, "+-animation: %d\n", sprite->animation_nr);
-    fprintf(stdout, "+-position: %0.2f, %0.2f\n", sprite->position.x, sprite->position.y);
+    fprintf(stdout, "+-position: %d, %d\n", sprite->position.x, sprite->position.y);
     fprintf(stdout, "+-w/h: %d, %d\n", sprite->width, sprite->height);
     fprintf(stdout, "+-cell: %d, %d\n", sprite->cell_width, sprite->cell_height);
 }
@@ -45,7 +45,7 @@ Sprite* rbxeSpriteLoad(char* path, int cell_width, int cell_height) {
     sprite = malloc(sizeof(Sprite));
     sprite->id = ++unique_id;
     sprite->animation_nr = 0;
-    sprite->position = vec2_create(0,0);
+    sprite->position = ivec2_create(100, 100);
     sprite->is_active = TRUE;
     sprite->health = 0;
 
@@ -84,17 +84,18 @@ void rbxeSpriteRender(Sprite* sprite) {
     - Render vertically flipped in pixel buffer
     */
     source = sprite->data;    
-    dest = (unsigned char*)rbxeGetBuffer();   
+    dest = (unsigned char*)rbxeGetBuffer();  
+    dest += (sprite->position.y * width + sprite->position.x)  * 4; 
 
     for (y=0; y<sprite->cell_height; y++) {
         memcpy(dest, source, sprite->cell_height*4);
         
         source += sprite->width * 4;
-        dest += (width * 4);
+        dest -= (width * 4);
     }
 }
 
-void rbxeSpriteSetPosition(Sprite* sprite, vec2 position) {
+void rbxeSpriteSetPosition(Sprite* sprite, ivec2 position) {
     sprite->position = position;
 }
 
