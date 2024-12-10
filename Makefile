@@ -1,4 +1,4 @@
-# Makefile
+# Makefile to create all examples
 CC=gcc
 STD=-std=c89
 OPT=-O2

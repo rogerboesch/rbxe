@@ -19,14 +19,9 @@ int main(void) {
     const int halfWidth = width / 2, halfHeight = height / 2;
     const Pixel red = {255, 0, 0, 255}, blue = {0, 0, 255, 0};
 
-    Pixel* pixbuf = rbxeStart("Example", WIDTH, HEIGHT, width, height);
+    if (!rbxeStart("Example", WIDTH, HEIGHT, width, height)) return EXIT_FAILURE;
 
-    if (!pixbuf) {
-        fprintf(stderr, "Could not init RBXE\n");
-        return 1;
-    }
-
-    while (rbxeRun(pixbuf)) {
+    while (rbxeRun()) {
         rbxeMousePos(&mouseX, &mouseY);
 
         if (rbxeKeyPressed(KEY_ESCAPE)) {
@@ -41,6 +36,6 @@ int main(void) {
         }
     }
 
-    return rbxeEnd(pixbuf);
+    return rbxeEnd();
 }
 

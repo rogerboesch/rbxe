@@ -74,7 +74,6 @@ static void pxUpdate(const int width, const int height, vec2 pos, double t) {
 
 int main(const int argc, const char** argv) {
     double t;
-    Pixel* pixbuf;
     vec2 pos = {0.0, 0.0};
     int width = 64, height = 64;
 
@@ -83,11 +82,12 @@ int main(const int argc, const char** argv) {
         height = argc > 2 ? atoi(argv[2]) : width;
     }
   
-    pixbuf = rbxeStart("Mandelbrot", 800, 600, width, height);
+    if (!rbxeStart("Mandelbrot", 800, 600, width, height)) return EXIT_FAILURE;
+
     rbxeClear(255);
     t = rbxeTime();
 
-    while (rbxeRun(pixbuf)) { 
+    while (rbxeRun()) { 
         double dT, T = rbxeTime();
         dT = (T - t) * 50.0;
         t = T;
@@ -117,6 +117,6 @@ int main(const int argc, const char** argv) {
         pxUpdate(width, height, pos, t);
     }
 
-    return rbxeEnd(pixbuf);
+    return rbxeEnd();
 }
 

@@ -23,15 +23,16 @@ static void rbxeDrawGradient(void) {
 }
 
 int main(void) {
-    Pixel* pixbuf = rbxeStart("Gradient", 800, 600, WIDTH, HEIGHT);
+    if (!rbxeStart("Gradient", 800, 600, WIDTH, HEIGHT)) return EXIT_FAILURE;
+
     rbxeDrawGradient();
 
-    while (rbxeRun(pixbuf)) {
+    while (rbxeRun()) {
         if(rbxeKeyPressed(KEY_ESCAPE)) {
             break;
         }
     }
 
-    return rbxeEnd(pixbuf);
+    return rbxeEnd();
 }
 

@@ -11,15 +11,15 @@ to be extremely simple, lightweight, and easy to use.
 #include <rbxe.h>
 
 int main(void) {
-    Pixel* pixbuf = rbxeStart("Hello World", 800, 600, 100, 75);
+    if (!rbxeStart("Hello World", 800, 600, 100, 75)) return EXIT_FAILURE;
 
-    while (rbxeRun(pixbuf)) {
+    while (rbxeRun()) {
         if (rbxeKeyPressed(KEY_ESCAPE)) {
             break;
         }
     }
 
-    return rbxeEnd(pixbuf);
+    return rbxeEnd(pxbuf);
 }
 
 ```
@@ -87,24 +87,16 @@ make clean
 ### Engine
 
 ```C
-typedef struct Pixel {
-    unsigned char r, g, b, a;
-} Px;
+int rbxeStart(const char* title, int winwidth, int winheight, int scrwidth, int scrheight);
 ```
 
-Main and only tyepedefed structure used by the engine. The simple pixel 
-engine handles only 4 channel RGBA buffers. 
-
-```C
-Pixel* rbxeStart(const char* title, int winwidth, int winheight, int scrwidth, int scrheight);
-```
-
-Creates a window with title, width and height specified by the first three
-arguments. The fourth and fifth arguments represent the width and height of 
+Creates a window with ```title```, ```width``` and ```height``` specified by the first three
+arguments. The fourth and fifth arguments represent the ```width``` and ```height``` of 
 the pixel buffer that is allocated and returned to be rendered. The pixel 
 buffer is a contiguous array of type Pixel in row-major order. The size in memory
-of the returned pixel buffer is exactly the width by the height by the size of
-the ```Pixel``` struct.
+of the pixel buffer is exactly the width by the height by the size of
+the internal ```Pixel``` struct. (See ```rbxeGetBuffer()```).
+It returns a non-zero if the engine started correctly, otherwise it returns zero.
 
 ```C
 int rbxeStep(void);
@@ -256,11 +248,31 @@ Draw a string.
 
 ### Direct buffer access
 
+It is higly recommened that you use the mentioned drawing funcctions to access the pixel buffer.
+However, there are situations where you might like to direct access the pixel buffer.
+
+Main and only tyepedefed structure used by the engine. The simple pixel 
+engine handles only 4 channel RGBA buffers. 
+
+```C
+typedef struct Pixel {
+    unsigned char r, g, b, a;
+} Px;
+```
+
 By initializing RBXE you are given a 8-bit RGBA pixel buffer in a row-major order 
 where the coordinate (0, 0) corresponds to the top left pixel of the image. At each
 frame you render from the CPU side by directly accessing and modifying the values of 
 the pixel buffer giving you fast and direct control over every pixel in the screen. 
+
+You can get access to the buffer by calling:
+
+```C
+Pixel* pixbuf = rbxeGetBuffer();
+```
+
 This is an example on how you can plot a pixel at position (x, y) to red.
+Access to ```width``` you have by calling ```rbxeScreenSize()```
 
 ```C
 Pixel red = {255, 0, 0, 255};

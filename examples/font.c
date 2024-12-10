@@ -20,16 +20,11 @@ int main(void) {
     const Pixel black = {0, 0, 0, 255}, white = {255, 255, 255, 255};
     char str[255];
 
-    Pixel* pixbuf = rbxeStart("Font", WIDTH, HEIGHT, width, height);
-
-    if (!pixbuf) {
-        fprintf(stderr, "Could not init RBXE\n");
-        return 1;
-    }
+    if (!rbxeStart("Font", WIDTH, HEIGHT, width, height)) return EXIT_FAILURE;
 
     rbxeFontInit();
 
-    while (rbxeRun(pixbuf)) {
+    while (rbxeRun()) {
         rbxeMousePos(&mouseX, &mouseY);
 
         if (rbxeKeyPressed(KEY_ESCAPE)) {
@@ -44,6 +39,6 @@ int main(void) {
         }
     }
 
-    return rbxeEnd(pixbuf);
+    return rbxeEnd();
 }
 

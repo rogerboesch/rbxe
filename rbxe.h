@@ -14,10 +14,9 @@ typedef struct Pixel {
 
 /* RBXE core */
 int rbxeStep(void);
-int rbxeRun(const Pixel* pixbuf);
-void rbxeRender(const Pixel* pixbuf);
-int rbxeEnd(Pixel* pixbuf);
-Pixel* rbxeStart(const char* title, const int winwidth, const int winheight, const int scrwidth, const int scrheight);
+int rbxeRun(void);
+int rbxeEnd(void);
+int rbxeStart(const char* title, const int winwidth, const int winheight, const int scrwidth, const int scrheight);
 
 Pixel* rbxeGetBuffer(void);
 void rbxeScreenSize(int* widthptr, int* heightptr);
@@ -411,7 +410,7 @@ void rbxeMouseVisible(const int visible) {
 
 /* rbxe core */
 
-Pixel* rbxeStart(const char* title,  const int winwidth, const int winheight, const int scrwidth, const int scrheight) {
+int rbxeStart(const char* title,  const int winwidth, const int winheight, const int scrwidth, const int scrheight) {
     Pixel* pixbuf;
     GLFWwindow* window;
     unsigned int id, vao, ebo, texture;
@@ -426,7 +425,7 @@ Pixel* rbxeStart(const char* title,  const int winwidth, const int winheight, co
     /* init glfw */
     if (!glfwInit()) {
         fprintf(stderr, "RBXE failed to initiate glfw.\n");
-        return NULL;
+        return 0;
     }
 
     /* open and setup window */
@@ -445,7 +444,7 @@ Pixel* rbxeStart(const char* title,  const int winwidth, const int winheight, co
     if (!window) {
         fprintf(stderr, "RBXE failed to open glfw window.\n");
         glfwTerminate();
-        return NULL;
+        return 0;
     }
     
     glfwMakeContextCurrent(window);
@@ -474,7 +473,7 @@ Pixel* rbxeStart(const char* title,  const int winwidth, const int winheight, co
     pixbuf = (Pixel*)calloc(scrsize, sizeof(Pixel));
     if (!pixbuf) {
         fprintf(stderr, "RBXE failed to allocate pixel framebuffer.\n");
-        return NULL;
+        return 0;
     }
 
     /* set global information */
@@ -532,7 +531,7 @@ Pixel* rbxeStart(const char* title,  const int winwidth, const int winheight, co
     
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, rbxe.scrres.width, rbxe.scrres.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixbuf);
 
-    return pixbuf;
+    return 1;
 }
 
 void rbxeBackgroundColor(const Pixel c) {
@@ -540,7 +539,7 @@ void rbxeBackgroundColor(const Pixel c) {
     glClearColor((float)c.r * n, (float)c.g * n, (float)c.b * n, (float)c.a * n);
 }
 
-void rbxeRender(const Pixel* pixbuf) {
+static void _rbxeRender(const Pixel* pixbuf) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, rbxe.scrres.width, rbxe.scrres.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixbuf);
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -554,16 +553,18 @@ int rbxeStep(void) {
     return !glfwWindowShouldClose(rbxe.window);
 }
 
-int rbxeRun(const Pixel* pixbuf) {
-    rbxeRender(pixbuf);
+int rbxeRun(void) {
+    _rbxeRender(rbxe.data);
     return rbxeStep();
 }
 
-int rbxeEnd(Pixel* pixbuf) {
+int rbxeEnd(void) {
     glfwTerminate();
 
-    if (pixbuf) {
-        free(pixbuf);
+    if (rbxe.data) {
+        free(rbxe.data);
+        rbxe.data = NULL;
+
         return EXIT_SUCCESS;
     }
 

@@ -9,15 +9,18 @@
 static const Pixel black = {0, 0, 0, 255};
 static const Pixel white = {255, 255, 255, 255};
 
-static void pxInit(Pixel* pixbuf, const size_t size) {
+static void pxInit(const size_t size) {
+    Pixel* pixbuf = rbxeGetBuffer();
     size_t i;
+
     for (i = 0; i < size; ++i) {
         memcpy(pixbuf + i, rand() % 2 ? &white : &black, sizeof(Pixel));
     }
 }
 
-static void pxUpdate(Pixel* pixbuf, Pixel* buf, const int width, const int height) {
+static void pxUpdate(Pixel* buf, const int width, const int height) {
     int x, y, count, index = 0;
+    Pixel* pixbuf = rbxeGetBuffer();
 
     for (y = 0; y < height; ++y) {
         for (x = 0; x < width; ++x, ++index) {
@@ -39,7 +42,7 @@ static void pxUpdate(Pixel* pixbuf, Pixel* buf, const int width, const int heigh
 }
 
 int main(const int argc, char** argv) {
-    Pixel* pixbuf, *buf;
+    Pixel* buf;
     const Pixel red = {255, 0, 0, 255};
     int mouseX, mouseY, width = 320, height = 240;
     
@@ -48,12 +51,14 @@ int main(const int argc, char** argv) {
         height = argc > 2 ? atoi(argv[2]) : width;
     }
 
-    srand(time(NULL));
-    pixbuf = rbxeStart("Game Of Life", 800, 600, width, height);
-    buf = (Pixel*)malloc(width * height * sizeof(Pixel));
-    pxInit(pixbuf, width * height);
+    if (!rbxeStart("Game Of Life", 800, 600, width, height)) return EXIT_FAILURE;
 
-    while (rbxeRun(pixbuf)) {
+    srand(time(NULL));
+
+    buf = (Pixel*)malloc(width * height * sizeof(Pixel));
+    pxInit(width * height);
+
+    while (rbxeRun()) {
         rbxeMousePos(&mouseX, &mouseY);
 
         if (rbxeKeyPressed(KEY_ESCAPE) || rbxeKeyPressed(KEY_Q)) {
@@ -61,10 +66,10 @@ int main(const int argc, char** argv) {
         }
 
         if (rbxeKeyPressed(KEY_R)) {
-            pxInit(pixbuf, width * height);
+            pxInit(width * height);
         }
         
-        pxUpdate(pixbuf, buf, width, height);
+        pxUpdate(buf, width, height);
         
         if (mouseX >= 0 && mouseX < width && mouseY >= 0 && mouseY < height) {
             rbxeSetPixel(mouseX, mouseY, red);
@@ -72,6 +77,6 @@ int main(const int argc, char** argv) {
     }
     
     free(buf);
-    return rbxeEnd(pixbuf);
+    return rbxeEnd();
 }
 

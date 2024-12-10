@@ -13,8 +13,9 @@ static Pixel pxAir(const int height, int y) {
     return air;
 }
 
-static void pxInit(Pixel* pixbuf, const int width, const int height) {
+static void pxInit(const int width, const int height) {
     int x, y, index = 0;
+    Pixel* pixbuf = rbxeGetBuffer();
 
     for (y = 0; y < height; ++y) {
         for (x = 0; x < width; ++x, ++index) {
@@ -23,8 +24,9 @@ static void pxInit(Pixel* pixbuf, const int width, const int height) {
     }
 }
 
-static void pxUpdate(Pixel* pixbuf, Pixel* buf, const int width, const int height) {
+static void pxUpdate(Pixel* buf, const int width, const int height) {
     int x, y, dy, index = 0;
+    Pixel* pixbuf = rbxeGetBuffer();
 
     for (y = 0; y < height; ++y) {
         for (x = 0; x < width; ++x, ++index) { 
@@ -51,7 +53,7 @@ static void pxUpdate(Pixel* pixbuf, Pixel* buf, const int width, const int heigh
 }
 
 int main(const int argc, const char** argv) {
-    Pixel* pixbuf, *buf;
+    Pixel* buf;
     const Pixel red = {255, 0, 0, 255};
     int mouseX, mouseY, width = 160, height = 120;
     
@@ -60,12 +62,14 @@ int main(const int argc, const char** argv) {
         height = argc > 2 ? atoi(argv[2]) : width;
     }
 
-    srand(time(NULL));
-    pixbuf = rbxeStart("Sand Simulation", 800, 600, width, height);
-    buf = (Pixel*)malloc(width * height * sizeof(Pixel));
-    pxInit(pixbuf, width, height);
+    if (!rbxeStart("Sand Simulation", 800, 600, width, height)) return EXIT_FAILURE;
 
-    while (rbxeRun(pixbuf)) {
+    srand(time(NULL));
+
+    buf = (Pixel*)malloc(width * height * sizeof(Pixel));
+    pxInit(width, height);
+
+    while (rbxeRun()) {
         rbxeMousePos(&mouseX, &mouseY);
 
         if (rbxeKeyPressed(KEY_ESCAPE) || rbxeKeyPressed(KEY_Q)) {
@@ -73,10 +77,10 @@ int main(const int argc, const char** argv) {
         }
         
         if (rbxeKeyPressed(KEY_R)) {
-            pxInit(pixbuf, width, height);
+            pxInit(width, height);
         }
         
-        pxUpdate(pixbuf, buf, width, height);
+        pxUpdate(buf, width, height);
         
         if (rbxeMouseDown(MOUSE_LEFT) && 
             mouseX >= 0 && mouseX < width && mouseY >= 0 && mouseY < height) {
@@ -85,6 +89,6 @@ int main(const int argc, const char** argv) {
     }
     
     free(buf);
-    return rbxeEnd(pixbuf);
+    return rbxeEnd();
 }
 
