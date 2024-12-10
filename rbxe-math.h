@@ -7,7 +7,7 @@ typedef struct vec2 {
 
 static vec2 vec2_create(float x, float y);
 
-#ifdef RBXE_APPLICATION
+#ifdef RBXE_ENGINE
 
 static vec2 vec2_create(float x, float y) {
     vec2 p;
@@ -17,5 +17,5 @@ static vec2 vec2_create(float x, float y) {
     return p;
 }
 
-#endif /* RBXE_APPLICATION */
+#endif /* RBXE_ENGINE */
 #endif /* RB_PIXEL_ENGINE_MATH_H */

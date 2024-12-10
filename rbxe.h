@@ -185,7 +185,7 @@ void rbxeMouseVisible(const int visible);
 
 /* Pixel Engine implementation -------------------------------- */
 
-#ifdef RBXE_APPLICATION
+#ifdef RBXE_ENGINE
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -648,5 +648,5 @@ void rbxePlotCircle(int xc, int yc, int r, const Pixel color) {
 	}
 }
 
-#endif /* RBXE_APPLICATION */
+#endif /* RBXE_ENGINE */
 #endif /* RB_PIXEL_ENGINE_H */

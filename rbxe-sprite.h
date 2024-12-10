@@ -26,7 +26,7 @@ void rbxeSpriteSetPosition(Sprite* sprite, vec2 position);
 void rbxeSpriteSetActive(Sprite* sprite, int active);
 void rbxeSpriteSetHealth(Sprite* sprite, int health);
 
-#ifdef RBXE_APPLICATION
+#ifdef RBXE_ENGINE
 
 static int unique_id = 0;
 
@@ -100,5 +100,5 @@ void rbxeSpriteSetHealth(Sprite* sprite, int health) {
     sprite->health = health;
 }
 
-#endif /* RBXE_APPLICATION */
+#endif /* RBXE_ENGINE */
 #endif /* RB_PIXEL_ENGINE_SPRITE_H */

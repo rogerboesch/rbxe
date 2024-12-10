@@ -1,4 +1,4 @@
-#define RBXE_APPLICATION
+#define RBXE_ENGINE
 
 #include <rbxe.h>
 

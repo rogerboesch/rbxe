@@ -1,4 +1,4 @@
-#define RBXE_APPLICATION
+#define RBXE_ENGINE
 #include <rbxe.h>
 
 #include <rbxe-sprite.h>
@@ -10,7 +10,7 @@ int main(void) {
 
     sprite = rbxeSpriteLoad("player.png", 24, 24);
     if (!sprite) return EXIT_FAILURE;
-    
+
     while (rbxeRun()) {
         if (rbxeKeyPressed(KEY_ESCAPE)) {
             break;

@@ -8,7 +8,7 @@ void rbxeFontInit(void);
 void rbxeFontDrawChar(int x, int y, const unsigned char ch, Pixel fg, Pixel bg);
 void rbxeFontDrawString(int x, int y, char* str, Pixel fg, Pixel bg);
 
-#ifdef RBXE_APPLICATION
+#ifdef RBXE_ENGINE
 
 /* Speccy font */
 
@@ -359,5 +359,5 @@ void rbxeFontDrawString(int x, int y, char* str, Pixel fg, Pixel bg) {
 	}
 }
 
-#endif /* RBXE_APPLICATION */
+#endif /* RBXE_ENGINE */
 #endif /* RB_PIXEL_ENGINE_FONT_H */

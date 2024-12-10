@@ -7,7 +7,7 @@ to be extremely simple, lightweight, and easy to use.
 ## Hello World
 ```C
 
-#define RBXE_APPLICATION
+#define RBXE_ENGINE
 #include <rbxe.h>
 
 int main(void) {
@@ -28,15 +28,15 @@ int main(void) {
 ## Header-Only
 
 As a header only solution, you need to define 
-```RBXE_APPLICATION``` before including rbxe.h to access the
+```RBXE_ENGINE``` before including rbxe.h to access the
 implementation details. 
 
 ```C
-#define RBXE_APPLICATION
+#define RBXE_ENGINE
 #include <rbxe.h>
 ```
 
-You should only define ```RBXE_APPLICATION``` in a single translation unit.
+You should only define ```RBXE_ENGINE``` in a single translation unit.
 
 ## Dependencies
 
