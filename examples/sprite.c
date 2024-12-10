@@ -33,6 +33,8 @@ int main(void) {
         if (mouseX >= 0 && mouseX < width && mouseY >= 0 && mouseY < height) {
             sprintf(str, "%d,%d", mouseX, mouseY);
             rbxeFontDrawString(10, 10, str, white, black);
+
+            rbxeSpriteSetPosition(sprite, mouseX, mouseY);
         }
 
         rbxeSpriteRender(sprite);

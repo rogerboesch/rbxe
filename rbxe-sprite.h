@@ -22,7 +22,7 @@ typedef struct Sprite {
 
 Sprite* rbxeSpriteLoad(char* filename, int cell_width, int cell_height);
 void rbxeSpriteRender(Sprite* sprite);
-void rbxeSpriteSetPosition(Sprite* sprite, ivec2 position);
+void rbxeSpriteSetPosition(Sprite* sprite, int x, int y);
 void rbxeSpriteSetActive(Sprite* sprite, int active);
 void rbxeSpriteSetHealth(Sprite* sprite, int health);
 
@@ -95,8 +95,8 @@ void rbxeSpriteRender(Sprite* sprite) {
     }
 }
 
-void rbxeSpriteSetPosition(Sprite* sprite, ivec2 position) {
-    sprite->position = position;
+void rbxeSpriteSetPosition(Sprite* sprite, int x, int y) {
+    sprite->position = ivec2_create(x, y);
 }
 
 void rbxeSpriteSetActive(Sprite* sprite, int active) {
