@@ -38,25 +38,6 @@ implementation details.
 
 You should only define ```RBXE_APPLICATION``` in a single translation unit.
 
-
-## Plotting
-
-By initializing rbxe you are given a 8-bit RGBA pixel buffer in a row-major order 
-where the coordinate (0, 0) corresponds to the top left pixel of the image. At each
-frame you render from the CPU side by directly accessing and modifying the values of 
-the pixel buffer giving you fast and direct control over every pixel in the screen. 
-This is an example on how you can plot a pixel at position (x, y) to red.
-
-```C
-
-Pixel red = {255, 0, 0, 255};
-pixbuf[y * width + x] = red;
-
-```
-
-Where ```width``` is the fourth argument given to ```rbxeStart()```. 
-
-
 ## Dependencies
 
 * [GLFW](https://github.com/glfw/glfw)
@@ -166,6 +147,24 @@ Deallocates the pixel buffer and closes the render window along with OpenGL
 libraries.
 
 ```C
+void rbxeClear(const int value);
+```
+
+Clears the buffer with the given ```value```.
+
+```C
+void rbxeSetPixel(const int x, const int y, const Pixel color);
+```
+
+Set a pixel at ```x``` and ```y``` position with the specified ```color```.
+
+```C
+void rbxePlotLine(int x1, int y1, int x2, int y2, const Pixel color);
+```
+
+Draws a line from ```x1```,```y1``` to ```x2```,```y2``` with the specified ```color```.
+
+```C
 void rbxeScreenSize(int* width, int* height);
 void rbxeWindowSize(int* width, int* height);
 ```
@@ -251,3 +250,19 @@ void rbxeFontDrawString(int x, int y, char* str, Pixel fg, Pixel bg);
 ```
 
 Draw a string.
+
+
+### Direct buffer access
+
+By initializing RBXE you are given a 8-bit RGBA pixel buffer in a row-major order 
+where the coordinate (0, 0) corresponds to the top left pixel of the image. At each
+frame you render from the CPU side by directly accessing and modifying the values of 
+the pixel buffer giving you fast and direct control over every pixel in the screen. 
+This is an example on how you can plot a pixel at position (x, y) to red.
+
+```C
+Pixel red = {255, 0, 0, 255};
+pixbuf[y * width + x] = red;
+```
+
+Where ```width``` is the fourth argument given to ```rbxeStart()```. 
