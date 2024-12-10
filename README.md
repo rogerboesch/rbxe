@@ -1,7 +1,8 @@
 # RBXE - Roger Boesch's Pixel Engine
 
-Simple pixel engine written in C using OpenGL. It's meant
-to be extremely simple, lightweight, and easy to use.
+RBXE Pixel Engine is written in C using internally a pixel buffer using
+OpenGL for visualisation.
+It's meant to be extremely simple, lightweight, and easy to use.
 
 
 ## Hello World
@@ -33,7 +34,10 @@ implementation details.
 
 ```C
 #define RBXE_ENGINE
-#include <rbxe.h>
+#include <rbxe.h>           /* Basic pixel engine              */
+#include <rbxe-font.h>      /* Only if you need font support   */
+#include <rbxe-sprite.h>    /* Only if you need sprite support */
+#include <rbxe-math.h>      /* Only if you need math support   */
 ```
 
 You should only define ```RBXE_ENGINE``` in a single translation unit.
