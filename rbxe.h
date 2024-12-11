@@ -502,7 +502,7 @@ int rbxeStart(const char* title,  const int winwidth, const int winheight, int s
     glewExperimental = GL_TRUE;
     if (glewInit() != GLEW_OK) {
         fprintf(stderr, "RBXE failed to initiate glew.\n");
-        return NULL;
+        return FALSE;
     }
 #endif
 
