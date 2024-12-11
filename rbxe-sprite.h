@@ -152,8 +152,8 @@ void rbxeSpriteRender(Sprite* sprite) {
 }
 
 void rbxeSpriteUpdate(Sprite* sprite) {
-    sprite->position.x += sprite->velocity.x;
-    sprite->position.y += sprite->velocity.y;
+    sprite->position.x += sprite->velocity.x * rbxeDeltaTime();
+    sprite->position.y += sprite->velocity.y * rbxeDeltaTime();
 }
 
 void rbxeSpriteSetPosition(Sprite* sprite, float x, float y) {

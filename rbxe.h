@@ -53,6 +53,7 @@ void rbxePlotCircle(int xc, int yc, int r, const Pixel color);
 
 /* time input */
 double rbxeTime(void);
+double rbxeDeltaTime(void);
 
 /* keyboard input */
 int rbxeKeyDown(const int key);
@@ -262,14 +263,19 @@ static struct rbxeInfo {
     GLFWwindow* window;
     Pixel* data;
 
+    double last_time;
+    double delta_time;
+
     struct rbxeRes {
         int width;
         int height;
     } scrres, winres;
+
     struct rbxeRatio {
         float width;
         float height;
     } ratio;
+
     struct rbxeInput {
         int mouseState;
         int queuedChar;
@@ -277,7 +283,7 @@ static struct rbxeInfo {
         unsigned char keys[KEY_LAST];
         unsigned char pressedKeys[KEY_LAST];
     } input;
-} rbxe = {NULL, NULL, {400, 300}, {800, 600}, {1.0, 1.0}, {GLFW_RELEASE, 1, 0, {0}, {0}}};
+} rbxe = {NULL, NULL, 0.0, 0.0, {400, 300}, {800, 600}, {1.0, 1.0}, {GLFW_RELEASE, 1, 0, {0}, {0}}};
 
 /* implementation only static functions */
 
@@ -356,6 +362,10 @@ void rbxeScreenSize(int* width, int* height) {
 
 double rbxeTime(void) {
     return glfwGetTime();
+}
+
+double rbxeDeltaTime(void) {
+    return rbxe.delta_time;
 }
 
 /* keyboard input */
@@ -563,6 +573,9 @@ int rbxeStart(const char* title,  const int winwidth, const int winheight, int s
     
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, rbxe.scrres.width, rbxe.scrres.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixbuf);
 
+    rbxe.last_time = rbxeTime();
+    rbxe.delta_time = 0.0;
+
     return 1;
 }
 
@@ -581,6 +594,9 @@ int rbxeStep(void) {
     glfwPollEvents();
     glfwSwapBuffers(rbxe.window);
     glClear(GL_COLOR_BUFFER_BIT);
+
+    rbxe.delta_time = rbxeTime() - rbxe.last_time;
+    rbxe.last_time = rbxeTime();
 
     return !glfwWindowShouldClose(rbxe.window);
 }

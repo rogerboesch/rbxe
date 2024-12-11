@@ -44,14 +44,14 @@ int main(void) {
     if (!sprite) return EXIT_FAILURE;
 
     rbxeSpriteSetPosition(sprite, 0, 40);
-    rbxeSpriteSetVelocity(sprite, 0.1, 0);
+    rbxeSpriteSetVelocity(sprite, 10, 0);
 
     /* Create sprite clones */
     for (i=0; i<NUMBER_OF_SPRITES; i++) {
         clone[i] = rbxeSpriteClone(sprite);
 
         rbxeSpriteSetPosition(clone[i], 0, (i+2)*40);
-        rbxeSpriteSetVelocity(clone[i], (i+1)*0.02, 0);
+        rbxeSpriteSetVelocity(clone[i], (i+1)*10, 0);
     }
 
     while (rbxeRun()) {
@@ -61,19 +61,19 @@ int main(void) {
 
         rbxeClear(0);
 
-        sprintf(str, "Time: %f", rbxeTime());
+        sprintf(str, "Delta: %f", rbxeDeltaTime());
         rbxeFontDrawString(10, 10, str, white, black);
 
         rbxeSpriteUpdate(sprite);
         rbxeSpriteRender(sprite);
 
-        rbxeFontDrawString((int)sprite->position.x, (int)sprite->position.y, "original", white, black);
+        rbxeFontDrawString((int)sprite->position.x, (int)sprite->position.y+10, "original", white, black);
 
         for (i=0; i<NUMBER_OF_SPRITES; i++) {
             rbxeSpriteUpdate(clone[i]);
             rbxeSpriteRender(clone[i]);
 
-            rbxeFontDrawString((int)clone[i]->position.x, (int)clone[i]->position.y, "clone", white, black);
+            rbxeFontDrawString((int)clone[i]->position.x, (int)clone[i]->position.y+10, "clone", white, black);
         }
     }
 
