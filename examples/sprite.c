@@ -43,7 +43,7 @@ int main(void) {
     if (!sprite) return EXIT_FAILURE;
 
     rbxeSpriteSetPosition(sprite, 0, 100);
-    rbxeSpriteSetVelocity(sprite, 1, 1);
+    rbxeSpriteSetVelocity(sprite, 1, 0);
 
     while (rbxeRun()) {
         if (rbxeKeyPressed(KEY_ESCAPE)) {

@@ -30,8 +30,8 @@ typedef struct Sprite {
 	int is_active;
 
     /* Transform related */
-    ivec2 position;
-    ivec2 velocity;
+    vec2 position;
+    vec2 velocity;
 
     /* Sprite atlas information*/
     unsigned char* data;
@@ -51,8 +51,8 @@ Sprite* rbxeSpriteLoad(char* filename, int cell_width, int cell_height);
 Sprite* rbxeSpriteClone(Sprite* sprite);
 void rbxeSpriteRender(Sprite* sprite);
 void rbxeSpriteUpdate(Sprite* sprite);
-void rbxeSpriteSetPosition(Sprite* sprite, int x, int y);
-void rbxeSpriteSetVelocity(Sprite* sprite, int x, int y);
+void rbxeSpriteSetPosition(Sprite* sprite, float x, float y);
+void rbxeSpriteSetVelocity(Sprite* sprite, float x, float y);
 void rbxeSpriteSetActive(Sprite* sprite, int active);
 void rbxeSpriteSetHealth(Sprite* sprite, int health);
 
@@ -62,8 +62,8 @@ static int unique_id = 0;
 
 void rbxeSpriteDump(Sprite* sprite) {
     fprintf(stdout, "Sprite %d (clone: %d)\n", sprite->id, sprite->is_clone);
-    fprintf(stdout, "+-position: %d, %d\n", sprite->position.x, sprite->position.y);
-    fprintf(stdout, "+-velocity: %d, %d\n", sprite->velocity.x, sprite->velocity.y);
+    fprintf(stdout, "+-position: %0.3f, %0.3f\n", sprite->position.x, sprite->position.y);
+    fprintf(stdout, "+-velocity: %0.3f, %0.3f\n", sprite->velocity.x, sprite->velocity.y);
     fprintf(stdout, "+-w/h: %d, %d\n", sprite->width, sprite->height);
     fprintf(stdout, "+-cell: %d, %d\n", sprite->cell_width, sprite->cell_height);
     fprintf(stdout, "+-animation: %d\n", sprite->animation_nr);
@@ -77,7 +77,7 @@ Sprite* rbxeSpriteLoad(char* path, int cell_width, int cell_height) {
     sprite->id = ++unique_id;
     sprite->is_clone = FALSE;
     sprite->animation_nr = 0;
-    sprite->position = ivec2_create(100, 100);
+    sprite->position = vec2_create(100, 100);
     sprite->is_active = TRUE;
     sprite->health = 0;
 
@@ -110,7 +110,7 @@ Sprite* rbxeSpriteClone(Sprite* sprite) {
     clone->id = ++unique_id;
     clone->is_clone = TRUE;
     clone->animation_nr = 0;
-    clone->position = ivec2_create(100, 100);
+    clone->position = vec2_create(100, 100);
     clone->is_active = TRUE;
     clone->health = 0;
 	clone->data = sprite->data;
@@ -141,7 +141,7 @@ void rbxeSpriteRender(Sprite* sprite) {
     */
     source = sprite->data;    
     dest = (unsigned char*)rbxeGetBuffer();  
-    dest += (sprite->position.y * width + sprite->position.x)  * 4; 
+    dest += ((int)sprite->position.y * width + (int)sprite->position.x)  * 4; 
 
     for (y=0; y<sprite->cell_height; y++) {
         memcpy(dest, source, sprite->cell_height*4);
@@ -156,12 +156,12 @@ void rbxeSpriteUpdate(Sprite* sprite) {
     sprite->position.y += sprite->velocity.y;
 }
 
-void rbxeSpriteSetPosition(Sprite* sprite, int x, int y) {
-    sprite->position = ivec2_create(x, y);
+void rbxeSpriteSetPosition(Sprite* sprite, float x, float y) {
+    sprite->position = vec2_create(x, y);
 }
 
-void rbxeSpriteSetVelocity(Sprite* sprite, int x, int y) {
-    sprite->velocity = ivec2_create(x, y);
+void rbxeSpriteSetVelocity(Sprite* sprite, float x, float y) {
+    sprite->velocity = vec2_create(x, y);
 }
 
 void rbxeSpriteSetActive(Sprite* sprite, int active) {
