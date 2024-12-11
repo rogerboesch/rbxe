@@ -370,7 +370,7 @@ int rbxeKeyPressed(const int key) {
         return 1;
     }
 
-    return 0;
+    return FALSE;
 }
 
 int rbxeKeyReleased(const int key) {
@@ -379,7 +379,7 @@ int rbxeKeyReleased(const int key) {
         return 1;
     }
 
-    return 0;
+    return FALSE;
 }
 
 char rbxeKeyChar(void) {
@@ -476,7 +476,7 @@ int rbxeStart(const char* title,  const int winwidth, const int winheight, int s
         fprintf(stderr, "RBXE failed to open glfw window.\n");
         glfwTerminate();
 
-        return 0;
+        return FALSE;
     }
     
     glfwMakeContextCurrent(window);
@@ -505,7 +505,7 @@ int rbxeStart(const char* title,  const int winwidth, const int winheight, int s
     pixbuf = (Pixel*)calloc(scrsize, sizeof(Pixel));
     if (!pixbuf) {
         fprintf(stderr, "RBXE failed to allocate pixel framebuffer.\n");
-        return 0;
+        return FALSE;
     }
 
     /* set global information */
