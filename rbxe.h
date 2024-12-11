@@ -446,10 +446,16 @@ int rbxeStart(const char* title,  const int winwidth, const int winheight, int s
         1,  2,  3 
     };
 
+    /* check scaling */
+    if (scaling <= 0 || scrwidth < 16 || scrheight < 16) {
+        fprintf(stderr, "RBXE failed to initiate: scaling is wrong: %d\n", scaling);
+        return FALSE;
+    }
+
     /* init glfw */
     if (!glfwInit()) {
         fprintf(stderr, "RBXE failed to initiate glfw.\n");
-        return 0;
+        return FALSE;
     }
 
     /* open and setup window */
