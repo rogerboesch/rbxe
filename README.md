@@ -263,7 +263,53 @@ Draw a string.
 
 ### Sprites
 
-**Not yet ready, Under development**
+```C
+Sprite* rbxeSpriteLoad(char* filename, int cell_width, int cell_height);
+```
+
+*Description follows when implementation finished*
+
+```C
+Sprite* rbxeSpriteClone(Sprite* sprite);
+```
+
+*Description follows when implementation finished*
+
+```C
+void rbxeSpriteRender(Sprite* sprite);
+```
+
+*Description follows when implementation finished*
+
+```C
+void rbxeSpriteUpdate(Sprite* sprite);
+```
+
+*Description follows when implementation finished*
+
+```C
+void rbxeSpriteSetPosition(Sprite* sprite, float x, float y);
+```
+
+*Description follows when implementation finished*
+
+```C
+void rbxeSpriteSetVelocity(Sprite* sprite, float x, float y);
+```
+
+*Description follows when implementation finished*
+
+```C
+void rbxeSpriteSetActive(Sprite* sprite, int active);
+```
+
+*Description follows when implementation finished*
+
+```C
+void rbxeSpriteSetHealth(Sprite* sprite, int health);
+```
+
+*Description follows when implementation finished*
 
 
 ### Direct buffer access
