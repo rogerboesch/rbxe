@@ -35,7 +35,20 @@ endif
 CFLAGS=$(STD) $(OPT) $(WFLAGS) $(INCDIR)
 LFLAGS=$(STD) $(OPT) $(LIBDIR) $(LIBS)
 
-all: bin/hello bin/example bin/font bin/sandsim bin/mandelbrot bin/gameoflife bin/gradient bin/pendulum bin/sprite
+all: examples game
+
+# Game
+
+game: bin/game
+
+bin/game : obj/game.o
+	$(CC) obj/game.o -o bin/game $(LFLAGS)
+
+obj/game.o : game/game.c rbxe.h rbxe-sprite.h | makedir
+	$(CC) -c game/game.c -o obj/game.o $(CFLAGS)
+
+# Examples
+examples: bin/hello bin/example bin/font bin/sandsim bin/mandelbrot bin/gameoflife bin/gradient bin/pendulum bin/sprite
 
 bin/hello : obj/hello.o
 	$(CC) obj/hello.o -o bin/hello $(LFLAGS)
