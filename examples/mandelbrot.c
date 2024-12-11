@@ -1,11 +1,36 @@
+/*
+ * RBXE | The Pixel Engine by Roger Boesch
+ *
+ * Copyright (C) 2024 Roger Boesch
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+
 #define RBXE_ENGINE
 #include <rbxe.h>
+
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
 
 #define ITERS 50
 #define CLAMP(f) (double)(((f) > 1.0) + f * ((f) >= 0.0 && (f) <= 1.0))
+
+#define WIDTH 640
+#define HEIGHT 640
+#define SCALE 1
+#define FULLSCREEN TRUE
 
 typedef struct vec2 {
     double x, y;
@@ -72,17 +97,11 @@ static void pxUpdate(const int width, const int height, vec2 pos, double t) {
     }
 }
 
-int main(const int argc, const char** argv) {
+int main(void) {
     double t;
     vec2 pos = {0.0, 0.0};
-    int width = 64, height = 64;
-
-    if (argc > 1) {
-        width = atoi(argv[1]);
-        height = argc > 2 ? atoi(argv[2]) : width;
-    }
   
-    if (!rbxeStart("Mandelbrot", 800, 600, width, height)) return EXIT_FAILURE;
+    if (!rbxeStart("Mandelbrot", WIDTH, HEIGHT, SCALE, FULLSCREEN)) return EXIT_FAILURE;
 
     rbxeClear(255);
     t = rbxeTime();
@@ -114,7 +133,7 @@ int main(const int argc, const char** argv) {
             zoom -= dT * 0.01 * zoom;
         }
         
-        pxUpdate(width, height, pos, t);
+        pxUpdate(WIDTH/SCALE, HEIGHT/SCALE, pos, t);
     }
 
     return rbxeEnd();

@@ -1,8 +1,33 @@
+/*
+ * RBXE | The Pixel Engine by Roger Boesch
+ *
+ * Copyright (C) 2024 Roger Boesch
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+
 #define RBXE_ENGINE
 #include <rbxe.h>
+
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+
+#define WIDTH 800
+#define HEIGHT 600
+#define SCALE 5
+#define FULLSCREEN FALSE
 
 static const Pixel sand = {125, 125, 0, 255};
 
@@ -52,17 +77,14 @@ static void pxUpdate(Pixel* buf, const int width, const int height) {
     memcpy(pixbuf, buf, width * height * sizeof(Pixel));
 }
 
-int main(const int argc, const char** argv) {
+int main(void) {
     Pixel* buf;
     const Pixel red = {255, 0, 0, 255};
-    int mouseX, mouseY, width = 160, height = 120;
-    
-    if (argc > 1) {
-        width = atoi(argv[1]);
-        height = argc > 2 ? atoi(argv[2]) : width;
-    }
+    int mouseX, mouseY, width = 0, height = 0;
 
-    if (!rbxeStart("Sand Simulation", 800, 600, width, height)) return EXIT_FAILURE;
+    if (!rbxeStart("Sand Simulation", WIDTH, HEIGHT, SCALE, FULLSCREEN)) return EXIT_FAILURE;
+
+    rbxeScreenSize(&width, &height);
 
     srand(time(NULL));
 

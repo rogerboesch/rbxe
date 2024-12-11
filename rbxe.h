@@ -1,3 +1,22 @@
+/*
+ * RBXE | The Pixel Engine by Roger Boesch
+ *
+ * Copyright (C) 2024 Roger Boesch
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+
 #ifndef RB_PIXEL_ENGINE_H
 #define RB_PIXEL_ENGINE_H
 
@@ -414,12 +433,13 @@ void rbxeMouseVisible(const int visible) {
 
 /* rbxe core */
 
-int rbxeStart(const char* title,  const int winwidth, const int winheight, const int scrwidth, const int scrheight) {
+int rbxeStart(const char* title,  const int winwidth, const int winheight, int scaling, int fullscreen) {
     Pixel* pixbuf;
     GLFWwindow* window;
     unsigned int id, vao, ebo, texture;
     unsigned int shader, vshader, fshader;
-
+    const int scrwidth = winwidth / scaling;
+    const int scrheight = winheight / scaling;
     const size_t scrsize = scrwidth * scrheight;
     const unsigned int indices[] = {
         0,  1,  3,
@@ -444,10 +464,12 @@ int rbxeStart(const char* title,  const int winwidth, const int winheight, const
     glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 #endif
 
-    window = glfwCreateWindow(winwidth, winheight, title, glfwGetPrimaryMonitor(), NULL);
+    window = glfwCreateWindow(winwidth, winheight, title, fullscreen ? glfwGetPrimaryMonitor() : NULL, NULL);
+
     if (!window) {
         fprintf(stderr, "RBXE failed to open glfw window.\n");
         glfwTerminate();
+
         return 0;
     }
     

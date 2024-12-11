@@ -1,8 +1,33 @@
+/*
+ * RBXE | The Pixel Engine by Roger Boesch
+ *
+ * Copyright (C) 2024 Roger Boesch
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+
 #define RBXE_ENGINE
 #include <rbxe.h>
+
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+
+#define WIDTH 800
+#define HEIGHT 600
+#define SCALE 2
+#define FULLSCREEN TRUE
 
 #define pxAt(px, w, x, y) (px[(((y) * (w)) + (x))].r)
 
@@ -41,17 +66,13 @@ static void pxUpdate(Pixel* buf, const int width, const int height) {
     memcpy(pixbuf, buf, width * height * sizeof(Pixel));
 }
 
-int main(const int argc, char** argv) {
+int main(void) {
     Pixel* buf;
     const Pixel red = {255, 0, 0, 255};
-    int mouseX, mouseY, width = 320, height = 240;
-    
-    if (argc > 1) {
-        width = atoi(argv[1]);
-        height = argc > 2 ? atoi(argv[2]) : width;
-    }
+    int mouseX, mouseY;
+    const int width = WIDTH * SCALE, height = HEIGHT * SCALE;
 
-    if (!rbxeStart("Game Of Life", 800, 600, width, height)) return EXIT_FAILURE;
+    if (!rbxeStart("Game Of Life", WIDTH, HEIGHT, SCALE, FULLSCREEN)) return EXIT_FAILURE;
 
     srand(time(NULL));
 
@@ -66,10 +87,10 @@ int main(const int argc, char** argv) {
         }
 
         if (rbxeKeyPressed(KEY_R)) {
-            pxInit(width * height);
+            pxInit(WIDTH / SCALE * HEIGHT / SCALE);
         }
         
-        pxUpdate(buf, width, height);
+        pxUpdate(buf, WIDTH/SCALE, HEIGHT/SCALE);
         
         if (mouseX >= 0 && mouseX < width && mouseY >= 0 && mouseY < height) {
             rbxeSetPixel(mouseX, mouseY, red);

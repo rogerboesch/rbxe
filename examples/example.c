@@ -1,5 +1,23 @@
-#define RBXE_ENGINE
+/*
+ * RBXE | The Pixel Engine by Roger Boesch
+ *
+ * Copyright (C) 2024 Roger Boesch
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
 
+#define RBXE_ENGINE
 #include <rbxe.h>
 
 #include <stdio.h>
@@ -11,7 +29,8 @@
 
 #define WIDTH 800
 #define HEIGHT 600
-#define SCALE 1 / 10
+#define SCALE 10
+#define FULLSCREEN FALSE
 
 int main(void) {
     int mouseX, mouseY;
@@ -19,7 +38,7 @@ int main(void) {
     const int halfWidth = width / 2, halfHeight = height / 2;
     const Pixel red = {255, 0, 0, 255}, blue = {0, 0, 255, 0};
 
-    if (!rbxeStart("Example", WIDTH, HEIGHT, width, height)) return EXIT_FAILURE;
+    if (!rbxeStart("Example", WIDTH, HEIGHT, SCALE, FULLSCREEN)) return EXIT_FAILURE;
 
     while (rbxeRun()) {
         rbxeMousePos(&mouseX, &mouseY);

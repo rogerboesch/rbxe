@@ -1,10 +1,35 @@
+/*
+ * RBXE | The Pixel Engine by Roger Boesch
+ *
+ * Copyright (C) 2024 Roger Boesch
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+
 #define RBXE_ENGINE
 #include <rbxe.h>
+
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
 
 #define ABS(n) ((n) > 0 ? (n) : -(n))
+
+#define WIDTH 800
+#define HEIGHT 600
+#define SCALE 4
+#define FULLSCREEN FALSE
 
 typedef struct vec2 {
     float x, y;
@@ -30,19 +55,16 @@ static ivec2 ivec2_create(int x, int y) {
     return p;
 }
 
-int main(const int argc, const char** argv) {
+int main(void) {
     const Pixel red = {255, 0, 0, 255}, green = {0, 255, 0, 255};
-    int width = 200, height = 150;
     vec2 xy, dif, cross;
     ivec2 p, center, idif;
     float invDist, dT, T, t, v = 0.0f;
+    int width=0, height=0;
 
-    if (argc > 1) {
-        width = atoi(argv[1]);
-        height = argc > 2 ? atoi(argv[2]) : width;
-    }
+    if (!rbxeStart("Pendulum", WIDTH, HEIGHT, SCALE, FULLSCREEN)) return EXIT_FAILURE;
 
-    if (!rbxeStart("Pendulum", 800, 600, width, height)) return EXIT_FAILURE;
+    rbxeScreenSize(&width, &height);
 
     center = ivec2_create(width / 2, height / 2);
     p = ivec2_create(center.x + width / 8, center.y);
@@ -51,6 +73,7 @@ int main(const int argc, const char** argv) {
     idif = ivec2_create(p.x - center.x, p.y - center.y);
     invDist = 1.0F / sqrt(idif.x * idif.x + idif.y * idif.y);
     t = rbxeTime();
+
 
     while (rbxeRun()) {
         T = rbxeTime();

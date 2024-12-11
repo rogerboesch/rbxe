@@ -11,8 +11,13 @@ It's meant to be extremely simple, lightweight, and easy to use.
 #define RBXE_ENGINE
 #include <rbxe.h>
 
+#define WIDTH 800
+#define HEIGHT 600
+#define SCALE 4
+#define FULLSCREEN TRUE
+
 int main(void) {
-    if (!rbxeStart("Hello World", 800, 600, 100, 75)) return EXIT_FAILURE;
+    if (!rbxeStart("Hello", WIDTH, HEIGHT, SCALE, FULLSCREEN)) return EXIT_FAILURE;
 
     while (rbxeRun()) {
         if (rbxeKeyPressed(KEY_ESCAPE)) {
@@ -20,7 +25,7 @@ int main(void) {
         }
     }
 
-    return rbxeEnd(pxbuf);
+    return rbxeEnd();
 }
 
 ```
@@ -91,15 +96,16 @@ make clean
 ### Engine
 
 ```C
-int rbxeStart(const char* title, int winwidth, int winheight, int scrwidth, int scrheight);
+int rbxeStart(const char* title, int winwidth, int scale, int fullscreen);
 ```
 
 Creates a window with ```title```, ```width``` and ```height``` specified by the first three
-arguments. The fourth and fifth arguments represent the ```width``` and ```height``` of 
+arguments. The fourth argument reprepresent the ```scale``` of 
 the pixel buffer that is allocated and returned to be rendered. The pixel 
 buffer is a contiguous array of type Pixel in row-major order. The size in memory
 of the pixel buffer is exactly the width by the height by the size of
 the internal ```Pixel``` struct. (See ```rbxeGetBuffer()```).
+The last parameter ```fullscreen``` defines if the engines starts fullscreen or windowed mode.
 It returns a non-zero if the engine started correctly, otherwise it returns zero.
 
 ```C
