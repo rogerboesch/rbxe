@@ -580,7 +580,7 @@ int rbxeStart(const char* title,  const int winwidth, const int winheight, int s
 }
 
 void rbxeBackgroundColor(const Pixel c) {
-    const float n = 1.0F / 255.0F;
+    const float n = 1.0f / 255.0f;
     glClearColor((float)c.r * n, (float)c.g * n, (float)c.b * n, (float)c.a * n);
 }
 
