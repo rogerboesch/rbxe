@@ -18,15 +18,12 @@
  */
 
 #define RBXE_ENGINE
+
 #include <rbxe.h>
 #include <rbxe-font.h>
 
 #include <stdio.h>
 #include <string.h>
-
-/* This program opens up a 800 x 600 window in a 2:1 pixel scale.
- * Each frame it clears the pixel buffer to white, then draws a 
- * 'Hello World' string where the mouse is  */
 
 #define WIDTH 800
 #define HEIGHT 600
