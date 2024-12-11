@@ -26,15 +26,18 @@
 #define WIDTH 800
 #define HEIGHT 600
 #define SCALE 2
-#define FULLSCREEN TRUE
+#define FULLSCREEN FALSE
 
-#define OUTER_ROOM_SIZE 160
-#define INNER_ROOM_SIZE OUTER_ROOM_SIZE/3*2
+#define ROOM_SIZE 200
 
-void drawRoom(void);
+void drawStandardRoom(int x, int y, int width, int height, int thickness, Pixel color);
 
 int main(void) {
+    int swidth, sheight;
+
     if (!rbxeStart("Game", WIDTH, HEIGHT, SCALE, FULLSCREEN)) return EXIT_FAILURE;
+
+    rbxeScreenSize(&swidth, &sheight);
 
     while (rbxeRun()) {
         if (rbxeKeyPressed(KEY_ESCAPE)) {
@@ -43,37 +46,41 @@ int main(void) {
 
         rbxeClear(0);
 
-        drawRoom();
+        drawStandardRoom(swidth/2, sheight/2, ROOM_SIZE, ROOM_SIZE, 40, gameGetPalette(PAL_COLOR_CYAN));
     }
 
     return rbxeEnd();
 }
 
-void drawRoom(void) {
+void drawStandardRoom(int x, int y, int width, int height, int thickness, Pixel color) {
     int x1,y1,x2,y2;
-    int space=(OUTER_ROOM_SIZE-INNER_ROOM_SIZE)/2;
-    int width, height;
-    rbxeScreenSize(&width, &height);
+    int swidth, sheight;
+    int iwidth, iheight;
+
+    rbxeScreenSize(&swidth, &sheight);
 
     /* Outer rectancle */
-    x1 = 10;
-    y1 = (height - OUTER_ROOM_SIZE) / 2;
-    rbxePlotLine(x1, y1, x1 + OUTER_ROOM_SIZE, y1, gameGetPalette(PAL_COLOR_MAGENTA));
-    rbxePlotLine(x1, y1+OUTER_ROOM_SIZE, x1 + OUTER_ROOM_SIZE, y1+OUTER_ROOM_SIZE, gameGetPalette(PAL_COLOR_MAGENTA));
-    rbxePlotLine(x1, y1, x1, y1+OUTER_ROOM_SIZE, gameGetPalette(PAL_COLOR_MAGENTA));
-    rbxePlotLine(x1+OUTER_ROOM_SIZE, y1, x1+OUTER_ROOM_SIZE, y1+OUTER_ROOM_SIZE, gameGetPalette(PAL_COLOR_MAGENTA));
+    x1 = x-width/2;
+    y1 = y-height/2;
+    rbxePlotLine(x1, y1, x1 + width, y1, color);
+    rbxePlotLine(x1, y1+height, x1 + width, y1+height, color);
+    rbxePlotLine(x1, y1, x1, y1+height, color);
+    rbxePlotLine(x1+width, y1, x1+width, y1+height, color);
 
     /* Inner rectancle */
-    x2 = x1 + space; 
-    y2 = y1 + space; 
-    rbxePlotLine(x2, y2, x2 + INNER_ROOM_SIZE, y2, gameGetPalette(PAL_COLOR_MAGENTA));
-    rbxePlotLine(x2, y2+INNER_ROOM_SIZE, x2 + INNER_ROOM_SIZE, y2+INNER_ROOM_SIZE, gameGetPalette(PAL_COLOR_MAGENTA));
-    rbxePlotLine(x2, y2, x2, y2+INNER_ROOM_SIZE, gameGetPalette(PAL_COLOR_MAGENTA));
-    rbxePlotLine(x2+INNER_ROOM_SIZE, y2, x2+INNER_ROOM_SIZE, y2+INNER_ROOM_SIZE, gameGetPalette(PAL_COLOR_MAGENTA));
+    x2 = x1 + thickness; 
+    y2 = y1 + thickness; 
+    iwidth = width - 2*thickness;
+    iheight = height - 2*thickness;
+    
+    rbxePlotLine(x2, y2, x2 + iwidth, y2, color);
+    rbxePlotLine(x2, y2+iheight, x2 + iwidth, y2+iheight, color);
+    rbxePlotLine(x2, y2, x2, y2+iheight, color);
+    rbxePlotLine(x2+iwidth, y2, x2+iwidth, y2+iheight, color);
 
     /* Connection */
-   rbxePlotLine(x1, y1, x2, y2, gameGetPalette(PAL_COLOR_MAGENTA));
-   rbxePlotLine(x1, y1+OUTER_ROOM_SIZE, x2, y2+INNER_ROOM_SIZE, gameGetPalette(PAL_COLOR_MAGENTA));
-   rbxePlotLine(x1+OUTER_ROOM_SIZE, y1+OUTER_ROOM_SIZE, x2+INNER_ROOM_SIZE, y2+INNER_ROOM_SIZE, gameGetPalette(PAL_COLOR_MAGENTA));
-   rbxePlotLine(x1+OUTER_ROOM_SIZE, y1, x2+INNER_ROOM_SIZE, y2, gameGetPalette(PAL_COLOR_MAGENTA));
+   rbxePlotLine(x1, y1, x2, y2, color);
+   rbxePlotLine(x1, y1+height, x2, y2+iheight, color);
+   rbxePlotLine(x1+width, y1+height, x2+iwidth, y2+iheight, color);
+   rbxePlotLine(x1+width, y1, x2+iwidth, y2, color);
 }

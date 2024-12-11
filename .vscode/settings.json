@@ -19,6 +19,8 @@
         "vector": "c",
         "__node_handle": "c",
         "string.h": "c",
-        "game-palette-zx.h": "c"
+        "game-palette-zx.h": "c",
+        "__locale": "c",
+        "locale": "c"
     }
 }
