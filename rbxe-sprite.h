@@ -135,9 +135,8 @@ void rbxeSpriteRender(Sprite* sprite) {
 
     /* 
     TODO:
-    - Use position of sprite in dest
     - Use correct frame (see animation_id)
-    - Render vertically flipped in pixel buffer
+    - Check buffer limitations!!
     */
     source = sprite->data;    
     dest = (unsigned char*)rbxeGetBuffer();  
