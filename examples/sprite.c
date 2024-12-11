@@ -29,21 +29,30 @@
 #define NUMBER_OF_SPRITES 5
 
 int main(void) {
-   int mouseX, mouseY;
     const Pixel black = {0, 0, 0, 255}, white = {255, 255, 255, 255};
     char str[255];
     Sprite* sprite;
+    Sprite* clone[NUMBER_OF_SPRITES];
     int i=0;
 
     if (!rbxeStart("Sprite", WIDTH, HEIGHT, SCALE, FULLSCREEN)) return EXIT_FAILURE;
 
     rbxeFontInit();
 
+    /* Create main sprite */
     sprite = rbxeSpriteLoad("player.png", 24, 24);
     if (!sprite) return EXIT_FAILURE;
 
-    rbxeSpriteSetPosition(sprite, 0, 100);
-    rbxeSpriteSetVelocity(sprite, 1, 0);
+    rbxeSpriteSetPosition(sprite, 0, 40);
+    rbxeSpriteSetVelocity(sprite, 0.1, 0);
+
+    /* Create sprite clones */
+    for (i=0; i<NUMBER_OF_SPRITES; i++) {
+        clone[i] = rbxeSpriteClone(sprite);
+
+        rbxeSpriteSetPosition(clone[i], 0, (i+2)*40);
+        rbxeSpriteSetVelocity(clone[i], (i+1)*0.02, 0);
+    }
 
     while (rbxeRun()) {
         if (rbxeKeyPressed(KEY_ESCAPE)) {
@@ -52,15 +61,20 @@ int main(void) {
 
         rbxeClear(0);
 
-        rbxeMousePos(&mouseX, &mouseY);
- 
-        if (mouseX >= 0 && mouseX < WIDTH && mouseY >= 0 && mouseY < HEIGHT) {
-            sprintf(str, "%d,%d", mouseX, mouseY);
-            rbxeFontDrawString(10, 10, str, white, black);
-        }
+        sprintf(str, "Time: %f", rbxeTime());
+        rbxeFontDrawString(10, 10, str, white, black);
 
         rbxeSpriteUpdate(sprite);
         rbxeSpriteRender(sprite);
+
+        rbxeFontDrawString((int)sprite->position.x, (int)sprite->position.y, "original", white, black);
+
+        for (i=0; i<NUMBER_OF_SPRITES; i++) {
+            rbxeSpriteUpdate(clone[i]);
+            rbxeSpriteRender(clone[i]);
+
+            rbxeFontDrawString((int)clone[i]->position.x, (int)clone[i]->position.y, "clone", white, black);
+        }
     }
 
     return rbxeEnd();
