@@ -43,11 +43,17 @@ void gameRoomDraw(int id);
 #define ROOM_SCALE_HORIZ    2
 #define ROOM_SCALE_VERT     3
 
-#define NUMBERS_PER_LINE    8
+#define ROOM_TYPE_STD       1
+#define ROOM_TYPE_EDGE      2
+#define ROOM_TYPE_CAVERN    3
+#define ROOM_TYPE_ATIC      4
+
+#define NUMBERS_PER_LINE    9
 
 typedef struct roomInfo {
     int id;                                 /* Room ID */
     int layer;                              /* Atic, First Floor, Ground, Basement, Caverns */
+    int type;                               /* Standard, Edge, Cavern, Atic */
     int color;                              /* Palette color */
     int scale;                              /* Room scale */
     int idleft, idright, idtop, idbottom;   /* IDs to next rooms */
@@ -107,12 +113,13 @@ int _gameRoomParse(char* str) {
     if (index+1 == NUMBERS_PER_LINE) {
         room.id       = numbers[0];
         room.layer    = numbers[1];
-        room.color    = numbers[2];
-        room.scale    = numbers[3];
-        room.idleft   = numbers[4];
-        room.idright  = numbers[5];
-        room.idtop    = numbers[6];
-        room.idbottom = numbers[7];
+        room.type     = numbers[2];
+        room.color    = numbers[3];
+        room.scale    = numbers[4];
+        room.idleft   = numbers[5];
+        room.idright  = numbers[6];
+        room.idtop    = numbers[7];
+        room.idbottom = numbers[8];
 
         _gameRoomAdd(&room);
 
@@ -174,6 +181,7 @@ int gameRoomInitialize(void) {
 void _gameRoomDump(roomInfo room) {
     fprintf(stdout, "Room %d\n", room.id);
     fprintf(stdout, "+-layer: %d\n", room.layer);
+    fprintf(stdout, "+-type: %d\n", room.type);
     fprintf(stdout, "+-color: %d\n", room.layer);
     fprintf(stdout, "+-scale: %d\n", room.layer);
     fprintf(stdout, "+-doors: [%d,%d,%d,%d]\n", room.idleft, room.idright, room.idtop, room.idbottom);
@@ -248,6 +256,7 @@ void gameRoomDraw(int id) {
         thickness /= 2;
     }
 
+    /* TODO: Draw different room types based on room.type */
     _gameRoomDrawStandard(s_width/2, s_height/2, width, height, thickness, room);
 }
 
