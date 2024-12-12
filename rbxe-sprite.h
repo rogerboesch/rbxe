@@ -53,6 +53,9 @@ void rbxeSpriteRender(Sprite* sprite);
 void rbxeSpriteUpdate(Sprite* sprite);
 void rbxeSpriteSetPosition(Sprite* sprite, float x, float y);
 void rbxeSpriteSetVelocity(Sprite* sprite, float x, float y);
+void rbxeSpriteSetVelocityX(Sprite* sprite, float x);
+void rbxeSpriteSetVelocityY(Sprite* sprite, float y);
+void rbxeSpriteSetVelocity(Sprite* sprite, float x, float y);
 void rbxeSpriteSetActive(Sprite* sprite, int active);
 void rbxeSpriteSetHealth(Sprite* sprite, int health);
 
@@ -128,7 +131,9 @@ Sprite* rbxeSpriteClone(Sprite* sprite) {
 }
 
 void rbxeSpriteRender(Sprite* sprite) {
-    int y, width, height;
+    int width,height;
+    int x,y;
+    int i;
     unsigned char* source, *dest;
 
     rbxeScreenSize(&width, &height);
@@ -138,11 +143,14 @@ void rbxeSpriteRender(Sprite* sprite) {
     - Use correct frame (see animation_id)
     - Check buffer limitations!!
     */
+    x = (int)sprite->position.x - sprite->cell_width/2;
+    y = (int)sprite->position.y + sprite->cell_height/2;
+
     source = sprite->data;    
     dest = (unsigned char*)rbxeGetBuffer();  
-    dest += ((int)sprite->position.y * width + (int)sprite->position.x)  * 4; 
+    dest += (y * width + x)  * 4; 
 
-    for (y=0; y<sprite->cell_height; y++) {
+    for (i=0; i<sprite->cell_height; i++) {
         memcpy(dest, source, sprite->cell_height*4);
         
         source += sprite->width * 4;
@@ -161,6 +169,14 @@ void rbxeSpriteSetPosition(Sprite* sprite, float x, float y) {
 
 void rbxeSpriteSetVelocity(Sprite* sprite, float x, float y) {
     sprite->velocity = vec2_create(x, y);
+}
+
+void rbxeSpriteSetVelocityX(Sprite* sprite, float x) {
+    sprite->velocity = vec2_create(x, sprite->velocity.y);
+}
+
+void rbxeSpriteSetVelocityY(Sprite* sprite, float y) {
+    sprite->velocity = vec2_create(sprite->velocity.x, y);
 }
 
 void rbxeSpriteSetActive(Sprite* sprite, int active) {

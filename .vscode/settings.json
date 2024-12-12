@@ -21,6 +21,7 @@
         "string.h": "c",
         "game-palette-zx.h": "c",
         "__locale": "c",
-        "locale": "c"
+        "locale": "c",
+        "sstream": "cpp"
     }
 }

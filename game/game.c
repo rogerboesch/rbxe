@@ -19,6 +19,11 @@
 
 #define RBXE_ENGINE
 #include <rbxe.h>
+#include <rbxe-sprite.h>
+#include <rbxe-font.h>
+
+#define GAME_ROOMS
+#include "game-rooms.h"
 
 #define GAME_PALETTE
 #include "game-palette-zx.h"
@@ -27,60 +32,57 @@
 #define HEIGHT 600
 #define SCALE 2
 #define FULLSCREEN FALSE
-
-#define ROOM_SIZE 200
-
-void drawStandardRoom(int x, int y, int width, int height, int thickness, Pixel color);
+#define SPEED 50
 
 int main(void) {
     int swidth, sheight;
+    Sprite* sprite;
 
     if (!rbxeStart("Game", WIDTH, HEIGHT, SCALE, FULLSCREEN)) return EXIT_FAILURE;
 
     rbxeScreenSize(&swidth, &sheight);
+
+    /* Create rooms */
+    if (!gameRoomInitialize()) return EXIT_FAILURE;
+
+    /* Create main sprite */
+    sprite = rbxeSpriteLoad("player.png", 24, 24);
+    if (!sprite) return EXIT_FAILURE;
+
+    rbxeSpriteSetPosition(sprite, swidth/2, sheight/2);
 
     while (rbxeRun()) {
         if (rbxeKeyPressed(KEY_ESCAPE)) {
             break;
         }
 
+        if (rbxeKeyDown(KEY_LEFT)) {
+            rbxeSpriteSetVelocityX(sprite, -SPEED);
+        }
+        else if (rbxeKeyDown(KEY_RIGHT)) {
+            rbxeSpriteSetVelocityX(sprite, SPEED);
+        }
+        else {
+            rbxeSpriteSetVelocityX(sprite, 0);
+        }
+
+        if (rbxeKeyDown(KEY_UP)) {
+            rbxeSpriteSetVelocityY(sprite, SPEED);
+        }
+        else if (rbxeKeyDown(KEY_DOWN)) {
+            rbxeSpriteSetVelocityY(sprite, -SPEED);
+        }
+        else {
+            rbxeSpriteSetVelocityY(sprite, 0);
+        }
+
         rbxeClear(0);
 
-        drawStandardRoom(swidth/2, sheight/2, ROOM_SIZE, ROOM_SIZE, 40, gameGetPalette(PAL_COLOR_CYAN));
+        gameRoomDrawStandard(swidth/2, sheight/2, ROOM_SIZE, ROOM_SIZE, 40, gameGetPalette(PAL_COLOR_CYAN));
+
+        rbxeSpriteUpdate(sprite);
+        rbxeSpriteRender(sprite);
     }
 
     return rbxeEnd();
-}
-
-void drawStandardRoom(int x, int y, int width, int height, int thickness, Pixel color) {
-    int x1,y1,x2,y2;
-    int swidth, sheight;
-    int iwidth, iheight;
-
-    rbxeScreenSize(&swidth, &sheight);
-
-    /* Outer rectancle */
-    x1 = x-width/2;
-    y1 = y-height/2;
-    rbxePlotLine(x1, y1, x1 + width, y1, color);
-    rbxePlotLine(x1, y1+height, x1 + width, y1+height, color);
-    rbxePlotLine(x1, y1, x1, y1+height, color);
-    rbxePlotLine(x1+width, y1, x1+width, y1+height, color);
-
-    /* Inner rectancle */
-    x2 = x1 + thickness; 
-    y2 = y1 + thickness; 
-    iwidth = width - 2*thickness;
-    iheight = height - 2*thickness;
-    
-    rbxePlotLine(x2, y2, x2 + iwidth, y2, color);
-    rbxePlotLine(x2, y2+iheight, x2 + iwidth, y2+iheight, color);
-    rbxePlotLine(x2, y2, x2, y2+iheight, color);
-    rbxePlotLine(x2+iwidth, y2, x2+iwidth, y2+iheight, color);
-
-    /* Connection */
-   rbxePlotLine(x1, y1, x2, y2, color);
-   rbxePlotLine(x1, y1+height, x2, y2+iheight, color);
-   rbxePlotLine(x1+width, y1+height, x2+iwidth, y2+iheight, color);
-   rbxePlotLine(x1+width, y1, x2+iwidth, y2, color);
 }
