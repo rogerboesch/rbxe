@@ -50,6 +50,9 @@ typedef struct roomInfo {
     /* ... More to come */
 } roomInfo;
 
+/* Sprites used for rooms */
+Sprite* spriteDoor = NULL;
+
 void _gameRoomAdd(roomInfo* room) {
     printf("Add room %d\n", room->id);
 }
@@ -109,7 +112,14 @@ int _gameRoomParse(char* str) {
         return TRUE;
     }
 
-    return FALSE;
+    return TRUE;
+}
+
+int _gameRoomLoadSprites(void) {
+    spriteDoor = rbxeSpriteLoad("door.png", 48, 36);
+    if (!spriteDoor) return FALSE;
+
+    return TRUE;
 }
 
 int gameRoomInitialize(void) {
@@ -148,7 +158,7 @@ int gameRoomInitialize(void) {
 
     fprintf(stdout, "Rooms file loaded\n");
 
-    return TRUE;
+    return _gameRoomLoadSprites();
 }
 
 void gameRoomDrawStandard(int x, int y, int width, int height, int thickness, Pixel color) {
@@ -178,10 +188,16 @@ void gameRoomDrawStandard(int x, int y, int width, int height, int thickness, Pi
     rbxePlotLine(x2+iwidth, y2, x2+iwidth, y2+iheight, color);
 
     /* Connection */
-   rbxePlotLine(x1, y1, x2, y2, color);
-   rbxePlotLine(x1, y1+height, x2, y2+iheight, color);
-   rbxePlotLine(x1+width, y1+height, x2+iwidth, y2+iheight, color);
-   rbxePlotLine(x1+width, y1, x2+iwidth, y2, color);
+    rbxePlotLine(x1, y1, x2, y2, color);
+    rbxePlotLine(x1, y1+height, x2, y2+iheight, color);
+    rbxePlotLine(x1+width, y1+height, x2+iwidth, y2+iheight, color);
+    rbxePlotLine(x1+width, y1, x2+iwidth, y2, color);
+
+    /* Draw doors */
+    rbxeSpriteRenderEx(spriteDoor, swidth/2, y2+iheight+18-1, 0, 0, 48, 36);        /* top */
+    rbxeSpriteRenderEx(spriteDoor, swidth/2, y2-18, 48, 0, 48, 36);                 /* bottom */
+    rbxeSpriteRenderEx(spriteDoor, x2-18+1, y2+iheight/2, 132, 0, 36, 48);          /* left */
+    rbxeSpriteRenderEx(spriteDoor, x2+iwidth+18-1, y2+iheight/2, 96, 0, 36, 48);    /* right */
 }
 
 #endif /* GAME_ROOMS */

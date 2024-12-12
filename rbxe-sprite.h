@@ -50,6 +50,7 @@ typedef struct Sprite {
 Sprite* rbxeSpriteLoad(char* filename, int cell_width, int cell_height);
 Sprite* rbxeSpriteClone(Sprite* sprite);
 void rbxeSpriteRender(Sprite* sprite);
+void rbxeSpriteRenderEx(Sprite* sprite, int destx, int desty, int srcx, int srcy, int srcwidth, int srcheight);
 void rbxeSpriteUpdate(Sprite* sprite);
 void rbxeSpriteSetPosition(Sprite* sprite, float x, float y);
 void rbxeSpriteSetVelocity(Sprite* sprite, float x, float y);
@@ -151,10 +152,39 @@ void rbxeSpriteRender(Sprite* sprite) {
     dest += (y * width + x)  * 4; 
 
     for (i=0; i<sprite->cell_height; i++) {
-        memcpy(dest, source, sprite->cell_height*4);
+        memcpy(dest, source, sprite->cell_width*4);
         
         source += sprite->width * 4;
         dest -= (width * 4);
+    }
+}
+
+void rbxeSpriteRenderEx(Sprite* sprite, int destx, int desty, int srcx, int srcy, int srcwidth, int srcheight) {
+    int width,height;
+    int x,y;
+    int i;
+    unsigned char* source, *dest;
+
+    UNUSED(srcy);
+
+    rbxeScreenSize(&width, &height);
+
+    /* 
+    TODO:
+    - Check buffer limitations!!
+    */
+    x = (int)destx - srcwidth/2;
+    y = (int)desty + srcheight/2;
+
+    source = sprite->data + srcx*4;    
+    dest = (unsigned char*)rbxeGetBuffer();  
+    dest += (y*width + x) * 4; 
+
+    for (i=0; i<srcheight; i++) {
+        memcpy(dest, source, srcwidth*4);
+        
+        source += sprite->width*4;
+        dest -= (width*4);
     }
 }
 

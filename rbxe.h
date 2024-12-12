@@ -23,6 +23,7 @@
 #ifndef PIXEL_TYPE_DEFINED
 #define PIXEL_TYPE_DEFINED
 
+#define UNUSED(x) (void)(x)
 #define ABS(n) ((n) > 0 ? (n) : -(n))
 
 #define TRUE    1
