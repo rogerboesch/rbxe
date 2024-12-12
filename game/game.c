@@ -37,10 +37,15 @@
 int main(void) {
     int s_width, s_height;
     sprite_info* sprite;
+    int room_id = 1;
+    const pixel_info black = {0, 0, 0, 255}, white = {255, 255, 255, 255};
+    char str[255];
 
     if (!rbxeStart("Game", WIDTH, HEIGHT, SCALE, FULLSCREEN)) return EXIT_FAILURE;
 
     rbxeScreenSize(&s_width, &s_height);
+
+    rbxeFontInit();
 
     /* Create rooms */
     if (!gameRoomInitialize()) return EXIT_FAILURE;
@@ -76,9 +81,19 @@ int main(void) {
             rbxeSpriteSetVelocityY(sprite, 0);
         }
 
+        if (rbxeKeyPressed(KEY_Q)) {
+            room_id--;
+        }
+        else if (rbxeKeyPressed(KEY_W)) {
+            room_id++;
+        }
+
         rbxeClear(0);
 
-        gameRoomDraw(1);
+        gameRoomDraw(room_id);
+
+        sprintf(str, "Room: %d", room_id);
+        rbxeFontDrawString(s_width-80, s_height-20, str, white, black);
 
         rbxeSpriteUpdate(sprite);
         rbxeSpriteRender(sprite);

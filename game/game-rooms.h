@@ -225,7 +225,7 @@ void gameRoomDraw(int id) {
     int s_width, s_height;
     int width, height, thickness;
 
-    if (room_list == NULL || id >= room_list->len) {
+    if (room_list == NULL || id > room_list->len) {
         fprintf(stderr, "No room with id %d available\n", id);
         return;
     }
