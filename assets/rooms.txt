@@ -1,9 +1,12 @@
+#
+# Atic Atac (135 rooms)
+#
 # Level: ATIC=1,FIRST_FLOOR=2,GROUND=3,BASEMENT=4,CAVERNS=5
 # Type: STD=1,EDGE=2,CAVERN=3,ATIC=4,DBLDOOR=5
 # Color: BLACK=0,BLUE=1,RED=2,MAGENTA=3,GREEN=4,CYAN=5,YELLOW=6,WHITE=7
 # Scale: FULL=1,HORIZ=2,VERT=3
 #
-# Ground rooms
+# Ground rooms (31)
 # ID, Level, Type, Color, Scale, ID(left, right, top, bottom)
 # I  L  T  C  S  Links
 001, 3, 1, 6, 2, 000, 002, 000, 000
@@ -42,3 +45,125 @@
 032, 3, 1, 2, 3, 000, 000, 027, 033
 # Room 33 is a double door room (special) and also it goes down to caverns
 033, 3, 5, 3, 1, 000, 000, 000, 032
+#
+# First floor (23 rooms)
+# ID, Level, Type, Color, Scale, ID(left, right, top, bottom)
+# I  L  T  C  S  Links
+#
+100, 2
+101, 2
+102, 2
+203, 2
+104, 2
+105, 2
+106, 2
+107, 2
+108, 2
+109, 2
+110, 2
+111, 2
+112, 2
+113, 2 
+114, 2
+115, 2
+116, 2
+117, 2
+118, 2
+119, 2
+120, 2
+121, 2
+122, 2
+#
+# Atic (16 rooms)
+# ID, Level, Type, Color, Scale, ID(left, right, top, bottom)
+# I  L  T  C  S  Links
+#
+200, 1
+201, 1
+202, 1
+203, 1
+204, 1
+205, 1
+206, 1
+207, 1
+208, 1
+209, 1
+210, 1
+211, 1
+212, 1
+213, 1
+214, 1
+215, 1
+#
+# Basement (22 rooms)
+# ID, Level, Type, Color, Scale, ID(left, right, top, bottom)
+# I  L  T  C  S  Links
+#
+300, 4
+301, 4
+302, 4
+303, 4
+304, 4
+305, 4
+306, 4
+307, 4
+308, 4
+308, 4
+310, 4
+311, 4
+312, 4
+313, 4
+314, 4
+315, 4
+316, 4
+317, 4
+318, 4
+319, 4
+320, 4
+321, 4
+#
+# Caverns (42 rooms)
+# ID, Level, Type, Color, Scale, ID(left, right, top, bottom)
+# I  L  T  C  S  Links
+400, 5
+401, 5
+402, 5
+403, 5
+404, 5
+405, 5
+406, 5
+407, 5
+408, 5
+409, 5
+410, 5
+411, 5
+412, 5
+413, 5
+414, 5
+415, 5
+416, 5
+417, 5
+418, 5
+419, 5
+420, 5
+421, 5
+422, 5
+423, 5
+424, 5
+425, 5
+426, 5
+427, 5
+428, 5
+429, 5
+430, 5
+431, 5
+432, 5
+433, 5
+434, 5
+435, 5
+436, 5
+437, 5
+438, 5
+439, 5
+440, 5
+441, 5
