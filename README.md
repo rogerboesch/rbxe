@@ -4,6 +4,8 @@ RBXE Pixel Engine is written in C using internally a pixel buffer using
 OpenGL for visualisation.
 It's meant to be extremely simple, lightweight, and easy to use.
 
+Add the same time i'm working on a game (using this pixel engine) called Atic Atac.
+More info on that you find [here](game/)
 
 ## Hello World
 ```C
