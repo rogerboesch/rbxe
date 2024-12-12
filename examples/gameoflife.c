@@ -31,21 +31,21 @@
 
 #define pxAt(px, w, x, y) (px[(((y) * (w)) + (x))].r)
 
-static const Pixel black = {0, 0, 0, 255};
-static const Pixel white = {255, 255, 255, 255};
+static const pixel_info black = {0, 0, 0, 255};
+static const pixel_info white = {255, 255, 255, 255};
 
 static void pxInit(const size_t size) {
-    Pixel* pixbuf = rbxeGetBuffer();
+    pixel_info* pixbuf = rbxeGetBuffer();
     size_t i;
 
     for (i = 0; i < size; ++i) {
-        memcpy(pixbuf + i, rand() % 2 ? &white : &black, sizeof(Pixel));
+        memcpy(pixbuf + i, rand() % 2 ? &white : &black, sizeof(pixel_info));
     }
 }
 
-static void pxUpdate(Pixel* buf, const int width, const int height) {
+static void pxUpdate(pixel_info* buf, const int width, const int height) {
     int x, y, count, index = 0;
-    Pixel* pixbuf = rbxeGetBuffer();
+    pixel_info* pixbuf = rbxeGetBuffer();
 
     for (y = 0; y < height; ++y) {
         for (x = 0; x < width; ++x, ++index) {
@@ -63,12 +63,12 @@ static void pxUpdate(Pixel* buf, const int width, const int height) {
         }
     }
 
-    memcpy(pixbuf, buf, width * height * sizeof(Pixel));
+    memcpy(pixbuf, buf, width * height * sizeof(pixel_info));
 }
 
 int main(void) {
-    Pixel* buf;
-    const Pixel red = {255, 0, 0, 255};
+    pixel_info* buf;
+    const pixel_info red = {255, 0, 0, 255};
     int mouseX, mouseY;
     const int width = WIDTH * SCALE, height = HEIGHT * SCALE;
 
@@ -76,7 +76,7 @@ int main(void) {
 
     srand(time(NULL));
 
-    buf = (Pixel*)malloc(width * height * sizeof(Pixel));
+    buf = (pixel_info*)malloc(width * height * sizeof(pixel_info));
     pxInit(width * height);
 
     while (rbxeRun()) {

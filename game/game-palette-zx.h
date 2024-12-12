@@ -39,13 +39,13 @@
 #define PAL_COLOR_YELLOW_LT   14
 #define PAL_COLOR_WHITE_LT    15
 
-Pixel gameGetPalette(int number);
+pixel_info gameGetPalette(int number);
 
 #ifdef GAME_PALETTE
 
 #define MAX_PALETTE_ENTRY 16
 
-Pixel game_palette[] = {
+pixel_info game_palette[] = {
 	// Bright 0
 	{0x00, 0x00, 0x00, 0xff}, // Black
 	{0x00, 0x22, 0xd7, 0xff}, // Blue
@@ -67,7 +67,7 @@ Pixel game_palette[] = {
 	{0xff, 0xff, 0xff, 0xff}  // White
 };
 
-Pixel gameGetPalette(int number) {
+pixel_info gameGetPalette(int number) {
     if (number < 0 || number >= MAX_PALETTE_ENTRY) {
         fprintf(stderr, "Palette color %d is not available. (%d-%d)", number, 0, MAX_PALETTE_ENTRY);
         return game_palette[0];

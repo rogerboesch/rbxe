@@ -106,7 +106,7 @@ arguments. The fourth argument reprepresent the ```scale``` of
 the pixel buffer that is allocated and returned to be rendered. The pixel 
 buffer is a contiguous array of type Pixel in row-major order. The size in memory
 of the pixel buffer is exactly the width by the height by the size of
-the internal ```Pixel``` struct. (See ```rbxeGetBuffer()```).
+the internal ```pixel_info``` struct. (See ```rbxeGetBuffer()```).
 The last parameter ```fullscreen``` defines if the engines starts fullscreen or windowed mode.
 It returns a non-zero if the engine started correctly, otherwise it returns zero.
 
@@ -120,7 +120,7 @@ returns zero if the window was closed, otherwise it returns a non-zero value.
 Unless using ```rbxeRun()```, this functions should be called once every frame.
 
 ```C
-void rbxeRender(const Pixel* pixbuf);
+void rbxeRender(const pixel_info* pixbuf);
 ```
 
 Renders the pixel buffer passed as argument to the screen. This function can be
@@ -133,7 +133,7 @@ linear RGB color of the rendered pixel. All values in between are automatically
 interpolated.
 
 ```C
-int rbxeRun(const Pixel* pixbuf);
+int rbxeRun(const pixel_info* pixbuf);
 ```
 
 This function is exactly the same as calling ```rbxeStep()``` and
@@ -160,7 +160,7 @@ window respectively, inside the first and second pointers passed to the
 function. Expects valid integers as arguments.
 
 ```C
-void rbxeBackgroundColor(Pixel color);
+void rbxeBackgroundColor(pixel_info color);
 ```
 
 Sets the color of the background to the color specified by the passed argument.
@@ -225,19 +225,19 @@ void rbxeClear(const int value);
 Clears the buffer with the given ```value```.
 
 ```C
-void rbxeSetPixel(const int x, const int y, const Pixel color);
+void rbxeSetPixel(const int x, const int y, const pixel_info color);
 ```
 
 Set a pixel at ```x``` and ```y``` position with the specified ```color```.
 
 ```C
-void rbxePlotLine(int x1, int y1, int x2, int y2, const Pixel color);
+void rbxePlotLine(int x1, int y1, int x2, int y2, const pixel_info color);
 ```
 
 Plots a line from ```x1```,```y1``` to ```x2```,```y2``` with the specified ```color```.
 
 ```C
-void rbxePlotCircle(int xc, int yc, int r, const Pixel color);
+void rbxePlotCircle(int xc, int yc, int r, const pixel_info color);
 ```
 
 Plot a circle at ```xc```,```yc``` with radius ```r``` and the specified ```color```.
@@ -251,13 +251,13 @@ void rbxeFontInit(void);
 Initialize the font engine.
 
 ```C
-void rbxeFontDrawChar(int x, int y, const unsigned char ch, Pixel fg, Pixel bg);
+void rbxeFontDrawChar(int x, int y, const unsigned char ch, pixel_info fg, pixel_info bg);
 ```
 
 Draw a single character.
 
 ```C
-void rbxeFontDrawString(int x, int y, char* str, Pixel fg, Pixel bg);
+void rbxeFontDrawString(int x, int y, char* str, pixel_info fg, pixel_info bg);
 ```
 
 Draw a string.
@@ -323,7 +323,7 @@ Main and only tyepedefed structure used by the engine. The simple pixel
 engine handles only 4 channel RGBA buffers. 
 
 ```C
-typedef struct Pixel {
+typedef struct pixel_info {
     unsigned char r, g, b, a;
 } Px;
 ```
@@ -336,14 +336,14 @@ the pixel buffer giving you fast and direct control over every pixel in the scre
 You can get access to the buffer by calling:
 
 ```C
-Pixel* pixbuf = rbxeGetBuffer();
+pixel_info* pixbuf = rbxeGetBuffer();
 ```
 
 This is an example on how you can plot a pixel at position (x, y) to red.
 Access to ```width``` you have by calling ```rbxeScreenSize()```
 
 ```C
-Pixel red = {255, 0, 0, 255};
+pixel_info red = {255, 0, 0, 255};
 pixbuf[y * width + x] = red;
 ```
 

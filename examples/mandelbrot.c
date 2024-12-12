@@ -63,7 +63,7 @@ static double vec2_dot(const vec2 a, const vec2 b) {
 
 static void pxUpdate(const int width, const int height, vec2 pos, double t) {
     int i, x, y;
-    Pixel color;
+    pixel_info color;
 
     pos.x = (pos.x + pos.x * zoom) * 0.5;
     pos.y = (pos.y + pos.y * zoom) * 0.5;

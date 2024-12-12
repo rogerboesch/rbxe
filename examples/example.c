@@ -36,7 +36,7 @@ int main(void) {
     int mouseX, mouseY;
     const int width = WIDTH * SCALE, height = HEIGHT * SCALE;
     const int halfWidth = width / 2, halfHeight = height / 2;
-    const Pixel red = {255, 0, 0, 255}, blue = {0, 0, 255, 0};
+    const pixel_info red = {255, 0, 0, 255}, blue = {0, 0, 255, 0};
 
     if (!rbxeStart("Example", WIDTH, HEIGHT, SCALE, FULLSCREEN)) return EXIT_FAILURE;
 

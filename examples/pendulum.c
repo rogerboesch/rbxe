@@ -56,7 +56,7 @@ static ivec2 ivec2_create(int x, int y) {
 }
 
 int main(void) {
-    const Pixel red = {255, 0, 0, 255}, green = {0, 255, 0, 255};
+    const pixel_info red = {255, 0, 0, 255}, green = {0, 255, 0, 255};
     vec2 xy, dif, cross;
     ivec2 p, center, idif;
     float invDist, dT, T, t, v = 0.0f;

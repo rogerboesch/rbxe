@@ -36,7 +36,7 @@
 
 int main(void) {
     int s_width, s_height;
-    Sprite* sprite;
+    sprite_info* sprite;
 
     if (!rbxeStart("Game", WIDTH, HEIGHT, SCALE, FULLSCREEN)) return EXIT_FAILURE;
 

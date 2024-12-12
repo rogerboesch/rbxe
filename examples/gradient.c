@@ -25,8 +25,8 @@
 #define SCALE 4
 #define FULLSCREEN TRUE
 
-static Pixel rbxeGradientAt(int x, int y) {
-    Pixel px = {0, 0, 0, 255};
+static pixel_info rbxeGradientAt(int x, int y) {
+    pixel_info px = {0, 0, 0, 255};
     px.r = x;
     px.b = y;
 

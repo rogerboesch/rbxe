@@ -33,7 +33,7 @@
 int main(void) {
     int mouseX, mouseY;
     const int width = WIDTH * SCALE, height = HEIGHT * SCALE;
-    const Pixel black = {0, 0, 0, 255}, white = {255, 255, 255, 255};
+    const pixel_info black = {0, 0, 0, 255}, white = {255, 255, 255, 255};
     char str[255];
 
     if (!rbxeStart("Font", WIDTH, HEIGHT, SCALE, FULLSCREEN)) return EXIT_FAILURE;

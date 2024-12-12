@@ -1,5 +1,5 @@
 /*
- * RBXE | The Pixel Engine by Roger Boesch
+ * RBXE | The pixel_info Engine by Roger Boesch
  *
  * Copyright (C) 2024 Roger Boesch
  *
@@ -24,8 +24,8 @@
 #include <rbxe.h>
 
 void rbxeFontInit(void);
-void rbxeFontDrawChar(int x, int y, const unsigned char ch, Pixel fg, Pixel bg);
-void rbxeFontDrawString(int x, int y, char* str, Pixel fg, Pixel bg);
+void rbxeFontDrawChar(int x, int y, const unsigned char ch, pixel_info fg, pixel_info bg);
+void rbxeFontDrawString(int x, int y, char* str, pixel_info fg, pixel_info bg);
 
 #ifdef RBXE_ENGINE
 
@@ -310,7 +310,7 @@ void rbxeFontInit(void) {
 	memcpy(p+BEGIN_OF_UDG, p+CHARA, 8*19);
 }
 
-void rbxeFontDrawChar(int x, int y, const unsigned char ch, Pixel fg, Pixel bg) {
+void rbxeFontDrawChar(int x, int y, const unsigned char ch, pixel_info fg, pixel_info bg) {
     int width, height;
     unsigned char* buffer;
     int w, h, offset;
@@ -367,7 +367,7 @@ void rbxeFontDrawChar(int x, int y, const unsigned char ch, Pixel fg, Pixel bg) 
     }
 }
 
-void rbxeFontDrawString(int x, int y, char* str, Pixel fg, Pixel bg) {
+void rbxeFontDrawString(int x, int y, char* str, pixel_info fg, pixel_info bg) {
 	while (*str != 0) {
 		char ch = *str;
 	

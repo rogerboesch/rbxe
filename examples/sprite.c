@@ -29,10 +29,10 @@
 #define NUMBER_OF_SPRITES 5
 
 int main(void) {
-    const Pixel black = {0, 0, 0, 255}, white = {255, 255, 255, 255};
+    const pixel_info black = {0, 0, 0, 255}, white = {255, 255, 255, 255};
     char str[255];
-    Sprite* sprite;
-    Sprite* clone[NUMBER_OF_SPRITES];
+    sprite_info* sprite;
+    sprite_info* clone[NUMBER_OF_SPRITES];
     int i=0;
 
     if (!rbxeStart("Sprite", WIDTH, HEIGHT, SCALE, FULLSCREEN)) return EXIT_FAILURE;

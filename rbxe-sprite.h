@@ -24,47 +24,47 @@
 #include <stb_image.h>
 #include <rbxe-math.h>
 
-typedef struct Sprite {
+typedef struct sprite_info {
 	int id;
     int is_clone;
 	int is_active;
 
-    /* Transform related */
+    /* transform related */
     vec2 position;
     vec2 velocity;
 
-    /* Sprite atlas information*/
+    /* sprite atlas information*/
     unsigned char* data;
     int width;
     int height;
     int cell_width;
     int cell_height;
 
-    /* Animation */
+    /* snimation */
 	int animation_nr;
 
     /* Life management */
     int health;
-} Sprite;
+} sprite_info;
 
-Sprite* rbxeSpriteLoad(char* filename, int cell_width, int cell_height);
-Sprite* rbxeSpriteClone(Sprite* sprite);
-void rbxeSpriteRender(Sprite* sprite);
-void rbxeSpriteRenderEx(Sprite* sprite, int destx, int desty, int srcx, int srcy, int srcwidth, int srcheight);
-void rbxeSpriteUpdate(Sprite* sprite);
-void rbxeSpriteSetPosition(Sprite* sprite, float x, float y);
-void rbxeSpriteSetVelocity(Sprite* sprite, float x, float y);
-void rbxeSpriteSetVelocityX(Sprite* sprite, float x);
-void rbxeSpriteSetVelocityY(Sprite* sprite, float y);
-void rbxeSpriteSetVelocity(Sprite* sprite, float x, float y);
-void rbxeSpriteSetActive(Sprite* sprite, int active);
-void rbxeSpriteSetHealth(Sprite* sprite, int health);
+sprite_info* rbxeSpriteLoad(char* filename, int cell_width, int cell_height);
+sprite_info* rbxeSpriteClone(sprite_info* sprite);
+void rbxeSpriteRender(sprite_info* sprite);
+void rbxeSpriteRenderEx(sprite_info* sprite, int destx, int desty, int srcx, int srcy, int srcwidth, int srcheight);
+void rbxeSpriteUpdate(sprite_info* sprite);
+void rbxeSpriteSetPosition(sprite_info* sprite, float x, float y);
+void rbxeSpriteSetVelocity(sprite_info* sprite, float x, float y);
+void rbxeSpriteSetVelocityX(sprite_info* sprite, float x);
+void rbxeSpriteSetVelocityY(sprite_info* sprite, float y);
+void rbxeSpriteSetVelocity(sprite_info* sprite, float x, float y);
+void rbxeSpriteSetActive(sprite_info* sprite, int active);
+void rbxeSpriteSetHealth(sprite_info* sprite, int health);
 
 #ifdef RBXE_ENGINE
 
 static int unique_id = 0;
 
-void rbxeSpriteDump(Sprite* sprite) {
+void rbxeSpriteDump(sprite_info* sprite) {
     fprintf(stdout, "Sprite %d (clone: %d)\n", sprite->id, sprite->is_clone);
     fprintf(stdout, "+-position: %0.3f, %0.3f\n", sprite->position.x, sprite->position.y);
     fprintf(stdout, "+-velocity: %0.3f, %0.3f\n", sprite->velocity.x, sprite->velocity.y);
@@ -73,11 +73,11 @@ void rbxeSpriteDump(Sprite* sprite) {
     fprintf(stdout, "+-animation: %d\n", sprite->animation_nr);
 }
 
-Sprite* rbxeSpriteLoad(char* path, int cell_width, int cell_height) {
+sprite_info* rbxeSpriteLoad(char* path, int cell_width, int cell_height) {
 	int width, height, channel_count;
-    Sprite *sprite;
+    sprite_info *sprite;
 
-    sprite = malloc(sizeof(Sprite));
+    sprite = malloc(sizeof(sprite_info));
     sprite->id = ++unique_id;
     sprite->is_clone = FALSE;
     sprite->animation_nr = 0;
@@ -107,10 +107,10 @@ Sprite* rbxeSpriteLoad(char* path, int cell_width, int cell_height) {
     return sprite;
 }
 
-Sprite* rbxeSpriteClone(Sprite* sprite) {
-    Sprite *clone;
+sprite_info* rbxeSpriteClone(sprite_info* sprite) {
+    sprite_info *clone;
 
-    clone = malloc(sizeof(Sprite));
+    clone = malloc(sizeof(sprite_info));
     clone->id = ++unique_id;
     clone->is_clone = TRUE;
     clone->animation_nr = 0;
@@ -131,14 +131,14 @@ Sprite* rbxeSpriteClone(Sprite* sprite) {
     return clone;
 }
 
-void rbxeSpriteRender(Sprite* sprite) {
+void rbxeSpriteRender(sprite_info* sprite) {
     /* TODO:
        - Use animation id later to choose correct frame
     */
     rbxeSpriteRenderEx(sprite, (int)sprite->position.x, (int)sprite->position.y, 0, 0, sprite->cell_width, sprite->cell_width);
 }
 
-void rbxeSpriteRenderEx(Sprite* sprite, int destx, int desty, int srcx, int srcy, int srcwidth, int srcheight) {
+void rbxeSpriteRenderEx(sprite_info* sprite, int destx, int desty, int srcx, int srcy, int srcwidth, int srcheight) {
     int width,height;
     int x,y;
     int i;
@@ -166,32 +166,32 @@ void rbxeSpriteRenderEx(Sprite* sprite, int destx, int desty, int srcx, int srcy
     }
 }
 
-void rbxeSpriteUpdate(Sprite* sprite) {
+void rbxeSpriteUpdate(sprite_info* sprite) {
     sprite->position.x += sprite->velocity.x * rbxeDeltaTime();
     sprite->position.y += sprite->velocity.y * rbxeDeltaTime();
 }
 
-void rbxeSpriteSetPosition(Sprite* sprite, float x, float y) {
+void rbxeSpriteSetPosition(sprite_info* sprite, float x, float y) {
     sprite->position = vec2_create(x, y);
 }
 
-void rbxeSpriteSetVelocity(Sprite* sprite, float x, float y) {
+void rbxeSpriteSetVelocity(sprite_info* sprite, float x, float y) {
     sprite->velocity = vec2_create(x, y);
 }
 
-void rbxeSpriteSetVelocityX(Sprite* sprite, float x) {
+void rbxeSpriteSetVelocityX(sprite_info* sprite, float x) {
     sprite->velocity = vec2_create(x, sprite->velocity.y);
 }
 
-void rbxeSpriteSetVelocityY(Sprite* sprite, float y) {
+void rbxeSpriteSetVelocityY(sprite_info* sprite, float y) {
     sprite->velocity = vec2_create(sprite->velocity.x, y);
 }
 
-void rbxeSpriteSetActive(Sprite* sprite, int active) {
+void rbxeSpriteSetActive(sprite_info* sprite, int active) {
     sprite->is_active = active;
 }
 
-void rbxeSpriteSetHealth(Sprite* sprite, int health) {
+void rbxeSpriteSetHealth(sprite_info* sprite, int health) {
     sprite->health = health;
 }
 

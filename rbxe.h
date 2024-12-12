@@ -1,5 +1,5 @@
 /*
- * RBXE | The Pixel Engine by Roger Boesch
+ * RBXE | The pixel_info Engine by Roger Boesch
  *
  * Copyright (C) 2024 Roger Boesch
  *
@@ -29,9 +29,9 @@
 #define TRUE    1
 #define FALSE   0
 
-typedef struct Pixel {
+typedef struct pixel_info {
     unsigned char r, g, b, a;
-} Pixel;
+} pixel_info;
 
 #endif /* PIXEL_TYPE_DEFINED */
 
@@ -41,16 +41,16 @@ int rbxeRun(void);
 int rbxeEnd(void);
 int rbxeStart(const char* title, const int win_width, const int win_height, const int scr_width, const int scr_height);
 
-Pixel* rbxeGetBuffer(void);
+pixel_info* rbxeGetBuffer(void);
 void rbxeScreenSize(int* width, int* height);
 void rbxeWindowSize(int* width, int* height);
-void rbxeBackgroundColor(const Pixel px);
+void rbxeBackgroundColor(const pixel_info px);
 
 /* Drawing */
 void rbxeClear(const int value);
-void rbxeSetPixel(const int x, const int y, const Pixel color);
-void rbxePlotLine(int x1, int y1, int x2, int y2, const Pixel color);
-void rbxePlotCircle(int xc, int yc, int r, const Pixel color);
+void rbxeSetPixel(const int x, const int y, const pixel_info color);
+void rbxePlotLine(int x1, int y1, int x2, int y2, const pixel_info color);
+void rbxePlotCircle(int xc, int yc, int r, const pixel_info color);
 
 /* time input */
 double rbxeTime(void);
@@ -204,7 +204,7 @@ void rbxeMouseVisible(const int visible);
 #define MOUSE_RIGHT         MOUSE_2
 #define MOUSE_MIDDLE        MOUSE_3
 
-/* Pixel Engine implementation -------------------------------- */
+/* pixel_info Engine implementation -------------------------------- */
 
 #ifdef RBXE_ENGINE
 
@@ -260,24 +260,24 @@ static const char* fragmentShader = RBXE_SHADER_HEADER RBXE_SHADER_FRAGMENT;
 
 /* rbxe core handler */
 
-static struct rbxeInfo {
+static struct rbxe_info {
     GLFWwindow* window;
-    Pixel* data;
+    pixel_info* data;
 
     double last_time;
     double delta_time;
 
-    struct rbxeRes {
+    struct rbxe_res {
         int width;
         int height;
     } scr_res, win_res;
 
-    struct rbxeRatio {
+    struct rbxe_ratio {
         float width;
         float height;
     } ratio;
 
-    struct rbxeInput {
+    struct rbxe_input {
         int mouse_state;
         int queued_char;
         int mem_char;
@@ -343,7 +343,7 @@ static void rbxeWindow(GLFWwindow* window, int width, int height) {
 
 /* Get pixel buffer */
 
-Pixel* rbxeGetBuffer(void) {
+pixel_info* rbxeGetBuffer(void) {
     return rbxe.data;
 }
 
@@ -445,7 +445,7 @@ void rbxeMouseVisible(const int visible) {
 /* rbxe core */
 
 int rbxeStart(const char* title,  const int win_width, const int win_height, int scaling, int fullscreen) {
-    Pixel* pixbuf;
+    pixel_info* pixbuf;
     GLFWwindow* window;
     unsigned int id, vao, ebo, texture;
     unsigned int shader, vshader, fshader;
@@ -513,7 +513,7 @@ int rbxeStart(const char* title,  const int win_width, const int win_height, int
     glDepthFunc(GL_LESS);
     
     /* allocate pixel framebuffer */
-    pixbuf = (Pixel*)calloc(scrsize, sizeof(Pixel));
+    pixbuf = (pixel_info*)calloc(scrsize, sizeof(pixel_info));
     if (!pixbuf) {
         fprintf(stderr, "RBXE failed to allocate pixel framebuffer.\n");
         return FALSE;
@@ -580,12 +580,12 @@ int rbxeStart(const char* title,  const int win_width, const int win_height, int
     return 1;
 }
 
-void rbxeBackgroundColor(const Pixel c) {
+void rbxeBackgroundColor(const pixel_info c) {
     const float n = 1.0f / 255.0f;
     glClearColor((float)c.r * n, (float)c.g * n, (float)c.b * n, (float)c.a * n);
 }
 
-static void _rbxeRender(const Pixel* pixbuf) {
+static void _rbxeRender(const pixel_info* pixbuf) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, rbxe.scr_res.width, rbxe.scr_res.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixbuf);
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -623,17 +623,17 @@ int rbxeEnd(void) {
 /* Drawing */
 
 void rbxeClear(const int value) {
-    int buflen = rbxe.scr_res.width*rbxe.scr_res.height*sizeof(Pixel);
+    int buflen = rbxe.scr_res.width*rbxe.scr_res.height*sizeof(pixel_info);
     memset(rbxe.data, value, buflen);
 }
 
-void rbxeSetPixel(const int x, const int y, const Pixel color) {
+void rbxeSetPixel(const int x, const int y, const pixel_info color) {
     if (x < 0 || x >= rbxe.scr_res.width || y < 0 || y > rbxe.scr_res.height) return;
     
     rbxe.data[y * rbxe.scr_res.width + x] = color;
 }
 
-void rbxePlotLine(int x1, int y1, int x2, int y2, const Pixel color) {
+void rbxePlotLine(int x1, int y1, int x2, int y2, const pixel_info color) {
     const int dx = ABS(x2 - x1);
     const int dy = -ABS(y2 - y1);
     const int sx = x1 < x2 ? 1 : -1;
@@ -668,7 +668,7 @@ void rbxePlotLine(int x1, int y1, int x2, int y2, const Pixel color) {
     }
 }
 
-void rbxePlotCircle(int xc, int yc, int r, const Pixel color) {
+void rbxePlotCircle(int xc, int yc, int r, const pixel_info color) {
 	int x = 0;
 	int y = r;
 	int p = 3 - 2 * r;

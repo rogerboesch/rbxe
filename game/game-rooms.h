@@ -55,7 +55,7 @@ typedef struct roomInfo {
 } roomInfo;
 
 /* Sprites used for rooms */
-Sprite* spriteDoor = NULL;
+sprite_info* sprite_doors = NULL;
 array_list *room_list = NULL;
 
 void _gameRoomAdd(roomInfo* room) {
@@ -123,8 +123,8 @@ int _gameRoomParse(char* str) {
 }
 
 int _gameRoomLoadSprites(void) {
-    spriteDoor = rbxeSpriteLoad("door.png", 48, 36);
-    if (!spriteDoor) return FALSE;
+    sprite_doors = rbxeSpriteLoad("door.png", 48, 36);
+    if (!sprite_doors) return FALSE;
 
     return TRUE;
 }
@@ -183,7 +183,7 @@ void _gameRoomDrawStandard(int x, int y, int width, int height, int thickness, r
     int x1,y1,x2,y2;
     int s_width, s_height;      /* Screen */
     int i_width, i_height;      /* Inner rect */
-    Pixel color;
+    pixel_info color;
 
     rbxeScreenSize(&s_width, &s_height);
     color = gameGetPalette(room->color);
@@ -214,10 +214,10 @@ void _gameRoomDrawStandard(int x, int y, int width, int height, int thickness, r
     rbxePlotLine(x1+width, y1, x2+i_width, y2, color);
 
     /* Draw doors */
-    if (room->idtop != 0)    rbxeSpriteRenderEx(spriteDoor, s_width/2, y2+i_height+18-1, 0, 0, 48, 36);        /* top */
-    if (room->idbottom != 0) rbxeSpriteRenderEx(spriteDoor, s_width/2, y2-18, 48, 0, 48, 36);                  /* bottom */
-    if (room->idleft != 0)   rbxeSpriteRenderEx(spriteDoor, x2-18+1, y2+i_height/2, 132, 0, 36, 48);           /* left */
-    if (room->idright != 0)  rbxeSpriteRenderEx(spriteDoor, x2+i_width+18-1, y2+i_height/2, 96, 0, 36, 48);    /* right */
+    if (room->idtop != 0)    rbxeSpriteRenderEx(sprite_doors, s_width/2, y2+i_height+18-1, 0, 0, 48, 36);        /* top */
+    if (room->idbottom != 0) rbxeSpriteRenderEx(sprite_doors, s_width/2, y2-18, 48, 0, 48, 36);                  /* bottom */
+    if (room->idleft != 0)   rbxeSpriteRenderEx(sprite_doors, x2-18+1, y2+i_height/2, 132, 0, 36, 48);           /* left */
+    if (room->idright != 0)  rbxeSpriteRenderEx(sprite_doors, x2+i_width+18-1, y2+i_height/2, 96, 0, 36, 48);    /* right */
 }
 
 void gameRoomDraw(int id) {
@@ -234,8 +234,6 @@ void gameRoomDraw(int id) {
 
     room = array_list_get(room_list, id-1);
  
-    _gameRoomDump(*room);
-
     width = ROOM_SIZE;
     height = ROOM_SIZE;
     thickness = ROOM_SPACE;

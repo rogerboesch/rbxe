@@ -29,10 +29,10 @@
 #define SCALE 5
 #define FULLSCREEN FALSE
 
-static const Pixel sand = {125, 125, 0, 255};
+static const pixel_info sand = {125, 125, 0, 255};
 
-static Pixel pxAir(const int height, int y) {
-    Pixel air = {100, 100, 130, 255};
+static pixel_info pxAir(const int height, int y) {
+    pixel_info air = {100, 100, 130, 255};
     air.b += (uint8_t)(int)(125.0 * ((float)y / (float)height));
 
     return air;
@@ -40,7 +40,7 @@ static Pixel pxAir(const int height, int y) {
 
 static void pxInit(const int width, const int height) {
     int x, y, index = 0;
-    Pixel* pixbuf = rbxeGetBuffer();
+    pixel_info* pixbuf = rbxeGetBuffer();
 
     for (y = 0; y < height; ++y) {
         for (x = 0; x < width; ++x, ++index) {
@@ -49,9 +49,9 @@ static void pxInit(const int width, const int height) {
     }
 }
 
-static void pxUpdate(Pixel* buf, const int width, const int height) {
+static void pxUpdate(pixel_info* buf, const int width, const int height) {
     int x, y, dy, index = 0;
-    Pixel* pixbuf = rbxeGetBuffer();
+    pixel_info* pixbuf = rbxeGetBuffer();
 
     for (y = 0; y < height; ++y) {
         for (x = 0; x < width; ++x, ++index) { 
@@ -74,12 +74,12 @@ static void pxUpdate(Pixel* buf, const int width, const int height) {
         }
     }
 
-    memcpy(pixbuf, buf, width * height * sizeof(Pixel));
+    memcpy(pixbuf, buf, width * height * sizeof(pixel_info));
 }
 
 int main(void) {
-    Pixel* buf;
-    const Pixel red = {255, 0, 0, 255};
+    pixel_info* buf;
+    const pixel_info red = {255, 0, 0, 255};
     int mouseX, mouseY, width = 0, height = 0;
 
     if (!rbxeStart("Sand Simulation", WIDTH, HEIGHT, SCALE, FULLSCREEN)) return EXIT_FAILURE;
@@ -88,7 +88,7 @@ int main(void) {
 
     srand(time(NULL));
 
-    buf = (Pixel*)malloc(width * height * sizeof(Pixel));
+    buf = (pixel_info*)malloc(width * height * sizeof(pixel_info));
     pxInit(width, height);
 
     while (rbxeRun()) {
