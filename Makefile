@@ -44,7 +44,7 @@ game: bin/game
 bin/game : obj/game.o
 	$(CC) obj/game.o -o bin/game $(LFLAGS)
 
-obj/game.o : game/game.c game/game-rooms.h game/game-palette-zx.h rbxe.h rbxe-sprite.h rbxe-font.h rbxe-math.h | makedir
+obj/game.o : game/game.c game/game-rooms.h game/game-palette-zx.h rbxe.h rbxe-sprite.h rbxe-font.h rbxe-math.h rbxe-arraylist.h | makedir
 	$(CC) -c game/game.c -o obj/game.o $(CFLAGS)
 
 # Examples

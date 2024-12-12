@@ -22,11 +22,11 @@
 #include <rbxe-sprite.h>
 #include <rbxe-font.h>
 
-#define GAME_ROOMS
-#include "game-rooms.h"
-
 #define GAME_PALETTE
 #include "game-palette-zx.h"
+
+#define GAME_ROOMS
+#include "game-rooms.h"
 
 #define WIDTH 800
 #define HEIGHT 600
@@ -78,7 +78,7 @@ int main(void) {
 
         rbxeClear(0);
 
-        gameRoomDrawStandard(s_width/2, s_height/2, ROOM_SIZE, ROOM_SIZE, 40, gameGetPalette(PAL_COLOR_CYAN));
+        gameRoomDraw(1);
 
         rbxeSpriteUpdate(sprite);
         rbxeSpriteRender(sprite);

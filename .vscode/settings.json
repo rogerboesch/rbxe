@@ -22,6 +22,7 @@
         "game-palette-zx.h": "c",
         "__locale": "c",
         "locale": "c",
-        "sstream": "cpp"
+        "sstream": "cpp",
+        "__bit_reference": "cpp"
     }
 }

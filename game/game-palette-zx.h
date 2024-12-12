@@ -39,6 +39,8 @@
 #define PAL_COLOR_YELLOW_LT   14
 #define PAL_COLOR_WHITE_LT    15
 
+Pixel gameGetPalette(int number);
+
 #ifdef GAME_PALETTE
 
 #define MAX_PALETTE_ENTRY 16
