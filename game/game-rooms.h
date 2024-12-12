@@ -47,6 +47,7 @@ void gameRoomDraw(int id);
 #define ROOM_TYPE_EDGE      2
 #define ROOM_TYPE_CAVERN    3
 #define ROOM_TYPE_ATIC      4
+#define ROOM_TYPE_DBLDOOR   5
 
 #define NUMBERS_PER_LINE    9
 
