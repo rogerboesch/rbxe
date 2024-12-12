@@ -132,31 +132,10 @@ Sprite* rbxeSpriteClone(Sprite* sprite) {
 }
 
 void rbxeSpriteRender(Sprite* sprite) {
-    int width,height;
-    int x,y;
-    int i;
-    unsigned char* source, *dest;
-
-    rbxeScreenSize(&width, &height);
-
-    /* 
-    TODO:
-    - Use correct frame (see animation_id)
-    - Check buffer limitations!!
+    /* TODO:
+       - Use animation id later to choose correct frame
     */
-    x = (int)sprite->position.x - sprite->cell_width/2;
-    y = (int)sprite->position.y + sprite->cell_height/2;
-
-    source = sprite->data;    
-    dest = (unsigned char*)rbxeGetBuffer();  
-    dest += (y * width + x)  * 4; 
-
-    for (i=0; i<sprite->cell_height; i++) {
-        memcpy(dest, source, sprite->cell_width*4);
-        
-        source += sprite->width * 4;
-        dest -= (width * 4);
-    }
+    rbxeSpriteRenderEx(sprite, (int)sprite->position.x, (int)sprite->position.y, 0, 0, sprite->cell_width, sprite->cell_width);
 }
 
 void rbxeSpriteRenderEx(Sprite* sprite, int destx, int desty, int srcx, int srcy, int srcwidth, int srcheight) {
@@ -169,9 +148,8 @@ void rbxeSpriteRenderEx(Sprite* sprite, int destx, int desty, int srcx, int srcy
 
     rbxeScreenSize(&width, &height);
 
-    /* 
-    TODO:
-    - Check buffer limitations!!
+    /* TODO:
+       - Check buffer limitations!!
     */
     x = (int)destx - srcwidth/2;
     y = (int)desty + srcheight/2;

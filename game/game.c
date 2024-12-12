@@ -35,12 +35,12 @@
 #define SPEED 50
 
 int main(void) {
-    int swidth, sheight;
+    int s_width, s_height;
     Sprite* sprite;
 
     if (!rbxeStart("Game", WIDTH, HEIGHT, SCALE, FULLSCREEN)) return EXIT_FAILURE;
 
-    rbxeScreenSize(&swidth, &sheight);
+    rbxeScreenSize(&s_width, &s_height);
 
     /* Create rooms */
     if (!gameRoomInitialize()) return EXIT_FAILURE;
@@ -49,7 +49,7 @@ int main(void) {
     sprite = rbxeSpriteLoad("player.png", 24, 24);
     if (!sprite) return EXIT_FAILURE;
 
-    rbxeSpriteSetPosition(sprite, swidth/2, sheight/2);
+    rbxeSpriteSetPosition(sprite, s_width/2, s_height/2);
 
     while (rbxeRun()) {
         if (rbxeKeyPressed(KEY_ESCAPE)) {
@@ -78,7 +78,7 @@ int main(void) {
 
         rbxeClear(0);
 
-        gameRoomDrawStandard(swidth/2, sheight/2, ROOM_SIZE, ROOM_SIZE, 40, gameGetPalette(PAL_COLOR_CYAN));
+        gameRoomDrawStandard(s_width/2, s_height/2, ROOM_SIZE, ROOM_SIZE, 40, gameGetPalette(PAL_COLOR_CYAN));
 
         rbxeSpriteUpdate(sprite);
         rbxeSpriteRender(sprite);

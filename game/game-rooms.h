@@ -23,6 +23,7 @@
 #include <rbxe.h>
 
 int gameRoomInitialize(void);
+void gameRoomDraw(int id);
 void gameRoomDrawStandard(int x, int y, int width, int height, int thickness, Pixel color);
 
 #ifdef GAME_ROOMS
@@ -163,10 +164,10 @@ int gameRoomInitialize(void) {
 
 void gameRoomDrawStandard(int x, int y, int width, int height, int thickness, Pixel color) {
     int x1,y1,x2,y2;
-    int swidth, sheight;
-    int iwidth, iheight;
+    int s_width, s_height;  /* Screen */
+    int i_width, i_height;  /* Inner rect */
 
-    rbxeScreenSize(&swidth, &sheight);
+    rbxeScreenSize(&s_width, &s_height);
 
     /* Outer rectancle */
     x1 = x-width/2;
@@ -179,25 +180,28 @@ void gameRoomDrawStandard(int x, int y, int width, int height, int thickness, Pi
     /* Inner rectancle */
     x2 = x1 + thickness; 
     y2 = y1 + thickness; 
-    iwidth = width - 2*thickness;
-    iheight = height - 2*thickness;
+    i_width = width - 2*thickness;
+    i_height = height - 2*thickness;
     
-    rbxePlotLine(x2, y2, x2 + iwidth, y2, color);
-    rbxePlotLine(x2, y2+iheight, x2 + iwidth, y2+iheight, color);
-    rbxePlotLine(x2, y2, x2, y2+iheight, color);
-    rbxePlotLine(x2+iwidth, y2, x2+iwidth, y2+iheight, color);
+    rbxePlotLine(x2, y2, x2 + i_width, y2, color);
+    rbxePlotLine(x2, y2+i_height, x2 + i_width, y2+i_height, color);
+    rbxePlotLine(x2, y2, x2, y2+i_height, color);
+    rbxePlotLine(x2+i_width, y2, x2+i_width, y2+i_height, color);
 
     /* Connection */
     rbxePlotLine(x1, y1, x2, y2, color);
-    rbxePlotLine(x1, y1+height, x2, y2+iheight, color);
-    rbxePlotLine(x1+width, y1+height, x2+iwidth, y2+iheight, color);
-    rbxePlotLine(x1+width, y1, x2+iwidth, y2, color);
+    rbxePlotLine(x1, y1+height, x2, y2+i_height, color);
+    rbxePlotLine(x1+width, y1+height, x2+i_width, y2+i_height, color);
+    rbxePlotLine(x1+width, y1, x2+i_width, y2, color);
 
     /* Draw doors */
-    rbxeSpriteRenderEx(spriteDoor, swidth/2, y2+iheight+18-1, 0, 0, 48, 36);        /* top */
-    rbxeSpriteRenderEx(spriteDoor, swidth/2, y2-18, 48, 0, 48, 36);                 /* bottom */
-    rbxeSpriteRenderEx(spriteDoor, x2-18+1, y2+iheight/2, 132, 0, 36, 48);          /* left */
-    rbxeSpriteRenderEx(spriteDoor, x2+iwidth+18-1, y2+iheight/2, 96, 0, 36, 48);    /* right */
+    rbxeSpriteRenderEx(spriteDoor, s_width/2, y2+i_height+18-1, 0, 0, 48, 36);        /* top */
+    rbxeSpriteRenderEx(spriteDoor, s_width/2, y2-18, 48, 0, 48, 36);                 /* bottom */
+    rbxeSpriteRenderEx(spriteDoor, x2-18+1, y2+i_height/2, 132, 0, 36, 48);          /* left */
+    rbxeSpriteRenderEx(spriteDoor, x2+i_width+18-1, y2+i_height/2, 96, 0, 36, 48);    /* right */
+}
+
+void gameRoomDraw(int id) {
 }
 
 #endif /* GAME_ROOMS */

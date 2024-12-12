@@ -39,11 +39,11 @@ typedef struct Pixel {
 int rbxeStep(void);
 int rbxeRun(void);
 int rbxeEnd(void);
-int rbxeStart(const char* title, const int winwidth, const int winheight, const int scrwidth, const int scrheight);
+int rbxeStart(const char* title, const int win_width, const int win_height, const int scr_width, const int scr_height);
 
 Pixel* rbxeGetBuffer(void);
-void rbxeScreenSize(int* widthptr, int* heightptr);
-void rbxeWindowSize(int* widthptr, int* heightptr);
+void rbxeScreenSize(int* width, int* height);
+void rbxeWindowSize(int* width, int* height);
 void rbxeBackgroundColor(const Pixel px);
 
 /* Drawing */
@@ -63,7 +63,7 @@ int rbxeKeyReleased(const int key);
 char rbxeKeyChar(void);
 
 /* mouse input */
-void rbxeMousePos(int* xptr, int* yptr);
+void rbxeMousePos(int* x, int* y);
 int rbxeMouseDown(const int button);        
 int rbxeMousePressed(const int button);
 int rbxeMouseReleased(const int button);
@@ -270,7 +270,7 @@ static struct rbxeInfo {
     struct rbxeRes {
         int width;
         int height;
-    } scrres, winres;
+    } scr_res, win_res;
 
     struct rbxeRatio {
         float width;
@@ -278,11 +278,11 @@ static struct rbxeInfo {
     } ratio;
 
     struct rbxeInput {
-        int mouseState;
-        int queuedChar;
-        int memChar;
+        int mouse_state;
+        int queued_char;
+        int mem_char;
         unsigned char keys[KEY_LAST];
-        unsigned char pressedKeys[KEY_LAST];
+        unsigned char pressed_keys[KEY_LAST];
     } input;
 } rbxe = {NULL, NULL, 0.0, 0.0, {400, 300}, {800, 600}, {1.0, 1.0}, {GLFW_RELEASE, 1, 0, {0}, {0}}};
 
@@ -298,8 +298,8 @@ static void rbxeFrame(void) {
         -1.0f,  1.0f,   0.0f,   1.0f
     };
 
-    const float w = (float)rbxe.winres.width / (float)rbxe.scrres.width;
-    const float h = (float)rbxe.winres.height / (float)rbxe.scrres.height;
+    const float w = (float)rbxe.win_res.width / (float)rbxe.scr_res.width;
+    const float h = (float)rbxe.win_res.height / (float)rbxe.scr_res.height;
     
     rbxe.ratio.width = (h < w) ? (h / w) : 1.0f;
     rbxe.ratio.height = (w < h) ? (w / h) : 1.0f;
@@ -318,17 +318,17 @@ static void rbxeKeyboard(GLFWwindow* win, int key, int code, int action, int mod
 
     if (key < 128 && !rbxe.input.keys[key]) {
         if (mod == GLFW_MOD_CAPS_LOCK || mod == GLFW_MOD_SHIFT || key < 65) {
-            rbxe.input.memChar = key;
+            rbxe.input.mem_char = key;
         }
         else {
-            rbxe.input.memChar = key + 32;
+            rbxe.input.mem_char = key + 32;
         }
 
-        rbxe.input.queuedChar = 1;
+        rbxe.input.queued_char = 1;
     }
 
     rbxe.input.keys[key] = action;
-    rbxe.input.pressedKeys[key] = rbxe.input.pressedKeys[key] * (action != 0);
+    rbxe.input.pressed_keys[key] = rbxe.input.pressed_keys[key] * (action != 0);
 }
 
 static void rbxeWindow(GLFWwindow* window, int width, int height) {
@@ -336,8 +336,8 @@ static void rbxeWindow(GLFWwindow* window, int width, int height) {
 #ifndef __APPLE__
     glViewport(0, 0, width, height);
 #endif
-    rbxe.winres.width = width;
-    rbxe.winres.height = height;
+    rbxe.win_res.width = width;
+    rbxe.win_res.height = height;
     rbxeFrame();
 }
 
@@ -350,13 +350,13 @@ Pixel* rbxeGetBuffer(void) {
 /* window and screen size getters */
 
 void rbxeWindowSize(int* width, int* height) {
-    *width = rbxe.winres.width;
-    *height = rbxe.winres.height;
+    *width = rbxe.win_res.width;
+    *height = rbxe.win_res.height;
 }
 
 void rbxeScreenSize(int* width, int* height) {
-    *width = rbxe.scrres.width;
-    *height = rbxe.scrres.height;
+    *width = rbxe.scr_res.width;
+    *height = rbxe.scr_res.height;
 }
 
 /* time input */
@@ -376,8 +376,8 @@ int rbxeKeyDown(const int key) {
 }
 
 int rbxeKeyPressed(const int key) {
-    if (!rbxe.input.pressedKeys[key] && rbxe.input.keys[key]) {
-        rbxe.input.pressedKeys[key] = 1;
+    if (!rbxe.input.pressed_keys[key] && rbxe.input.keys[key]) {
+        rbxe.input.pressed_keys[key] = 1;
         return 1;
     }
 
@@ -385,8 +385,8 @@ int rbxeKeyPressed(const int key) {
 }
 
 int rbxeKeyReleased(const int key) {
-    if (!rbxe.input.keys[key] && rbxe.input.pressedKeys[key]) {
-        rbxe.input.pressedKeys[key] = 0;
+    if (!rbxe.input.keys[key] && rbxe.input.pressed_keys[key]) {
+        rbxe.input.pressed_keys[key] = 0;
         return 1;
     }
 
@@ -396,9 +396,9 @@ int rbxeKeyReleased(const int key) {
 char rbxeKeyChar(void) {
     char ch = 0;
 
-    if (rbxe.input.queuedChar) {
-        ch = rbxe.input.memChar;
-        rbxe.input.queuedChar = 0;
+    if (rbxe.input.queued_char) {
+        ch = rbxe.input.mem_char;
+        rbxe.input.queued_char = 0;
     }
 
     return ch;
@@ -411,13 +411,13 @@ void rbxeMousePos(int* x, int* y) {
     float width, height, hwidth, hheight;
     
     glfwGetCursorPos(rbxe.window, &dx, &dy);
-    width = (float)rbxe.scrres.width;
-    height = (float)rbxe.scrres.height;
+    width = (float)rbxe.scr_res.width;
+    height = (float)rbxe.scr_res.height;
     hwidth = width * 0.5;
     hheight = height * 0.5;
 
-    dx = dx * (width / (float)rbxe.winres.width);
-    dy = height - dy * (height / (float)rbxe.winres.height);
+    dx = dx * (width / (float)rbxe.win_res.width);
+    dy = height - dy * (height / (float)rbxe.win_res.height);
     *x = (int)((dx - hwidth) / rbxe.ratio.width + hwidth);
     *y = (int)((dy - hheight) / rbxe.ratio.height + hheight);
 }
@@ -428,8 +428,8 @@ int rbxeMouseDown(const int button) {
 
 int rbxeMousePressed(const int button) {
     const int mouseButton = glfwGetMouseButton(rbxe.window, button);
-    const int pressed = (mouseButton == GLFW_PRESS) &&  (rbxe.input.mouseState == GLFW_RELEASE);
-    rbxe.input.mouseState = mouseButton;
+    const int pressed = (mouseButton == GLFW_PRESS) &&  (rbxe.input.mouse_state == GLFW_RELEASE);
+    rbxe.input.mouse_state = mouseButton;
 
     return pressed;
 }
@@ -444,21 +444,21 @@ void rbxeMouseVisible(const int visible) {
 
 /* rbxe core */
 
-int rbxeStart(const char* title,  const int winwidth, const int winheight, int scaling, int fullscreen) {
+int rbxeStart(const char* title,  const int win_width, const int win_height, int scaling, int fullscreen) {
     Pixel* pixbuf;
     GLFWwindow* window;
     unsigned int id, vao, ebo, texture;
     unsigned int shader, vshader, fshader;
-    const int scrwidth = winwidth / scaling;
-    const int scrheight = winheight / scaling;
-    const size_t scrsize = scrwidth * scrheight;
+    const int scr_width = win_width / scaling;
+    const int scr_height = win_height / scaling;
+    const size_t scrsize = scr_width * scr_height;
     const unsigned int indices[] = {
         0,  1,  3,
         1,  2,  3 
     };
 
     /* check scaling */
-    if (scaling <= 0 || scrwidth < 16 || scrheight < 16) {
+    if (scaling <= 0 || scr_width < 16 || scr_height < 16) {
         fprintf(stderr, "RBXE failed to initiate: scaling is wrong: %d\n", scaling);
         return FALSE;
     }
@@ -481,7 +481,7 @@ int rbxeStart(const char* title,  const int winwidth, const int winheight, int s
     glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 #endif
 
-    window = glfwCreateWindow(winwidth, winheight, title, fullscreen ? glfwGetPrimaryMonitor() : NULL, NULL);
+    window = glfwCreateWindow(win_width, win_height, title, fullscreen ? glfwGetPrimaryMonitor() : NULL, NULL);
 
     if (!window) {
         fprintf(stderr, "RBXE failed to open glfw window.\n");
@@ -493,7 +493,7 @@ int rbxeStart(const char* title,  const int winwidth, const int winheight, int s
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
 
-    glfwSetWindowSizeLimits(window, scrwidth, scrheight, GLFW_DONT_CARE, GLFW_DONT_CARE);
+    glfwSetWindowSizeLimits(window, scr_width, scr_height, GLFW_DONT_CARE, GLFW_DONT_CARE);
     glfwSetWindowSizeCallback(window, rbxeWindow);
     glfwSetKeyCallback(window, rbxeKeyboard);
     glfwSetInputMode(window, GLFW_MOD_CAPS_LOCK, GLFW_TRUE);
@@ -521,10 +521,10 @@ int rbxeStart(const char* title,  const int winwidth, const int winheight, int s
 
     /* set global information */
     rbxe.window = window;
-    rbxe.winres.width = winwidth;
-    rbxe.winres.height = winheight;
-    rbxe.scrres.width = scrwidth;
-    rbxe.scrres.height = scrheight;
+    rbxe.win_res.width = win_width;
+    rbxe.win_res.height = win_height;
+    rbxe.scr_res.width = scr_width;
+    rbxe.scr_res.height = scr_height;
     rbxe.data = pixbuf;
 
     /* compile and link shaders */
@@ -572,7 +572,7 @@ int rbxeStart(const char* title,  const int winwidth, const int winheight, int s
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, rbxe.scrres.width, rbxe.scrres.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixbuf);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, rbxe.scr_res.width, rbxe.scr_res.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixbuf);
 
     rbxe.last_time = rbxeTime();
     rbxe.delta_time = 0.0;
@@ -586,7 +586,7 @@ void rbxeBackgroundColor(const Pixel c) {
 }
 
 static void _rbxeRender(const Pixel* pixbuf) {
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, rbxe.scrres.width, rbxe.scrres.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixbuf);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, rbxe.scr_res.width, rbxe.scr_res.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixbuf);
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
@@ -623,13 +623,14 @@ int rbxeEnd(void) {
 /* Drawing */
 
 void rbxeClear(const int value) {
-    int buflen = rbxe.scrres.width*rbxe.scrres.height*sizeof(Pixel);
+    int buflen = rbxe.scr_res.width*rbxe.scr_res.height*sizeof(Pixel);
     memset(rbxe.data, value, buflen);
 }
 
 void rbxeSetPixel(const int x, const int y, const Pixel color) {
-    if (x < 0 || x >= rbxe.scrres.width || y < 0 || y > rbxe.scrres.height) return;
-    rbxe.data[y * rbxe.scrres.width + x] = color;
+    if (x < 0 || x >= rbxe.scr_res.width || y < 0 || y > rbxe.scr_res.height) return;
+    
+    rbxe.data[y * rbxe.scr_res.width + x] = color;
 }
 
 void rbxePlotLine(int x1, int y1, int x2, int y2, const Pixel color) {
