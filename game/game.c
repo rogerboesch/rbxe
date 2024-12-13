@@ -28,16 +28,21 @@
 #define GAME_ROOMS
 #include "game-rooms.h"
 
-#define WIDTH 800
-#define HEIGHT 600
-#define SCALE 2
-#define FULLSCREEN FALSE
-#define SPEED 50
+#define WIDTH       800
+#define HEIGHT      600
+#define SCALE       2
+#define FULLSCREEN  FALSE
+
+#define SPEED               50
+
+#define ROOM_START_ID       18
 
 int main(void) {
-    int s_width, s_height;
-    sprite_info* sprite;
-    int room_id = 1;
+    int s_width = 0, s_height = 0;
+    sprite_info* sprite = NULL;
+    int room_id = ROOM_START_ID;
+    roomInfo* room = NULL;
+
     const pixel_info black = {0, 0, 0, 255}, white = {255, 255, 255, 255};
     char str[255];
 
@@ -49,6 +54,8 @@ int main(void) {
 
     /* Create rooms */
     if (!gameRoomInitialize()) return EXIT_FAILURE;
+
+    room = gameRoomSelect(room_id);
 
     /* Create main sprite */
     sprite = rbxeSpriteLoad("player.png", 24, 24);
@@ -83,32 +90,44 @@ int main(void) {
 
         if (rbxeKeyPressed(KEY_Q)) {
             room_id--;
+            room = gameRoomSelect(room_id);
         }
         else if (rbxeKeyPressed(KEY_W)) {
             room_id++;
+            room = gameRoomSelect(room_id);
         }
         else if (rbxeKeyPressed(KEY_0)) {
             room_id = 1;
+            room = gameRoomSelect(room_id);
         }
         else if (rbxeKeyPressed(KEY_1)) {
             room_id = 100;
+            room = gameRoomSelect(room_id);
         }
         else if (rbxeKeyPressed(KEY_2)) {
             room_id = 200;
+            room = gameRoomSelect(room_id);
         }
         else if (rbxeKeyPressed(KEY_3)) {
             room_id = 300;
+            room = gameRoomSelect(room_id);
         }
         else if (rbxeKeyPressed(KEY_4)) {
             room_id = 400;
+            room = gameRoomSelect(room_id);
         }
 
         rbxeClear(0);
 
-        gameRoomDraw(room_id);
+        gameRoomDraw();
 
-        sprintf(str, "Room: %d", room_id);
-        rbxeFontDrawString(s_width-80, s_height-20, str, white, black);
+        if (room != NULL) {
+            sprintf(str, "Room: %d", room->id);
+            rbxeFontDrawString(s_width-80, s_height-20, str, white, black);
+
+            sprintf(str, "Index: %d", room->index);
+            rbxeFontDrawString(s_width-80, s_height-36, str, white, black);
+        }
 
         rbxeSpriteUpdate(sprite);
         rbxeSpriteRender(sprite);

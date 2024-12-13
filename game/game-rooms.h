@@ -25,8 +25,22 @@
 #include <rbxe.h>
 #include <rbxe-arraylist.h>
 
+typedef struct roomInfo {
+    int id;                                 /* Room ID */
+    int index;                              /* Index in list */
+    int layer;                              /* Atic, First Floor, Ground, Basement, Caverns */
+    int type;                               /* Standard, Edge, Cavern, Atic */
+    int color;                              /* Palette color */
+    int scale;                              /* Room scale */
+    int idleft, idright, idtop, idbottom;   /* IDs to next rooms */
+    int idextra;                            /* Extra Id for rooms with 5 doors */
+    /* ... More to come */
+} roomInfo;
+
 int gameRoomInitialize(void);
-void gameRoomDraw(int id);
+roomInfo* gameRoomSelect(int id);
+void gameRoomDraw(void);
+void gameRoomDump(roomInfo room);
 
 #ifdef GAME_ROOMS
 
@@ -55,24 +69,39 @@ void gameRoomDraw(int id);
 
 #define NUMBERS_PER_LINE        10
 
-typedef struct roomInfo {
-    int id;                                 /* Room ID */
-    int layer;                              /* Atic, First Floor, Ground, Basement, Caverns */
-    int type;                               /* Standard, Edge, Cavern, Atic */
-    int color;                              /* Palette color */
-    int scale;                              /* Room scale */
-    int idleft, idright, idtop, idbottom;   /* IDs to next rooms */
-    int idextra;                            /* Extra Id for rooms with 5 doors */
-    /* ... More to come */
-} roomInfo;
+/* Used to store start index of each floor level */
+int startIndex100=0, startIndex200=0, startIndex300=0, startIndex400=0;
+int selected_room=0, selected_index=0;
 
 /* Sprites used for rooms */
 sprite_info* sprite_doors = NULL;
 array_list *room_list = NULL;
 
 void _gameRoomAdd(roomInfo* room) {
-    printf("Add room %d\n", room->id);
+    /* Room id's are not continuing, must therefore save index */
+    switch (room->id) {
+        case 100:
+            startIndex100 = room_list->len;
+            printf("Add room %d (start=%d)\n", room->id, startIndex100);
+            break;
+        case 200:
+            startIndex200 = room_list->len;
+            printf("Add room %d (start=%d)\n", room->id, startIndex200);
+            break;
+        case 300:
+            startIndex300 = room_list->len;
+            printf("Add room %d (start=%d)\n", room->id, startIndex300);
+            break;
+        case 400:
+            startIndex400 = room_list->len;
+            printf("Add room %d (start=%d)\n", room->id, startIndex400);
+            break;
+        default:
+            printf("Add room %d (index=%d)\n", room->id, room_list->len);
+            break;
+    }
 
+    room->index = room_list->len;
     array_list_append(room_list, room);
 }
 
@@ -185,8 +214,8 @@ int gameRoomInitialize(void) {
     return _gameRoomLoadSprites();
 }
 
-void _gameRoomDump(roomInfo room) {
-    fprintf(stdout, "Room %d\n", room.id);
+void gameRoomDump(roomInfo room) {
+    fprintf(stdout, "Room %d (%d)\n", room.id, room.index);
     fprintf(stdout, "+-layer: %d\n", room.layer);
     fprintf(stdout, "+-type: %d\n", room.type);
     fprintf(stdout, "+-color: %d\n", room.layer);
@@ -235,19 +264,19 @@ void _gameRoomDrawStandard(int x, int y, int width, int height, int thickness, r
     if (room->idright != 0)  rbxeSpriteRenderEx(sprite_doors, x2+i_width+18-1, y2+i_height/2, 96, 0, 36, 48);    /* right */
 }
 
-void gameRoomDraw(int id) {
+void gameRoomDraw(void) {
     roomInfo* room;
     int s_width, s_height;
     int width, height, thickness;
 
-    if (room_list == NULL || id > room_list->len) {
-        fprintf(stderr, "No room with id %d available\n", id);
+    if (room_list == NULL || selected_index < 0 || selected_index >= room_list->len) {
+        fprintf(stderr, "No room with id %d available (index=%d)\n", selected_room, selected_index);
         return;
     }
 
     rbxeScreenSize(&s_width, &s_height);
 
-    room = array_list_get(room_list, id-1);
+    room = array_list_get(room_list, selected_index);
  
     width = ROOM_SIZE;
     height = ROOM_SIZE;
@@ -265,6 +294,38 @@ void gameRoomDraw(int id) {
 
     /* TODO: Draw different room types based on room.type */
     _gameRoomDrawStandard(s_width/2, s_height/2, width, height, thickness, room);
+}
+
+roomInfo* gameRoomSelect(int room_id) {
+    selected_room = room_id;
+    selected_index = room_id-1;
+    roomInfo* room;
+
+    if (room_id >= 400) {
+       selected_index = room_id - 400 + startIndex400; 
+    }
+    else if (room_id >= 300) {
+       selected_index = room_id - 300 + startIndex300; 
+    }
+    else if (room_id >= 200) {
+       selected_index = room_id - 200 + startIndex200; 
+    }
+    else if (room_id >= 100) {
+       selected_index = room_id - 100 + startIndex100; 
+    }
+
+    fprintf(stdout, "gameRoomSelect: room with id %d (index=%d)\n", selected_room, selected_index);
+
+    if (room_list == NULL || selected_index < 0 || selected_index >= room_list->len) {
+        fprintf(stderr, "No room with id %d available (index=%d)\n", selected_room, selected_index);
+        return NULL;
+    }
+
+    room = array_list_get(room_list, selected_index);
+
+    gameRoomDump(*room);
+
+    return room;
 }
 
 #endif /* GAME_ROOMS */
