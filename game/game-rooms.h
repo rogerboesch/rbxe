@@ -30,26 +30,30 @@ void gameRoomDraw(int id);
 
 #ifdef GAME_ROOMS
 
-#define ROOM_SIZE           200             /* Size of a default size room */
-#define ROOM_SPACE          40              /* Space between inner and ourter room lines */
+#define ROOM_SIZE               200             /* Size of a default size room */
+#define ROOM_SPACE              40              /* Space between inner and ourter room lines */
 
-#define LEVEL_ATIC          1
-#define LEVEL_FIRST_FLOOR   2
-#define LEVEL_GROUND        3
-#define LEVEL_BASEMENT      4
-#define LEVEL_CAVERNS       5
+#define LEVEL_ATIC              1
+#define LEVEL_FIRST_FLOOR       2
+#define LEVEL_GROUND            3
+#define LEVEL_BASEMENT          4
+#define LEVEL_CAVERNS           5
 
-#define ROOM_SCALE_FULL     1
-#define ROOM_SCALE_HORIZ    2
-#define ROOM_SCALE_VERT     3
+#define ROOM_SCALE_FULL         1
+#define ROOM_SCALE_HORIZ        2
+#define ROOM_SCALE_VERT         3
 
-#define ROOM_TYPE_STD       1
-#define ROOM_TYPE_EDGE      2
-#define ROOM_TYPE_CAVERN    3
-#define ROOM_TYPE_ATIC      4
-#define ROOM_TYPE_DBLDOOR   5
+#define ROOM_TYPE_STD           1           /* Standard box room */
+#define ROOM_TYPE_EDGE          2           /* Room width edges */
+#define ROOM_TYPE_CAVERN        3           /* Cavern style */
+#define ROOM_TYPE_ATIC          4           /* Atic style */
+#define ROOM_TYPE_ROOF          5           /* Roof style (205,210) */
+#define ROOM_TYPE_DRTWO_UP      6           /* Two doors, has two doors on top (33) */
+#define ROOM_TYPE_DRFOUR_UPDWN  7           /* Two doors up, two doors down (311) */
+#define ROOM_TYPE_DRFIVE_DWN    8           /* Five doors, 2 on bottom (308,309) */
+#define ROOM_TYPE_DRFIVE_UP     9           /* Five doors, 2 onm top (313,314) */
 
-#define NUMBERS_PER_LINE    9
+#define NUMBERS_PER_LINE        10
 
 typedef struct roomInfo {
     int id;                                 /* Room ID */
@@ -58,6 +62,7 @@ typedef struct roomInfo {
     int color;                              /* Palette color */
     int scale;                              /* Room scale */
     int idleft, idright, idtop, idbottom;   /* IDs to next rooms */
+    int idextra;                            /* Extra Id for rooms with 5 doors */
     /* ... More to come */
 } roomInfo;
 
@@ -121,13 +126,14 @@ int _gameRoomParse(char* str) {
         room.idright  = numbers[6];
         room.idtop    = numbers[7];
         room.idbottom = numbers[8];
+        room.idextra = numbers[9];
 
         _gameRoomAdd(&room);
 
         return TRUE;
     }
 
-    return TRUE;
+    return FALSE;
 }
 
 int _gameRoomLoadSprites(void) {
@@ -185,7 +191,7 @@ void _gameRoomDump(roomInfo room) {
     fprintf(stdout, "+-type: %d\n", room.type);
     fprintf(stdout, "+-color: %d\n", room.layer);
     fprintf(stdout, "+-scale: %d\n", room.layer);
-    fprintf(stdout, "+-doors: [%d,%d,%d,%d]\n", room.idleft, room.idright, room.idtop, room.idbottom);
+    fprintf(stdout, "+-doors: [%d,%d,%d,%d,(%d)]\n", room.idleft, room.idright, room.idtop, room.idbottom, room.idextra);
 }
 
 void _gameRoomDrawStandard(int x, int y, int width, int height, int thickness, roomInfo *room) {

@@ -87,6 +87,21 @@ int main(void) {
         else if (rbxeKeyPressed(KEY_W)) {
             room_id++;
         }
+        else if (rbxeKeyPressed(KEY_0)) {
+            room_id = 1;
+        }
+        else if (rbxeKeyPressed(KEY_1)) {
+            room_id = 100;
+        }
+        else if (rbxeKeyPressed(KEY_2)) {
+            room_id = 200;
+        }
+        else if (rbxeKeyPressed(KEY_3)) {
+            room_id = 300;
+        }
+        else if (rbxeKeyPressed(KEY_4)) {
+            room_id = 400;
+        }
 
         rbxeClear(0);
 
