@@ -6,3 +6,26 @@ for the pixel engine RBXE.
 
 
 More info coming soon ...
+
+## Tasks
+
+### TODO
+
+- [ ] Draw different room types
+- [ ] Lock/unlock doors
+- [ ] Place game props in room
+- [ ] Collision handling
+- [ ] Switch room when walk trough door
+- [ ] Score and Lifes
+- [ ] Particle systems
+- [ ] Draw sprites in different colors
+- ...
+
+
+### Implemented
+
+- [x] Room loader
+- [x] Draw standard room
+- [x] Color palette (ZX)
+- [x] Sprites
+- [x] Sprite movement
