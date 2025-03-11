@@ -19,8 +19,6 @@
 
 #define RBXE_ENGINE
 #include <rbxe.h>
-
-#define RBXE_GIF
 #include <rbxe-gif.h>
 
 #include <stdlib.h>

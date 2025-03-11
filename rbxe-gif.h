@@ -22,7 +22,7 @@
 
 unsigned char* rbxeLoadGIF(char const* filename, int* width, int* height, int* palcount, unsigned char palette[768]);
 
-#ifdef RBXE_GIF
+#ifdef RBXE_ENGINE
 
 #include <gif_load.h>
 

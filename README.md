@@ -44,6 +44,7 @@ implementation details.
 #include <rbxe.h>           /* Basic pixel engine              */
 #include <rbxe-font.h>      /* Only if you need font support   */
 #include <rbxe-sprite.h>    /* Only if you need sprite support */
+#include <rbxe-gif.h>       /* Only if you need GIF support    */
 #include <rbxe-math.h>      /* Only if you need math support   */
 ```
 
