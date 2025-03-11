@@ -31,7 +31,7 @@
 #define SCREEN_WIDTH        320
 #define SCREEN_HEIGHT       200
 #define SCALE               2
-#define FULLSCREEN          FALSE
+#define FULLSCREEN          TRUE
  
 #define MAP_N               1024
 #define SCALE_FACTOR        70.0
@@ -161,8 +161,8 @@ void render_voxel(void) {
 int main(void) {
     int width, height;
 
-    colormap = rbxeLoadGIF("colormap-1.gif", NULL, NULL, &palsize, palette);
-    heightmap = rbxeLoadGIF("heightmap-1.gif", NULL, NULL, NULL, NULL);
+    colormap = rbxeLoadGIF("C0.gif", NULL, NULL, &palsize, palette);
+    heightmap = rbxeLoadGIF("D0.gif", NULL, NULL, NULL, NULL);
 
     if (colormap == NULL || heightmap == NULL) {
         fprintf(stderr, "ERROR: Can't load colormap or heightmap file\n");
