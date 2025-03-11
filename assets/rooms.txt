@@ -13,9 +13,10 @@
 # Color: BLACK=0,BLUE=1,RED=2,MAGENTA=3,GREEN=4,CYAN=5,YELLOW=6,WHITE=7
 # Scale: FULL=1,HORIZ=2,VERT=3
 # Links: left, right, top, bottom, extra (for Type 6-9)
+# Extras:START=900
 #
 # Ground rooms (31)
-# ID, Level, Type, Color, Scale, ID(left, right, top, bottom, extra)
+# ID, Level, Type, Color, Scale, ID(left, right, top, bottom), extra(add. door, other flags see EXTRA)
 # I  L  T  C  S  Links
 001, 3, 1, 6, 2, 000, 002, 000, 000, XXX
 002, 3, 1, 3, 1, 001, 003, 000, 007, XXX
@@ -35,7 +36,7 @@
 015, 3, 1, 6, 3, 000, 000, 009, 019, XXX
 016, 3, 1, 6, 3, 000, 017, 012, 022, XXX
 017, 3, 1, 7, 2, 016, 018, 000, 000, XXX
-018, 3, 1, 2, 1, 017, 999, 014, 024, XXX
+018, 3, 1, 2, 1, 017, 999, 014, 024, 900
 019, 3, 1, 7, 3, 000, 020, 015, 025, XXX
 020, 3, 1, 4, 1, 019, 021, 000, 000, XXX
 021, 3, 1, 3, 1, 020, 022, 000, 000, XXX

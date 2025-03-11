@@ -262,6 +262,11 @@ void rbxeFontDrawString(int x, int y, char* str, pixel_info fg, pixel_info bg);
 
 Draw a string.
 
+### GIF support
+
+```C
+unsigned char* rbxeLoadGIF(char const* filename, int* width, int* height, int* palcount, unsigned char palette[768]);
+```
 
 ### Sprites
 

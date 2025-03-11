@@ -25,7 +25,8 @@
 
 /* This program opens up a 800 x 600 window in a 10:1 pixel scale.
  * Each frame it clears the pixel buffer to white, then plots the 
- * center pixel red and the pixel pointed by the mouse blue.    */
+ * center pixel red and the pixel pointed by the mouse blue.
+ */
 
 #define WIDTH 800
 #define HEIGHT 600

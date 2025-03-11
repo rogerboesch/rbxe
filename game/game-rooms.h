@@ -67,11 +67,14 @@ void gameRoomDump(roomInfo room);
 #define ROOM_TYPE_DRFIVE_DWN    8           /* Five doors, 2 on bottom (308,309) */
 #define ROOM_TYPE_DRFIVE_UP     9           /* Five doors, 2 onm top (313,314) */
 
+#define ROOM_EXTRA_START        900         /* Marks start/end room */
+
 #define NUMBERS_PER_LINE        10
 
 /* Used to store start index of each floor level */
 int startIndex100=0, startIndex200=0, startIndex300=0, startIndex400=0;
 int selected_room=0, selected_index=0;
+int start_room=0;
 
 /* Sprites used for rooms */
 sprite_info* sprite_doors = NULL;
@@ -99,6 +102,11 @@ void _gameRoomAdd(roomInfo* room) {
         default:
             printf("Add room %d (index=%d)\n", room->id, room_list->len);
             break;
+    }
+
+    if (room->idextra == ROOM_EXTRA_START) {
+        start_room = room->id;
+        printf("> Room %d is the start room\n", room->id);
     }
 
     room->index = room_list->len;
@@ -211,6 +219,8 @@ int gameRoomInitialize(void) {
 
     fprintf(stdout, "Rooms file loaded %d rooms added\n", room_list->len);
 
+    gameRoomSelect(start_room);
+    
     return _gameRoomLoadSprites();
 }
 

@@ -111,7 +111,7 @@ int main(void) {
         dT = (T - t) * 50.0;
         t = T;
 
-        if (rbxeKeyPressed(KEY_ESCAPE) || rbxeKeyPressed(KEY_Q)) {
+        if (rbxeKeyPressed(KEY_ESCAPE)) {
             break;
         }
         if (rbxeKeyDown(KEY_D)) {

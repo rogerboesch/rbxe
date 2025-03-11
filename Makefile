@@ -48,7 +48,7 @@ obj/game.o : game/game.c game/game-rooms.h game/game-palette-zx.h rbxe.h rbxe-sp
 	$(CC) -c game/game.c -o obj/game.o $(CFLAGS)
 
 # Examples
-examples: bin/hello bin/example bin/font bin/sandsim bin/mandelbrot bin/gameoflife bin/gradient bin/pendulum bin/sprite
+examples: bin/hello bin/example bin/font bin/sandsim bin/mandelbrot bin/gameoflife bin/gradient bin/pendulum bin/sprite bin/voxel
 
 bin/hello : obj/hello.o
 	$(CC) obj/hello.o -o bin/hello $(LFLAGS)
@@ -103,6 +103,12 @@ bin/sprite : obj/sprite.o
 
 obj/sprite.o : examples/sprite.c rbxe.h rbxe-sprite.h | makedir
 	$(CC) -c examples/sprite.c -o obj/sprite.o $(CFLAGS)
+
+bin/voxel : obj/voxel.o
+	$(CC) obj/voxel.o -o bin/voxel $(LFLAGS)
+
+obj/voxel.o : examples/voxel.c rbxe.h rbxe-gif.h | makedir
+	$(CC) -c examples/voxel.c -o obj/voxel.o $(CFLAGS)
 
 makedir:
 	mkdir -p bin
