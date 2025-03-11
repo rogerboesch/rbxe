@@ -161,8 +161,8 @@ void render_voxel(void) {
 int main(void) {
     int width, height;
 
-    colormap = rbxeLoadGIF("C0.gif", NULL, NULL, &palsize, palette);
-    heightmap = rbxeLoadGIF("D0.gif", NULL, NULL, NULL, NULL);
+    colormap = rbxeLoadGIF("C21.gif", NULL, NULL, &palsize, palette);
+    heightmap = rbxeLoadGIF("D21.gif", NULL, NULL, NULL, NULL);
 
     if (colormap == NULL || heightmap == NULL) {
         fprintf(stderr, "ERROR: Can't load colormap or heightmap file\n");
