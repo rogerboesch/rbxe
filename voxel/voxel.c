@@ -42,6 +42,7 @@ uint8_t* colormap  = NULL;   // buffer/array to hold color values  (1024*1024)
 
 uint8_t palette[256 * 3];    // palette (RGB)
 int palsize;
+int night = FALSE;
 
 // Camera struct type declaration
 typedef struct {
@@ -97,6 +98,10 @@ void handle_input(void) {
     if (rbxeKeyDown(KEY_W)) {
         camera.horizon -= 1.5;
     }
+
+    if (rbxeKeyPressed(KEY_N)) {
+        night = !night;
+    }
 }
 
 void render_voxel(void) {
@@ -143,11 +148,23 @@ void render_voxel(void) {
                 for (int y = projheight; y < tallestheight; y++) {
                     if (y >= 0) {
                         int pal = colormap[mapoffset];
-                        color.r = palette[pal * 3 + 0] * LIGHT;
-                        color.g = palette[pal * 3 + 1] * LIGHT;
-                        color.b = palette[pal * 3 + 2] * LIGHT;
+                        
+                        color.r = palette[pal * 3 + 0];
+                        color.g = palette[pal * 3 + 1];
+                        color.b = palette[pal * 3 + 2];
                         color.a = 255;
                         
+                        color.r = (color.r & 63) << 2;
+                        color.g = (color.g & 63) << 2;
+                        color.b = (color.b & 63) << 2;
+ 
+                        if (night) {
+                            int mix = (color.r + color.g + color.b) / 3;
+                            color.r = 0;
+                            color.g = mix;
+                            color.b = 0;
+                        }
+
                         pixbuf[(SCREEN_WIDTH * (SCREEN_HEIGHT-y)) + i] = color; 
                     }
                 }
@@ -161,8 +178,8 @@ void render_voxel(void) {
 int main(void) {
     int width, height;
 
-    colormap = rbxeLoadGIF("C21.gif", NULL, NULL, &palsize, palette);
-    heightmap = rbxeLoadGIF("D21.gif", NULL, NULL, NULL, NULL);
+    colormap = rbxeLoadGIF("C01.gif", NULL, NULL, &palsize, palette);
+    heightmap = rbxeLoadGIF("D01.gif", NULL, NULL, NULL, NULL);
 
     if (colormap == NULL || heightmap == NULL) {
         fprintf(stderr, "ERROR: Can't load colormap or heightmap file\n");
