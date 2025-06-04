@@ -23,6 +23,7 @@
         "__locale": "c",
         "locale": "c",
         "sstream": "cpp",
-        "__bit_reference": "cpp"
+        "__bit_reference": "cpp",
+        "chip8-bmp.h": "c"
     }
 }

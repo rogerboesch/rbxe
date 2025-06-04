@@ -35,7 +35,27 @@ endif
 CFLAGS=$(STD) $(OPT) $(WFLAGS) $(INCDIR)
 LFLAGS=$(STD) $(OPT) $(LIBDIR) $(LIBS)
 
-all: examples game voxel
+all: examples game voxel chip8
+
+# Chip-8
+
+chip8: bin/chip8
+
+bin/chip8 : obj/chip8.o obj/chip8-platform.o obj/chip8-render.o obj/chip8-bmp.o
+	$(CC) obj/chip8.o obj/chip8-platform.o obj/chip8-render.o obj/chip8-bmp.o -o bin/chip8 $(LFLAGS)
+
+obj/chip8.o : chip8/chip8.c chip8/chip8-platform.c rbxe.h | makedir
+	$(CC) -c chip8/chip8.c -o obj/chip8.o	
+
+obj/chip8-platform.o : chip8/chip8-platform.c rbxe.h | makedir
+	$(CC) -c chip8/chip8-platform.c -o obj/chip8-platform.o	
+
+obj/chip8-render.o : chip8/chip8-render.c rbxe.h | makedir
+	$(CC) -c chip8/chip8-render.c -o obj/chip8-render.o	
+
+obj/chip8-bmp.o : chip8/chip8-bmp.c rbxe.h | makedir
+	$(CC) -c chip8/chip8-bmp.c -o obj/chip8-bmp.o	
+
 
 # Game
 
@@ -119,7 +139,8 @@ makedir:
 	mkdir -p obj
 	cp assets/* bin/
 	cp voxel/maps/* bin/
-
+	cp chip8/games/* bin/
+	
 clean:
 	rm -r bin
 	rm -r obj
