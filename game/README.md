@@ -23,7 +23,7 @@ More info coming soon ...
 - [ ] Sprite animation
 - [ ] Sound support
 
-(Not complete)
+*(Not complete)*
 
 ### Implemented
 
