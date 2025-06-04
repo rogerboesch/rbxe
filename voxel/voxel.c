@@ -31,7 +31,7 @@
 #define SCREEN_WIDTH        320
 #define SCREEN_HEIGHT       200
 #define SCALE               2
-#define FULLSCREEN          TRUE
+#define FULLSCREEN          FALSE
  
 #define MAP_N               1024
 #define SCALE_FACTOR        70.0
@@ -65,6 +65,10 @@ camera_t camera = {
 };
 
 void handle_input(void) {
+    camera.angle -= 0.01;
+    camera.x += cos(camera.angle);
+    camera.y += sin(camera.angle);
+
     if (rbxeKeyDown(KEY_UP)) {
         camera.x += cos(camera.angle);
         camera.y += sin(camera.angle);
@@ -175,11 +179,24 @@ void render_voxel(void) {
     }
 }
 
+void render_hud(void) {
+    int mid_width = SCREEN_WIDTH / 2;
+    int mid_height = SCREEN_HEIGHT / 2;
+
+    pixel_info green = {0, 255, 0, 255};
+
+    rbxeSetPixel(mid_width, mid_height, green);
+    rbxePlotLine(mid_width,      mid_height - 10, mid_width,      mid_height - 40, green);
+    rbxePlotLine(mid_width,      mid_height + 10, mid_width,      mid_height + 40, green);
+    rbxePlotLine(mid_width - 10, mid_height,      mid_width - 40, mid_height,      green);
+    rbxePlotLine(mid_width + 10, mid_height,      mid_width + 40, mid_height,      green);
+}
+
 int main(void) {
     int width, height;
 
-    colormap = rbxeLoadGIF("C01.gif", NULL, NULL, &palsize, palette);
-    heightmap = rbxeLoadGIF("D01.gif", NULL, NULL, NULL, NULL);
+    colormap = rbxeLoadGIF("C00.gif", NULL, NULL, &palsize, palette);
+    heightmap = rbxeLoadGIF("D00.gif", NULL, NULL, NULL, NULL);
 
     if (colormap == NULL || heightmap == NULL) {
         fprintf(stderr, "ERROR: Can't load colormap or heightmap file\n");
@@ -197,6 +214,10 @@ int main(void) {
 
         handle_input();
         render_voxel();
+        
+        if (night) {
+            render_hud();
+        }
 
         if (rbxeKeyPressed(KEY_ESCAPE)) {
             break;
