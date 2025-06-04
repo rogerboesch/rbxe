@@ -22,8 +22,8 @@ More info coming soon ...
 - [ ] Draw sprites in different colors
 - [ ] Sprite animation
 - [ ] Sound support
-- ...
 
+(Not complete)
 
 ### Implemented
 
