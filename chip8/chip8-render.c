@@ -16,7 +16,7 @@
 #endif
 
 #include "chip8.h"
-#include "chip8-bmp.h"
+//#include "chip8-bmp.h"
 #include "chip8-platform.h"
 
 /* number of instructions to execute per second */
@@ -31,8 +31,8 @@ static int bg_color = 0x000055;
 /* Is the interpreter running? Set to 0 to enter "debug" mode */
 static int running = 1;
 
-static Bitmap *chip8_screen;
-static Bitmap *hud;
+//static Bitmap *chip8_screen;
+//static Bitmap *hud;
 
 static void draw_screen();
 
@@ -99,15 +99,15 @@ void init_game(int argc, char *argv[]) {
 
     c8_reset();
 
-    fg_color = bm_byte_order(fg_color);
-    bg_color = bm_byte_order(bg_color);
+    //fg_color = bm_byte_order(fg_color);
+    //bg_color = bm_byte_order(bg_color);
 
     int opt;
     while((opt = getopt(argc, argv, "f:b:s:dvhq:m:")) != -1) {
         switch(opt) {
             case 'v': c8_verbose++; break;
-            case 'f': fg_color = bm_atoi(optarg); break;
-            case 'b': bg_color = bm_atoi(optarg); break;
+            //case 'f': fg_color = bm_atoi(optarg); break;
+            //case 'b': bg_color = bm_atoi(optarg); break;
             case 's': speed = atoi(optarg); if(speed < 1) speed = 10; break;
             case 'd': running = 0; break;
             case 'q': {
@@ -168,23 +168,23 @@ void init_game(int argc, char *argv[]) {
         exit_error("Unable to load '%s': %s\n", infile, strerror(errno));
     }
 
-    bm_set_color(screen, 0x202020);
-    bm_clear(screen);
+    //bm_set_color(screen, 0x202020);
+    //bm_clear(screen);
 
-    chip8_screen = bm_create(128, 64);
+    //chip8_screen = bm_create(128, 64);
 
     draw_screen();
 
-    hud = bm_create(128, 24);
-    if(!hud)
-        exit_error("unable to create HUD");
+    //hud = bm_create(128, 24);
+    //if(!hud)
+      //  exit_error("unable to create HUD");
 
     rlog("Initialized.");
 }
 
 void deinit_game() {
-    bm_free(hud);
-    bm_free(chip8_screen);
+    //bm_free(hud);
+    //bm_free(chip8_screen);
     rlog("Done.");
 }
 
@@ -235,6 +235,7 @@ static unsigned int noise(int x, int y, unsigned int col_in) {
 }
 #endif
 
+/*
 static void chip8_to_bmp(Bitmap *sbmp) {
     int x, y, w, h;
 
@@ -251,11 +252,12 @@ static void chip8_to_bmp(Bitmap *sbmp) {
         }
     }
 }
+*/
 
 static void draw_screen() {
     int w, h;
 
-    chip8_to_bmp(chip8_screen);
+    //chip8_to_bmp(chip8_screen);
     c8_resolution(&w, &h);
 
 #if CRT_BLUR
@@ -277,7 +279,7 @@ static void draw_screen() {
                               0.0, 0.1, 0.0};
     bm_apply_kernel(screen, 3, smooth_kernel);
 #else
-    bm_blit_ex(screen, 0, 0, bm_width(screen), bm_height(screen), chip8_screen, 0, 0, w, h, 0);
+    //bm_blit_ex(screen, 0, 0, bm_width(screen), bm_height(screen), chip8_screen, 0, 0, w, h, 0);
 #endif
 
 #if CRT_NOISE
@@ -297,10 +299,11 @@ static void draw_screen() {
 #endif
 }
 
-void bm_blit_blend(Bitmap *dst, int dx, int dy, Bitmap *src, int sx, int sy, int w, int h);
+//void bm_blit_blend(Bitmap *dst, int dx, int dy, Bitmap *src, int sx, int sy, int w, int h);
 
 
 void draw_hud() {
+/*
     int i;
 
     // Bitmap hud;
@@ -318,7 +321,8 @@ void draw_hud() {
     }
 
     bm_blit_blend(screen, 0, bm_height(screen) - 24, hud, 0, 0, bm_width(hud), bm_height(hud));
-}
+*/
+    }
 
 int render(double elapsedSeconds) {
     int i;
@@ -394,7 +398,7 @@ int render(double elapsedSeconds) {
     return 1;
 }
 
-
+/*
 void bm_blit_blend(Bitmap *dst, int dx, int dy, Bitmap *src, int sx, int sy, int w, int h) {
     int x,y, i, j;
 
@@ -486,3 +490,5 @@ void bm_blit_blend(Bitmap *dst, int dx, int dy, Bitmap *src, int sx, int sy, int
         j++;
     }
 }
+
+*/

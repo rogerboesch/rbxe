@@ -32,17 +32,17 @@
 #  define LOG_FILE_NAME "chip8.log"
 #endif
 
-Bitmap *screen;
-Bitmap *vscreen;
+//Bitmap *screen;
+//Bitmap *vscreen;
 
 static int pressed_key = 0;
 
 int mouse_x, mouse_y;
 static int mclick = 0, mdown = 0, mrelease = 0, mmove = 0;
 
-static Bitmap *cursor = NULL;
+//static Bitmap *cursor = NULL;
 static int cursor_hsx, cursor_hsy;
-static Bitmap *cursor_back = NULL;
+//static Bitmap *cursor_back = NULL;
 
 #if EPX_SCALE
 static Bitmap *scale_epx_i(Bitmap *in, Bitmap *out);
@@ -107,6 +107,7 @@ char *readfile(const char *fname) {
     return str;
 }
 
+/*
 void set_cursor(Bitmap *b, int hsx, int hsy) {
     cursor_hsx = hsx;
     cursor_hsy = hsy;
@@ -124,6 +125,7 @@ void set_cursor(Bitmap *b, int hsx, int hsy) {
         cursor_back = NULL;
     }
 }
+*/
 
 static const char *lastEvent = "---";
 static int finger_id = -1;
@@ -131,10 +133,12 @@ static int finger_id = -1;
 static void handle_events() {
 }
 
+/*
 Bitmap *get_bmp(const char *filename) {
     Bitmap *bmp = bm_load(filename);
     return bmp;
 }
+*/
 
 static uint32_t get_ticks(void) {
     return 0;
@@ -158,6 +162,7 @@ static void draw_frame() {
 
     start = get_ticks();
 
+    /*
     if(dodebug && n_elapsed > 0) {
         double sum = 0;
         int i, n = n_elapsed > 0xFF ? 0xFF : n_elapsed;
@@ -172,6 +177,8 @@ static void draw_frame() {
         bm_printf(screen, 1, 1, "%3.2f", fps);
         bm_set_font(screen, save);
     }
+    */
+
     frameTimes[(n_elapsed++) & 0xFF] = deltaTime;
 
     mclick = 0;
@@ -230,6 +237,7 @@ static void do_iteration() {
 
     draw_frame();
 
+    /*
     if(cursor) {
         cx = mouse_x - cursor_hsx;
         cy = mouse_y - cursor_hsy;
@@ -241,6 +249,7 @@ static void do_iteration() {
     if(cursor) {
         bm_maskedblit(screen, cx, cy, cursor_back, 0, 0, bm_width(cursor_back), bm_height(cursor_back));
     }
+        */
 }
 
 int main(int argc, char *argv[]) {
@@ -253,7 +262,7 @@ int main(int argc, char *argv[]) {
 
     srand((unsigned int)time(NULL));
 
-    screen = bm_create(SCREEN_WIDTH, SCREEN_HEIGHT);
+    // screen = bm_create(SCREEN_WIDTH, SCREEN_HEIGHT);
 
     init_game(argc, argv);
 
@@ -267,8 +276,8 @@ int main(int argc, char *argv[]) {
 
     rlog("%s: Main loop stopped", WINDOW_CAPTION);
 
-    bm_unbind(vscreen);
-    bm_free(screen);
+    //bm_unbind(vscreen);
+    //bm_free(screen);
 
     rlog("%s","Application Done!\n");
 

@@ -41,8 +41,8 @@ all: examples game voxel chip8
 
 chip8: bin/chip8
 
-bin/chip8 : obj/chip8.o obj/chip8-platform.o obj/chip8-render.o obj/chip8-bmp.o
-	$(CC) obj/chip8.o obj/chip8-platform.o obj/chip8-render.o obj/chip8-bmp.o -o bin/chip8 $(LFLAGS)
+bin/chip8 : obj/chip8.o obj/chip8-platform.o obj/chip8-render.o
+	$(CC) obj/chip8.o obj/chip8-platform.o obj/chip8-render.o -o bin/chip8 $(LFLAGS)
 
 obj/chip8.o : chip8/chip8.c chip8/chip8-platform.c rbxe.h | makedir
 	$(CC) -c chip8/chip8.c -o obj/chip8.o	
@@ -52,9 +52,6 @@ obj/chip8-platform.o : chip8/chip8-platform.c rbxe.h | makedir
 
 obj/chip8-render.o : chip8/chip8-render.c rbxe.h | makedir
 	$(CC) -c chip8/chip8-render.c -o obj/chip8-render.o	
-
-obj/chip8-bmp.o : chip8/chip8-bmp.c rbxe.h | makedir
-	$(CC) -c chip8/chip8-bmp.c -o obj/chip8-bmp.o	
 
 
 # Game
