@@ -15,7 +15,7 @@
 | 0x214    | 7002    | ADD V0, 0x02   |   → Player to right
 | **Move block down** | 
 | 0x216    | 7301    | ADD V3, 0x01   | Block Y += 1
-| **Collission test** |
+| **Collision test** |
 | 0x218    | 4031    | SE V0, V1      | If V0 == V1 (X equal)
 | 0x21A    | 5002    | SE V0, V2      | Und V0 == V2 (Y equal)
 | 0x21C    | 122A    | JP 0x22A       | → Game Over
