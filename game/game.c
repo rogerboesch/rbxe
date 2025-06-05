@@ -58,7 +58,7 @@ int main(void) {
     room = gameRoomSelect(room_id);
 
     /* Create main sprite */
-    sprite = rbxeSpriteLoad("player.png", 24, 24);
+    sprite = rbxeSpriteLoad("assets/player.png", 24, 24);
     if (!sprite) return EXIT_FAILURE;
 
     rbxeSpriteSetPosition(sprite, s_width/2, s_height/2);

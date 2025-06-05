@@ -40,7 +40,7 @@ int main(void) {
     rbxeFontInit();
 
     /* Create main sprite */
-    sprite = rbxeSpriteLoad("player.png", 24, 24);
+    sprite = rbxeSpriteLoad("assets/player.png", 24, 24);
     if (!sprite) return EXIT_FAILURE;
 
     rbxeSpriteSetPosition(sprite, 0, 40);

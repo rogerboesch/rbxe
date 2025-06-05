@@ -195,8 +195,8 @@ void render_hud(void) {
 int main(void) {
     int width, height;
 
-    colormap = rbxeLoadGIF("C00.gif", NULL, NULL, &palsize, palette);
-    heightmap = rbxeLoadGIF("D00.gif", NULL, NULL, NULL, NULL);
+    colormap = rbxeLoadGIF("maps/C00.gif", NULL, NULL, &palsize, palette);
+    heightmap = rbxeLoadGIF("maps/D00.gif", NULL, NULL, NULL, NULL);
 
     if (colormap == NULL || heightmap == NULL) {
         fprintf(stderr, "ERROR: Can't load colormap or heightmap file\n");

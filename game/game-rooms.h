@@ -174,7 +174,7 @@ int _gameRoomParse(char* str) {
 }
 
 int _gameRoomLoadSprites(void) {
-    sprite_doors = rbxeSpriteLoad("door.png", 48, 36);
+    sprite_doors = rbxeSpriteLoad("assets/door.png", 48, 36);
     if (!sprite_doors) return FALSE;
 
     return TRUE;
@@ -189,7 +189,7 @@ int gameRoomInitialize(void) {
 
     /* Load rooms file */
     int result;
-    FILE* f = fopen("rooms.txt", "r");
+    FILE* f = fopen("assets/rooms.txt", "r");
 
     if (!f) {
         fprintf(stderr, "Can't load rooms file\n");
