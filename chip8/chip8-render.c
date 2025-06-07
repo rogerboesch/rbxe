@@ -14,13 +14,14 @@
 #define RBXE_ENGINE
 #include <rbxe.h>
 
+#define BORDER 16
 #define ZOOM 10
-#define WIDTH 64*ZOOM
-#define HEIGHT 32*ZOOM
+#define WIDTH 64*ZOOM+2*BORDER
+#define HEIGHT 32*ZOOM+2*BORDER
 #define SCALE 1
 #define FULLSCREEN FALSE
 
-const char *romfile = "/Users/roger/Data/Projects-Retro/PixelEngine/bin/BLINKY.ch8";
+const char *romfile = "/Users/roger/Data/Projects-Retro/PixelEngine/bin/BREAKOUT.ch8";
 
 /* number of instructions to execute per second */
 static int speed = 1200;
@@ -205,8 +206,8 @@ static void draw_screen() {
         for (int x = 0; x < w; x++) {
             pixel_info c = c8_get_pixel(x,y) ? fg_color : bg_color;
             
-            xx = x * ZOOM;
-            yy = (h-y) * ZOOM;
+            xx = x * ZOOM + BORDER;
+            yy = (h-y) * ZOOM + BORDER;
             rbxePlotRectangle(xx, yy, xx+ZOOM, yy+ZOOM, c);
         }
     }
@@ -230,7 +231,7 @@ void test_key2(int code1, int code2, int index) {
     }
 }
 
-int render(double elapsedSeconds) {
+void render(double elapsedSeconds) {
     int i;
     static double timer = 0.0;
     int key_pressed = 0;
@@ -286,14 +287,14 @@ int render(double elapsedSeconds) {
 
         if (rbxeKeyPressed(KEY_F8)) {
             running = 1;
-            return 1;
+            return;
         }
          
         if (rbxeKeyPressed(KEY_F6)) {
             if (c8_ended())
-                return 0;
+                return;
             else if(c8_waitkey() && !key_pressed)
-                return 1;
+                return;
             
             c8_step();
             
@@ -307,5 +308,5 @@ int render(double elapsedSeconds) {
         draw_screen();
     }
 
-    return 1;
+    return;
 }
