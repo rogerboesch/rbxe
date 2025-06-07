@@ -10,39 +10,13 @@
 
 #include "chip8-platform.h"
 
-#if SCREEN_SCALE == 0
-/* This has happened to me more than once */
-#  error "You set SCREEN_SCALE to 0 again, dummy!"
-#endif
-
-#define VSCREEN_WIDTH    (SCREEN_WIDTH * (EPX_SCALE?2:1))
-#define VSCREEN_HEIGHT   (SCREEN_HEIGHT * (EPX_SCALE?2:1))
-#define WINDOW_WIDTH    (VSCREEN_WIDTH * SCREEN_SCALE)
-#define WINDOW_HEIGHT   (VSCREEN_HEIGHT * SCREEN_SCALE)
-
-#ifndef USE_LOG_STREAM
-#  define USE_LOG_STREAM 0
-#else
-#  ifndef LOG_STREAM
-#    define LOG_STREAM   stderr
-#  endif
-#endif
-
-#ifndef LOG_FILE_NAME
-#  define LOG_FILE_NAME "chip8.log"
-#endif
-
-//Bitmap *screen;
-//Bitmap *vscreen;
+#define WINDOW_CAPTION "CHIP-8 Machine"
+#define LOG_FILE_NAME "chip8.log"
 
 static int pressed_key = 0;
 
 int mouse_x, mouse_y;
 static int mclick = 0, mdown = 0, mrelease = 0, mmove = 0;
-
-//static Bitmap *cursor = NULL;
-static int cursor_hsx, cursor_hsy;
-//static Bitmap *cursor_back = NULL;
 
 #if EPX_SCALE
 static Bitmap *scale_epx_i(Bitmap *in, Bitmap *out);
@@ -107,40 +81,11 @@ char *readfile(const char *fname) {
     return str;
 }
 
-/*
-void set_cursor(Bitmap *b, int hsx, int hsy) {
-    cursor_hsx = hsx;
-    cursor_hsy = hsy;
-    cursor = b;
-    int w = bm_width(b), h= bm_height(b);
-    if(b) {
-        if(!cursor_back)
-            cursor_back = bm_create(w, h);
-        else if(bm_width(cursor_back) != w || bm_height(cursor_back) != h) {
-            bm_free(cursor_back);
-            cursor_back = bm_create(w, h);
-        }
-    } else {
-        bm_free(cursor_back);
-        cursor_back = NULL;
-    }
-}
-*/
-
 static const char *lastEvent = "---";
 static int finger_id = -1;
 
 static void handle_events() {
 }
-
-/*
-Bitmap *get_bmp(const char *filename) {
-    Bitmap *bmp = bm_load(filename);
-    return bmp;
-}
-*/
-
-#include <time.h>
 
 static uint32_t get_ticks(void) {
     clock_t uptime = clock() / (CLOCKS_PER_SEC / 1000);

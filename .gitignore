@@ -3,6 +3,8 @@
 
 bin/
 obj/
+build/
+xbuild/
 
 ### C++ ###
 # Prerequisites
