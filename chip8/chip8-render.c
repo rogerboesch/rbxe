@@ -20,7 +20,7 @@
 #define SCALE 1
 #define FULLSCREEN FALSE
 
-const char *romfile = "/Users/roger/Data/Projects-Retro/PixelEngine/bin/CAVE.ch8";
+const char *romfile = "/Users/roger/Data/Projects-Retro/PixelEngine/bin/BLINKY.ch8";
 
 /* number of instructions to execute per second */
 static int speed = 1200;
@@ -212,6 +212,23 @@ static void draw_screen() {
     }
 }
 
+void test_key1(int code, int index) {
+    if (rbxeKeyDown(code)) {
+        c8_key_down(index);
+    }
+    else {
+        c8_key_up(index);
+    }
+}
+
+void test_key2(int code1, int code2, int index) {
+    if (rbxeKeyDown(code1) || rbxeKeyDown(code2)) {
+        c8_key_down(index);
+    }
+    else {
+        c8_key_up(index);
+    }
+}
 
 int render(double elapsedSeconds) {
     int i;
@@ -220,19 +237,22 @@ int render(double elapsedSeconds) {
     
     rbxeRun();
     
-    /*
-    for (i = 0; i < 16; i++) {
-        int k = Key_Mapping[i];
-        
-        if (keys[k]) {
-            key_pressed = 1;
-            c8_key_down(i);
-        }
-        else {
-            c8_key_up(i);
-        }
-    }
-    */
+    test_key1(KEY_0, 0);
+    test_key1(KEY_1, 1);
+    test_key1(KEY_2, 2);
+    test_key2(KEY_3, KEY_UP, 3);
+    test_key1(KEY_4, 4);
+    test_key1(KEY_5, 5);
+    test_key2(KEY_6, KEY_DOWN, 6);
+    test_key2(KEY_7, KEY_LEFT, 7);
+    test_key2(KEY_8, KEY_RIGHT, 8);
+    test_key1(KEY_9, 9);
+    test_key1(KEY_A, 10);
+    test_key1(KEY_B, 11);
+    test_key1(KEY_C, 12);
+    test_key1(KEY_D, 13);
+    test_key1(KEY_E, 14);
+    test_key1(KEY_F, 15);
 
     timer += elapsedSeconds;
 
@@ -242,10 +262,10 @@ int render(double elapsedSeconds) {
     }
 
     if (running) {
-        /* F5 breaks the program and enters debugging mode */
-        //if(keys[KCODE(F5)])
-        //    running = 0;
-
+        if (rbxeKeyPressed(KEY_F5)) {
+            running = 0;
+        }
+        
         /* instructions per second * elapsed seconds = number of instructions to execute */
         int count = speed * elapsedSeconds;
 
@@ -264,26 +284,26 @@ int render(double elapsedSeconds) {
     else {
         /* Debugging mode: F6 steps through the program, F8 resumes */
 
-        /*
-        if(keys[KCODE(F8)]) {
-            // bm_set_color(screen, 0x202020);
-            // bm_fillrect(screen, 0, screen->h - 24, screen->w, screen->h);
+        if (rbxeKeyPressed(KEY_F8)) {
             running = 1;
             return 1;
         }
          
-        if(keys[KCODE(F6)]) {
-            if(c8_ended())
+        if (rbxeKeyPressed(KEY_F6)) {
+            if (c8_ended())
                 return 0;
             else if(c8_waitkey() && !key_pressed)
                 return 1;
+            
             c8_step();
-            if(c8_screen_updated()) {
+            
+            if (c8_screen_updated()) {
                 draw_screen();
             }
-            keys[KCODE(F6)] = 0;
+            
+            /* TODO: Relese key F6 ? */
         }
-*/
+
         draw_screen();
     }
 
