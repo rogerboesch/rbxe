@@ -50,6 +50,7 @@ void rbxeBackgroundColor(const pixel_info px);
 void rbxeClear(const int value);
 void rbxeSetPixel(const int x, const int y, const pixel_info color);
 void rbxePlotLine(int x1, int y1, int x2, int y2, const pixel_info color);
+void rbxePlotRectangle(int x1, int y1, int x2, int y2, const pixel_info color);
 void rbxePlotCircle(int xc, int yc, int r, const pixel_info color);
 
 /* time input */
@@ -664,6 +665,14 @@ void rbxePlotLine(int x1, int y1, int x2, int y2, const pixel_info color) {
 
             error = error + dx;
             y1 = y1 + sy;
+        }
+    }
+}
+
+void rbxePlotRectangle(int x1, int y1, int x2, int y2, const pixel_info color) {
+    for (int x = x1; x <= x2; x++) {
+        for (int y = y1; y <= y2; y++) {
+            rbxeSetPixel(x, y, color);
         }
     }
 }
