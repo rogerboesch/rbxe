@@ -572,7 +572,7 @@ uint16_t c8_get_pc() {
 
 uint16_t c8_prog_size() {
 	uint16_t n;
-	for (n = TOTAL_RAM - 1; n > PROG_OFFSET && C8.RAM[n] == 0; n--);
+    for (n = TOTAL_RAM - 1; n > PROG_OFFSET && C8.RAM[n] == 0; n--) {}
 	
     if (++n & 0x1) // Fix for #4
 		return n + 1;

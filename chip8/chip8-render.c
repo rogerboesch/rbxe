@@ -21,7 +21,7 @@
 #define SCALE 1
 #define FULLSCREEN FALSE
 
-const char *romfile = "/Users/roger/Data/Projects-Retro/PixelEngine/bin/BREAKOUT.ch8";
+const char *romfile = "/Users/roger/Data/Projects-Retro/PixelEngine/bin/TANK.ch8";
 
 /* number of instructions to execute per second */
 static int speed = 1200;
@@ -213,47 +213,51 @@ static void draw_screen() {
     }
 }
 
-void test_key1(int code, int index) {
+int test_key1(int code, int index) {
     if (rbxeKeyDown(code)) {
         c8_key_down(index);
+        return 1;
     }
     else {
         c8_key_up(index);
+        return 0;
     }
 }
 
-void test_key2(int code1, int code2, int index) {
+int test_key2(int code1, int code2, int index) {
     if (rbxeKeyDown(code1) || rbxeKeyDown(code2)) {
         c8_key_down(index);
+        return 1;
     }
     else {
         c8_key_up(index);
+        return 0;
     }
 }
 
-void render(double elapsedSeconds) {
+int render(double elapsedSeconds) {
     int i;
     static double timer = 0.0;
     int key_pressed = 0;
     
     rbxeRun();
     
-    test_key1(KEY_0, 0);
-    test_key1(KEY_1, 1);
-    test_key1(KEY_2, 2);
-    test_key2(KEY_3, KEY_UP, 3);
-    test_key1(KEY_4, 4);
-    test_key1(KEY_5, 5);
-    test_key2(KEY_6, KEY_DOWN, 6);
-    test_key2(KEY_7, KEY_LEFT, 7);
-    test_key2(KEY_8, KEY_RIGHT, 8);
-    test_key1(KEY_9, 9);
-    test_key1(KEY_A, 10);
-    test_key1(KEY_B, 11);
-    test_key1(KEY_C, 12);
-    test_key1(KEY_D, 13);
-    test_key1(KEY_E, 14);
-    test_key1(KEY_F, 15);
+    key_pressed = test_key1(KEY_0, 0);
+    key_pressed = test_key1(KEY_1, 1);
+    key_pressed = test_key1(KEY_2, 2);
+    key_pressed = test_key2(KEY_3, KEY_UP, 3);
+    key_pressed = test_key1(KEY_4, 4);
+    key_pressed = test_key1(KEY_5, 5);
+    key_pressed = test_key2(KEY_6, KEY_DOWN, 6);
+    key_pressed = test_key2(KEY_7, KEY_LEFT, 7);
+    key_pressed = test_key2(KEY_8, KEY_RIGHT, 8);
+    key_pressed = test_key1(KEY_9, 9);
+    key_pressed = test_key1(KEY_A, 10);
+    key_pressed = test_key1(KEY_B, 11);
+    key_pressed = test_key1(KEY_C, 12);
+    key_pressed = test_key1(KEY_D, 13);
+    key_pressed = test_key1(KEY_E, 14);
+    key_pressed = test_key1(KEY_F, 15);
 
     timer += elapsedSeconds;
 
@@ -287,14 +291,14 @@ void render(double elapsedSeconds) {
 
         if (rbxeKeyPressed(KEY_F8)) {
             running = 1;
-            return;
+            return 1;
         }
          
         if (rbxeKeyPressed(KEY_F6)) {
             if (c8_ended())
-                return;
+                return 0;
             else if(c8_waitkey() && !key_pressed)
-                return;
+                return 1;
             
             c8_step();
             
@@ -308,5 +312,5 @@ void render(double elapsedSeconds) {
         draw_screen();
     }
 
-    return;
+    return 1;
 }

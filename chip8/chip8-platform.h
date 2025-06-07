@@ -16,4 +16,4 @@ extern char *readfile(const char *fname);
 
 extern void init_game(int argc, char *argv[]);
 extern void deinit_game();
-extern void render(double deltaTime);
+extern int render(double deltaTime);

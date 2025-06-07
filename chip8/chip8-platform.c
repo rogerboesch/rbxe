@@ -130,7 +130,7 @@ int main(int argc, char *argv[]) {
 
     rlog("%s: Entering main loop", WINDOW_CAPTION);
 
-    while (!rbxeKeyPressed(KEY_ESCAPE)) {
+    while (!rbxeKeyDown(KEY_ESCAPE)) {
         do_iteration();
     }
 
