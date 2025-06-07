@@ -71,7 +71,7 @@ target_include_directories(bin/voxel INTERFACE voxel)
 target_link_libraries(bin/voxel PRIVATE CommonSettings)
 
 # Chip8
-add_executable(bin/chip8 chip8/chip8-platform.c chip8/chip8-render.c chip8/chip8.c)
+add_executable(bin/chip8 chip8/chip8-platform.c chip8/chip8-render.c chip8/chip8-dasm.c chip8/chip8-asm.c chip8/chip8.c)
 target_include_directories(bin/chip8 INTERFACE chip8)
 target_link_libraries(bin/chip8 PRIVATE CommonSettings)
 

@@ -266,6 +266,10 @@ int render(double elapsedSeconds) {
         timer -= 1.0/60.0;
     }
 
+    if (rbxeKeyPressed(KEY_F10)) {
+        c8_disasm();
+    }
+    
     if (running) {
         if (rbxeKeyPressed(KEY_F5)) {
             running = 0;
