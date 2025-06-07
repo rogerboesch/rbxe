@@ -20,16 +20,16 @@
 #define SCALE 1
 #define FULLSCREEN FALSE
 
-const char *romfile = "/Users/roger/Data/Projects-Retro/PixelEngine/bin/AIRPLANE.ch8";
+const char *romfile = "/Users/roger/Data/Projects-Retro/PixelEngine/bin/CAVE.ch8";
 
 /* number of instructions to execute per second */
 static int speed = 1200;
 
 /* Foreground color */
-const pixel_info fg_color = {0, 0, 0, 255};
+const pixel_info fg_color = {0, 255, 0, 255};
 
 /* Background color */
-const pixel_info bg_color = {255, 255, 255, 255};
+const pixel_info bg_color = {0, 0, 0, 255};
 
 /* Is the interpreter running? Set to 0 to enter "debug" mode */
 static int running = 1;

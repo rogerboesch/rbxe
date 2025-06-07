@@ -1,0 +1,4 @@
+Target dependency graph (2 targets)
+Target 'bin/chip8' in project 'Project'
+➜ Explicit dependency on target 'ZERO_CHECK' in project 'Project'
+Target 'ZERO_CHECK' in project 'Project' (no dependencies)
