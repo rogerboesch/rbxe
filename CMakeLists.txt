@@ -35,43 +35,53 @@ else()
     # TBD: target_link_libraries(CommonSettings INTERFACE m GL GLU GLEW)
 endif()
 
+# RBXE Sources
+set(RBXE_SOURCES
+    rbxe/rbxe.h
+    rbxe/rbxe-arraylist.h
+    rbxe/rbxe-font.h
+    rbxe/rbxe-gif.h
+    rbxe/rbxe-math.h
+    rbxe/rbxe-sprite.h
+)
+
 # Examples
-add_executable(bin/hello examples/hello.c)
+add_executable(bin/hello examples/hello.c ${RBXE_SOURCES})
 target_link_libraries(bin/hello PRIVATE CommonSettings)
 
-add_executable(bin/font examples/font.c)
+add_executable(bin/font examples/font.c ${RBXE_SOURCES})
 target_link_libraries(bin/font PRIVATE CommonSettings)
 
-add_executable(bin/sandsim examples/sandsim.c)
+add_executable(bin/sandsim examples/sandsim.c ${RBXE_SOURCES})
 target_link_libraries(bin/sandsim PRIVATE CommonSettings)
 
-add_executable(bin/mandelbrot examples/mandelbrot.c)
+add_executable(bin/mandelbrot examples/mandelbrot.c ${RBXE_SOURCES})
 target_link_libraries(bin/mandelbrot PRIVATE CommonSettings)
 
-add_executable(bin/gameoflife examples/gameoflife.c)
+add_executable(bin/gameoflife examples/gameoflife.c ${RBXE_SOURCES})
 target_link_libraries(bin/gameoflife PRIVATE CommonSettings)
 
-add_executable(bin/gradient examples/gradient.c)
+add_executable(bin/gradient examples/gradient.c ${RBXE_SOURCES})
 target_link_libraries(bin/gradient PRIVATE CommonSettings)
 
-add_executable(bin/pendulum examples/pendulum.c)
+add_executable(bin/pendulum examples/pendulum.c ${RBXE_SOURCES})
 target_link_libraries(bin/pendulum PRIVATE CommonSettings)
 
-add_executable(bin/sprite examples/sprite.c)
+add_executable(bin/sprite examples/sprite.c ${RBXE_SOURCES})
 target_link_libraries(bin/sprite PRIVATE CommonSettings)
 
 # Game
-add_executable(bin/game game/game.c)
+add_executable(bin/game game/game.c ${RBXE_SOURCES})
 target_include_directories(bin/game INTERFACE game)
 target_link_libraries(bin/game PRIVATE CommonSettings)
 
 # Voxel
-add_executable(bin/voxel voxel/voxel.c)
+add_executable(bin/voxel voxel/voxel.c ${RBXE_SOURCES})
 target_include_directories(bin/voxel INTERFACE voxel)
 target_link_libraries(bin/voxel PRIVATE CommonSettings)
 
 # Chip8
-add_executable(bin/chip8 chip8/chip8-platform.c chip8/chip8-render.c chip8/chip8-dasm.c chip8/chip8-asm.c chip8/chip8.c)
+add_executable(bin/chip8 chip8/chip8-platform.c chip8/chip8-render.c chip8/chip8-dasm.c chip8/chip8-asm.c chip8/chip8.c chip8/chip8-platform.h chip8/chip8.h ${RBXE_SOURCES})
 target_include_directories(bin/chip8 INTERFACE chip8)
 target_link_libraries(bin/chip8 PRIVATE CommonSettings)
 

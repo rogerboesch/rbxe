@@ -339,6 +339,7 @@ static int get_base(const char * a){
 	else
 		return 0;
 }
+
 static int parse_int(char **expression, const int linenum){
 	int base = get_base(*expression);
 	if(base <= 0)
@@ -349,7 +350,6 @@ static int parse_int(char **expression, const int linenum){
 }
 
 static void copy_arithmetic_expression(char * buffer, const char ** in){
-
 	while (**in && **in != ',' && **in !='\n' && **in !=';'){
 		if (**in == ' ') {
 			(*in)++;

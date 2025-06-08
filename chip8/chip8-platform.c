@@ -119,14 +119,17 @@ static void do_iteration() {
 int main(int argc, char *argv[]) {
     logfile = fopen(LOG_FILE_NAME, "w");
 
-    if (!logfile)
+    if (!logfile) {
         return 1;
+    }
 
     rlog("%s: Application Running", WINDOW_CAPTION);
 
     srand((unsigned int)time(NULL));
 
-    init_game(argc, argv);
+    if (!init_game(argc, argv)) {
+        return 1;
+    }
 
     rlog("%s: Entering main loop", WINDOW_CAPTION);
 

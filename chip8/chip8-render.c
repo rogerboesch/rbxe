@@ -98,7 +98,7 @@ int example_sys_hook(unsigned int nnn) {
     return 1;
 }
 
-void init_game(int argc, char *argv[]) {
+int init_game(int argc, char *argv[]) {
     rlog("Initializing...");
 
     srand((uint32_t)time(NULL));
@@ -106,7 +106,8 @@ void init_game(int argc, char *argv[]) {
     c8_reset();
 
     if (!rbxeStart("Chip8", WIDTH, HEIGHT, SCALE, FULLSCREEN)) {
-        exit(0);
+        rerror("Can't initialize RBXE");
+        return 0;
     }
 
     int opt;
@@ -154,7 +155,8 @@ void init_game(int argc, char *argv[]) {
                         char *delim = strchr(token, '=');
                         
                         if (!delim) {
-                            exit_error("error: bad field for -m; expected `addr=value`, got `%s`", token);
+                            rerror("error: bad field for -m; expected `addr=value`, got `%s`", token);
+                            return 0;
                         }
 
                         *delim = '\0';
@@ -182,18 +184,24 @@ void init_game(int argc, char *argv[]) {
     c8_sys_hook = example_sys_hook;
 
     rlog("Loading %s...", romfile);
+
     if (!c8_load_file(romfile)) {
-        exit_error("Unable to load '%s': %s\n", romfile, strerror(errno));
+        rerror("Unable to load '%s': %s\n", romfile, strerror(errno));
+        return 0;
     }
 
     draw_screen();
 
     rlog("Initialized.");
+
+    return 1;
 }
 
-void deinit_game() {
+int deinit_game() {
     rbxeEnd();
     rlog("Done.");
+
+    return 1;
 }
 
 static void draw_screen() {
@@ -213,7 +221,7 @@ static void draw_screen() {
     }
 }
 
-int test_key1(int code, int index) {
+static int test_key1(int code, int index) {
     if (rbxeKeyDown(code)) {
         c8_key_down(index);
         return 1;
@@ -224,7 +232,7 @@ int test_key1(int code, int index) {
     }
 }
 
-int test_key2(int code1, int code2, int index) {
+static int test_key2(int code1, int code2, int index) {
     if (rbxeKeyDown(code1) || rbxeKeyDown(code2)) {
         c8_key_down(index);
         return 1;
