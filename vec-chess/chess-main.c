@@ -41,7 +41,9 @@ void game_handle_remote_request(char* request)  {}
 
 #define BUTTON_FOUR 4
 #define DEFAULT_TEXT_SMALL_SIZE 10
+
 const pixel_info fg_color = {255, 192, 0, 255};
+const pixel_info transparent = {0, 0, 0, 0};
 
 #define WHITE 3
 #define BLACK 0
@@ -219,22 +221,34 @@ void platform_start_remote_input(void) {
 }
 
 int platform_input_is_left(void) {
-    return 0;
+    return rbxeKeyDown(KEY_LEFT);
 }
 
 int platform_input_is_right(void) {
-    return 0;
+    return rbxeKeyDown(KEY_RIGHT);
 }
 
 int platform_input_is_up(void) {
-    return 0;
+    return rbxeKeyDown(KEY_UP);
 }
 
 int platform_input_is_down(void) {
-    return 0;
+    return rbxeKeyDown(KEY_DOWN);
 }
 
 int platform_button_is_pressed(int number) {
+    if (number == 1 && rbxeKeyDown(KEY_1))
+        return 1;
+
+    if (number == 2 && rbxeKeyDown(KEY_2))
+        return 1;
+
+    if (number == 3 && rbxeKeyDown(KEY_3))
+        return 1;
+
+    if (number == 4 && rbxeKeyDown(KEY_4))
+        return 1;
+
     return 0;
 }
 
@@ -285,6 +299,8 @@ void platform_draw_lines(int* points, int count, int color) {
 }
 
 void platform_msg(char* msg, int x, int y, int size, int color) {
+    // TODO: Replace with vector font
+    rbxeFontDrawString(x, y, msg, fg_color, transparent);
 }
 
 void platform_raster_msg(char* msg, int x, int y, int size, int color) {
@@ -830,8 +846,12 @@ void game_stop(void) {
 }
 
 int game_frame() {
-    platform_frame();
+    rbxeClear(0);
 
+    if (rbxeKeyDown(KEY_ESCAPE)) {
+        return 0;
+    }
+    
     draw_grid();
     draw_board();
     
@@ -914,7 +934,9 @@ int game_frame() {
     // Render UI
     display_computer_info();
     display_user_info();
-    
+
+    platform_frame();
+
     return 1;
 }
 
@@ -925,6 +947,8 @@ int main() {
     game_start();
 
     for (;;) {
+//        rbxeClear(0);
+
         if (!game_frame()) {
             game_stop();
             return 0;
