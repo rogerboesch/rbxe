@@ -99,11 +99,12 @@ static void draw_frame() {
     elapsed = get_ticks() - start;
 
     /* It is technically possible for the game to run too fast, rendering the deltaTime useless */
-    if (elapsed < 10)
+    if (elapsed < 10) {
         return;
-
+    }
+    
     double deltaTime = elapsed / 1000.0;
-    render(deltaTime);
+    rom_render(deltaTime);
 
     start = get_ticks();
 
@@ -127,7 +128,7 @@ int main(int argc, char *argv[]) {
 
     srand((unsigned int)time(NULL));
 
-    if (!init_game(argc, argv)) {
+    if (!rom_init(argc, argv)) {
         return 1;
     }
 
@@ -137,7 +138,7 @@ int main(int argc, char *argv[]) {
         do_iteration();
     }
 
-    deinit_game();
+    rom_deinit();
 
     rlog("%s: Main loop stopped", WINDOW_CAPTION);
     rlog("%s","Application Done!\n");

@@ -98,7 +98,7 @@ int example_sys_hook(unsigned int nnn) {
     return 1;
 }
 
-int init_game(int argc, char *argv[]) {
+int rom_init(int argc, char *argv[]) {
     rlog("Initializing...");
 
     srand((uint32_t)time(NULL));
@@ -197,7 +197,7 @@ int init_game(int argc, char *argv[]) {
     return 1;
 }
 
-int deinit_game() {
+int rom_deinit() {
     rbxeEnd();
     rlog("Done.");
 
@@ -243,7 +243,7 @@ static int test_key2(int code1, int code2, int index) {
     }
 }
 
-int render(double elapsedSeconds) {
+int rom_render(double elapsedSeconds) {
     int i;
     static double timer = 0.0;
     int key_pressed = 0;

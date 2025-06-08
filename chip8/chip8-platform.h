@@ -14,6 +14,6 @@ extern void rerror(const char *fmt, ...);
 extern void exit_error(const char *msg, ...);
 extern char *readfile(const char *fname);
 
-extern int init_game(int argc, char *argv[]);
-extern int deinit_game();
-extern int render(double deltaTime);
+extern int rom_init(int argc, char *argv[]);
+extern int rom_deinit();
+extern int rom_render(double deltaTime);
