@@ -52,6 +52,10 @@ void rlog(const char *fmt, ...) {
     vfprintf(logfile, fmt, arg);
     fputc('\n', logfile);
 
+    fputs("INFO: ", stdout);
+    vfprintf(stdout, fmt, arg);
+    fputc('\n', stdout);
+
     va_end(arg);
 }
 

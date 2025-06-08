@@ -80,6 +80,11 @@ add_executable(bin/voxel voxel/voxel.c ${RBXE_SOURCES})
 target_include_directories(bin/voxel INTERFACE voxel)
 target_link_libraries(bin/voxel PRIVATE CommonSettings)
 
+# VecChess
+add_executable(bin/vec-chess vec-chess/chess-engine.c vec-chess/chess-main.c ${RBXE_SOURCES})
+target_include_directories(bin/vec-chess INTERFACE voxel)
+target_link_libraries(bin/vec-chess PRIVATE CommonSettings)
+
 # Chip8
 add_executable(bin/chip8 chip8/chip8-platform.c chip8/chip8-render.c chip8/chip8-dasm.c chip8/chip8-asm.c chip8/chip8.c chip8/chip8-platform.h chip8/chip8.h ${RBXE_SOURCES})
 target_include_directories(bin/chip8 INTERFACE chip8)

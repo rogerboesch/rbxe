@@ -22,13 +22,13 @@
 #define SCALE 1
 #define FULLSCREEN FALSE
 
-const char *romfile = "/Users/roger/Data/Projects-Retro/PixelEngine/bin/TANK.ch8";
+const char *romfile = "/Users/roger/Data/Projects-Retro/PixelEngine/bin/TETRIS.ch8";
 
 /* number of instructions to execute per second */
 static int speed = 1200;
 
 /* Colors */
-const pixel_info fg_color = {0, 255, 0, 255};
+const pixel_info fg_color = {255, 192, 0, 255};
 const pixel_info bg_color = {0, 0, 0, 255};
 const pixel_info fg_color_dbg = {255, 255, 255, 255};
 const pixel_info bg_color_dbg = {255, 0, 0, 255};
@@ -259,13 +259,13 @@ int rom_render(double elapsedSeconds) {
     
     key_pressed = test_key1(KEY_0, 0);
     key_pressed = test_key1(KEY_1, 1);
-    key_pressed = test_key1(KEY_2, 2);
-    key_pressed = test_key2(KEY_3, KEY_UP, 3);
-    key_pressed = test_key1(KEY_4, 4);
+    key_pressed = test_key2(KEY_2, KEY_UP, 2);
+    key_pressed = test_key1(KEY_3, 3);
+    key_pressed = test_key2(KEY_4, KEY_LEFT, 4);
     key_pressed = test_key1(KEY_5, 5);
-    key_pressed = test_key2(KEY_6, KEY_DOWN, 6);
-    key_pressed = test_key2(KEY_7, KEY_LEFT, 7);
-    key_pressed = test_key2(KEY_8, KEY_RIGHT, 8);
+    key_pressed = test_key2(KEY_6, KEY_RIGHT, 6);
+    key_pressed = test_key1(KEY_7, 7);
+    key_pressed = test_key2(KEY_8, KEY_DOWN, 8);
     key_pressed = test_key1(KEY_9, 9);
     key_pressed = test_key1(KEY_A, 10);
     key_pressed = test_key1(KEY_B, 11);
@@ -350,7 +350,7 @@ static void draw_frame() {
     elapsed = get_ticks() - start;
 
     /* It is technically possible for the game to run too fast, rendering the deltaTime useless */
-    if (elapsed < 10) {
+    if (elapsed < 16) {
         return;
     }
     
@@ -359,7 +359,7 @@ static void draw_frame() {
 
     start = get_ticks();
 
-    /** Debug screen */
+    /* Debug screen */
     if (showfps && n_elapsed > 0) {
          double sum = 0;
          int i, n = n_elapsed > 0xFF ? 0xFF : n_elapsed;
