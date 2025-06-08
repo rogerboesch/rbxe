@@ -16,4 +16,4 @@ extern char *readfile(const char *fname);
 
 extern int rom_init(int argc, char *argv[]);
 extern int rom_deinit();
-extern int rom_render(double deltaTime);
+extern int rom_step();

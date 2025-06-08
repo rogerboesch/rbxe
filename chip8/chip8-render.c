@@ -13,6 +13,7 @@
 
 #define RBXE_ENGINE
 #include <rbxe.h>
+#include <rbxe-font.h>
 
 #define BORDER 16
 #define ZOOM 10
@@ -26,14 +27,18 @@ const char *romfile = "/Users/roger/Data/Projects-Retro/PixelEngine/bin/TANK.ch8
 /* number of instructions to execute per second */
 static int speed = 1200;
 
-/* Foreground color */
+/* Colors */
 const pixel_info fg_color = {0, 255, 0, 255};
-
-/* Background color */
 const pixel_info bg_color = {0, 0, 0, 255};
+const pixel_info fg_color_dbg = {255, 255, 255, 255};
+const pixel_info bg_color_dbg = {255, 0, 0, 255};
 
 /* Is the interpreter running? Set to 0 to enter "debug" mode */
 static int running = 1;
+static int showfps = 0;
+
+static double frameTimes[256];
+static uint32_t n_elapsed = 0;
 
 static void draw_screen();
 
@@ -110,6 +115,8 @@ int rom_init(int argc, char *argv[]) {
         return 0;
     }
 
+    rbxeFontInit();
+    
     int opt;
 
     while ((opt = getopt(argc, argv, "f:b:s:dvhq:m:")) != -1) {
@@ -273,11 +280,15 @@ int rom_render(double elapsedSeconds) {
         c8_60hz_tick();
         timer -= 1.0/60.0;
     }
-
+    
     if (rbxeKeyPressed(KEY_F10)) {
+        showfps = !showfps;
+    }
+
+    if (rbxeKeyPressed(KEY_F11)) {
         c8_disasm();
     }
-    
+
     if (running) {
         if (rbxeKeyPressed(KEY_F5)) {
             running = 0;
@@ -305,7 +316,7 @@ int rom_render(double elapsedSeconds) {
             running = 1;
             return 1;
         }
-         
+        
         if (rbxeKeyPressed(KEY_F6)) {
             if (c8_ended())
                 return 0;
@@ -323,6 +334,54 @@ int rom_render(double elapsedSeconds) {
 
         draw_screen();
     }
+
+    return 1;
+}
+
+static uint32_t get_ticks(void) {
+    clock_t uptime = clock() / (CLOCKS_PER_SEC / 1000);
+    return (uint32_t)uptime;
+}
+
+static void draw_frame() {
+    static uint32_t start = 0;
+    static uint32_t elapsed = 0;
+
+    elapsed = get_ticks() - start;
+
+    /* It is technically possible for the game to run too fast, rendering the deltaTime useless */
+    if (elapsed < 10) {
+        return;
+    }
+    
+    double deltaTime = elapsed / 1000.0;
+    rom_render(deltaTime);
+
+    start = get_ticks();
+
+    /** Debug screen */
+    if (showfps && n_elapsed > 0) {
+         double sum = 0;
+         int i, n = n_elapsed > 0xFF ? 0xFF : n_elapsed;
+         
+         for (i = 0; i < n; i++)
+             sum += frameTimes[i];
+        
+         double avg = sum / n;
+         double fps = 1.0 / avg;
+        
+        char str[16];
+        snprintf(str, 16, "%3.2f", fps);
+        rbxeFontDrawString(2*BORDER, 3*BORDER, str, fg_color_dbg, bg_color_dbg);
+     }
+
+    frameTimes[(n_elapsed++) & 0xFF] = deltaTime;
+}
+
+int rom_step() {
+    draw_frame();
+    
+    /* TODO: Cursor handling */
 
     return 1;
 }

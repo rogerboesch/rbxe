@@ -9,13 +9,11 @@
 #include <assert.h>
 
 #include "chip8-platform.h"
-#include "rbxe.h"
+#include <rbxe.h>
+#include <rbxe-font.h>
 
 #define WINDOW_CAPTION "CHIP-8 Machine"
 #define LOG_FILE_NAME "chip8.log"
-
-static double frameTimes[256];
-static uint32_t n_elapsed = 0;
 
 char *readfile(const char *fname) {
     FILEOBJ *f;
@@ -87,36 +85,6 @@ void exit_error(const char *fmt, ...) {
     exit(1);
 }
 
-static uint32_t get_ticks(void) {
-    clock_t uptime = clock() / (CLOCKS_PER_SEC / 1000);
-    return (uint32_t)uptime;
-}
-
-static void draw_frame() {
-    static uint32_t start = 0;
-    static uint32_t elapsed = 0;
-
-    elapsed = get_ticks() - start;
-
-    /* It is technically possible for the game to run too fast, rendering the deltaTime useless */
-    if (elapsed < 10) {
-        return;
-    }
-    
-    double deltaTime = elapsed / 1000.0;
-    rom_render(deltaTime);
-
-    start = get_ticks();
-
-    frameTimes[(n_elapsed++) & 0xFF] = deltaTime;
-}
-
-static void do_iteration() {
-    draw_frame();
-
-    /* TODO: Cursor handling */
-}
-
 int main(int argc, char *argv[]) {
     logfile = fopen(LOG_FILE_NAME, "w");
 
@@ -135,7 +103,7 @@ int main(int argc, char *argv[]) {
     rlog("%s: Entering main loop", WINDOW_CAPTION);
 
     while (!rbxeKeyDown(KEY_ESCAPE)) {
-        do_iteration();
+        rom_step();
     }
 
     rom_deinit();
