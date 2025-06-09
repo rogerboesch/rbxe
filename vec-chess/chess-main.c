@@ -42,8 +42,14 @@ void game_handle_remote_request(char* request)  {}
 #define BUTTON_FOUR 4
 #define DEFAULT_TEXT_SMALL_SIZE 10
 
-const pixel_info fg_color = {255, 192, 0, 255};
+const pixel_info default_color = {255, 192, 0, 255};
+const pixel_info highlight_color = {255, 255, 255, 255};
+const pixel_info lowlight_color = {128, 192, 0, 255};
 const pixel_info transparent = {0, 0, 0, 0};
+
+#define DEFAULT_COLOR           1
+#define HIGHLIGHT_COLOR         2
+#define LOWLIGHT_COLOR          3
 
 #define WHITE 3
 #define BLACK 0
@@ -199,7 +205,7 @@ int game_colour;
 int game_board[8][8] = {};
 int game_from_x, game_from_y, game_to_x, game_to_y;
 int game_comp_from_x, game_comp_from_y, game_comp_to_x, game_comp_to_y;
-int draw_color = WHITE;
+int draw_color = DEFAULT_COLOR;
 
 char player_move_str[256];
 char player_info[256];
@@ -221,19 +227,19 @@ void platform_start_remote_input(void) {
 }
 
 int platform_input_is_left(void) {
-    return rbxeKeyDown(KEY_LEFT);
+    return rbxeKeyPressed(KEY_LEFT);
 }
 
 int platform_input_is_right(void) {
-    return rbxeKeyDown(KEY_RIGHT);
+    return rbxeKeyPressed(KEY_RIGHT);
 }
 
 int platform_input_is_up(void) {
-    return rbxeKeyDown(KEY_UP);
+    return rbxeKeyPressed(KEY_UP);
 }
 
 int platform_input_is_down(void) {
-    return rbxeKeyDown(KEY_DOWN);
+    return rbxeKeyPressed(KEY_DOWN);
 }
 
 int platform_button_is_pressed(int number) {
@@ -253,6 +259,20 @@ int platform_button_is_pressed(int number) {
 }
 
 void platform_draw_line(int x1, int y1, int x2, int y2, int color) {
+    pixel_info fg_color;
+    
+    switch (color) {
+        case LOWLIGHT_COLOR:
+            fg_color = lowlight_color;
+            break;
+        case HIGHLIGHT_COLOR:
+            fg_color = highlight_color;
+            break;
+        default:
+            fg_color = default_color;
+            break;
+    }
+
     rbxePlotLine(x1, y1, x2, y2, fg_color);
 }
 
@@ -298,15 +318,29 @@ void platform_draw_lines(int* points, int count, int color) {
     }
 }
 
+// TODO: Replace with vector font
 void platform_msg(char* msg, int x, int y, int size, int color) {
-    // TODO: Replace with vector font
+    pixel_info fg_color;
+    
+    switch (color) {
+        case LOWLIGHT_COLOR:
+            fg_color = lowlight_color;
+            break;
+        case HIGHLIGHT_COLOR:
+            fg_color = highlight_color;
+            break;
+        default:
+            fg_color = default_color;
+            break;
+    }
     rbxeFontDrawString(x, y, msg, fg_color, transparent);
 }
 
-void platform_raster_msg(char* msg, int x, int y, int size, int color) {
+void platform_frame_begin(void) {
+    rbxeClear(0);
 }
 
-void platform_frame(void) {
+void platform_frame_end(void) {
     rbxeRun();
 }
 
@@ -424,12 +458,12 @@ void draw_board_piece(int row, int col) {
     }
     
     game_colour = WHITE;
-    draw_color = WHITE;
+    draw_color = DEFAULT_COLOR;
     
     if (index > 9) {
         index -= BLACK_OFFSET;
         game_colour = BLACK;
-        draw_color = WHITE;
+        draw_color = HIGHLIGHT_COLOR;
     }
     
     draw_piece(piece_type[index-1], row, col, draw_color);
@@ -460,12 +494,12 @@ void update_board() {
 void draw_grid() {
     for (int row = 0; row < 9; row++) {
         int y = TOPMARGIN + row * VSPACING;
-        platform_draw_line(LEFTMARGIN, y, LEFTMARGIN+8*HSPACING, y, WHITE);
+        platform_draw_line(LEFTMARGIN, y, LEFTMARGIN+8*HSPACING, y, LOWLIGHT_COLOR);
     }
     
     for (int col = 0; col < 9; col++) {
         int x = LEFTMARGIN + col * HSPACING;
-        platform_draw_line(x, TOPMARGIN, x, TOPMARGIN+8*VSPACING, WHITE);
+        platform_draw_line(x, TOPMARGIN, x, TOPMARGIN+8*VSPACING, LOWLIGHT_COLOR);
     }
 }
 
@@ -541,19 +575,19 @@ void choose_to_move() {
 }
 
 void draw_from_move() {
-    draw_rect(game_from_y, game_from_x, WHITE);
+    draw_rect(game_from_y, game_from_x, HIGHLIGHT_COLOR);
 }
 
 void draw_choosen_from_move() {
-    draw_marker(game_from_y, game_from_x, WHITE);
+    draw_marker(game_from_y, game_from_x, HIGHLIGHT_COLOR);
 }
 
 void draw_to_move() {
-    draw_rect(game_to_y, game_to_x, WHITE);
+    draw_rect(game_to_y, game_to_x, HIGHLIGHT_COLOR);
 }
 
 void draw_computer_move() {
-    draw_rect(game_comp_to_y, game_comp_to_x, WHITE);
+    draw_rect(game_comp_to_y, game_comp_to_x, DEFAULT_COLOR);
 }
 
 void wait_for_begin() {
@@ -588,24 +622,24 @@ void build_last_computer_position() {
 }
 
 void display_computer_info() {
-    platform_msg(comp_move_str, INFO_RIGHT, INFO_LINE_1, DEFAULT_TEXT_SMALL_SIZE, WHITE);
+    platform_msg(comp_move_str, INFO_RIGHT, INFO_LINE_1, DEFAULT_TEXT_SMALL_SIZE, DEFAULT_COLOR);
 
     if (strlen(comp_info) > 0) {
-        platform_msg(comp_info, INFO_RIGHT, INFO_LINE_2, DEFAULT_TEXT_SMALL_SIZE, WHITE);
+        platform_msg(comp_info, INFO_RIGHT, INFO_LINE_2, DEFAULT_TEXT_SMALL_SIZE, DEFAULT_COLOR);
     }
 }
 
 void display_user_info() {
-    platform_msg(player_move_str, INFO_LEFT, INFO_LINE_1, DEFAULT_TEXT_SMALL_SIZE, WHITE);
+    platform_msg(player_move_str, INFO_LEFT, INFO_LINE_1, DEFAULT_TEXT_SMALL_SIZE, DEFAULT_COLOR);
 
     if (strlen(player_info) > 0) {
-        platform_msg(player_info, INFO_LEFT, INFO_LINE_2, DEFAULT_TEXT_SMALL_SIZE, WHITE);
+        platform_msg(player_info, INFO_LEFT, INFO_LINE_2, DEFAULT_TEXT_SMALL_SIZE, DEFAULT_COLOR);
     }
 }
 
 void display_msg(char* msg1, char* msg2) {
-    platform_msg(msg1, INFO_LEFT, INFO_LINE_1, DEFAULT_TEXT_SMALL_SIZE, WHITE);
-    platform_msg(msg2, INFO_LEFT, INFO_LINE_2, DEFAULT_TEXT_SMALL_SIZE, WHITE);
+    platform_msg(msg1, INFO_LEFT, INFO_LINE_1, DEFAULT_TEXT_SMALL_SIZE, DEFAULT_COLOR);
+    platform_msg(msg2, INFO_LEFT, INFO_LINE_2, DEFAULT_TEXT_SMALL_SIZE, DEFAULT_COLOR);
 }
 
 void end_game_screen() {
@@ -647,12 +681,12 @@ void animate_piece(int from_row, int from_col, int to_row, int to_col) {
     }
     
     game_colour = WHITE;
-    draw_color = WHITE;
+    draw_color = DEFAULT_COLOR;
     
     if (index > 9) {
         index -= BLACK_OFFSET;
         game_colour = BLACK;
-        draw_color = WHITE;
+        draw_color = HIGHLIGHT_COLOR;
     }
 
     int x1 = LEFTMARGIN + from_col * HSPACING;
@@ -846,7 +880,7 @@ void game_stop(void) {
 }
 
 int game_frame() {
-    rbxeClear(0);
+    platform_frame_begin();
 
     if (rbxeKeyDown(KEY_ESCAPE)) {
         return 0;
@@ -935,7 +969,7 @@ int game_frame() {
     display_computer_info();
     display_user_info();
 
-    platform_frame();
+    platform_frame_end();
 
     return 1;
 }
