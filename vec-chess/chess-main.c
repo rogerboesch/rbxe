@@ -200,7 +200,7 @@ void game_start(void);
 
 // MARK: - Game vars
 
-#define ANIMATION_TIME 5
+#define ANIMATION_TIME 15
 
 GAME_STATE game_state;
 int game_colour;
@@ -615,13 +615,13 @@ void build_last_user_position() {
     if (game_state == PLAYER_CHOOSE_FROM || game_state == COMPUTER_MOVED) {
         char h1 = HORIZ[game_from_x];
 
-        sprintf(player_move_str, "P %c%d TO ", h1, 8-game_from_y);
+        sprintf(player_move_str, "P: %c%d TO ", h1, 8-game_from_y);
     }
     else {
         char h1 = HORIZ[game_from_x];
         char h2 = HORIZ[game_to_x];
 
-        sprintf(player_move_str, "P %c%d TO %c%d", h1, 8-game_from_x, h2, 8-game_to_y);
+        sprintf(player_move_str, "P: %c%d TO %c%d", h1, 8-game_from_x, h2, 8-game_to_y);
     }
 }
 
@@ -629,7 +629,7 @@ void build_last_computer_position() {
     char h1 = HORIZ[game_comp_from_x];
     char h2 = HORIZ[game_comp_to_x];
 
-    sprintf(comp_move_str, "C %c%d TO %c%d", h1, 8-game_comp_from_y, h2, 8-game_comp_to_y);
+    sprintf(comp_move_str, "C: %c%d TO %c%d", h1, 8-game_comp_from_y, h2, 8-game_comp_to_y);
 }
 
 void display_computer_info() {
