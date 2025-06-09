@@ -39,6 +39,8 @@ void game_handle_remote_request(char* request)  {}
 #define SCALE 2
 #define RENDER_SCALE 4/5
 
+#define ANIMATION_TIME 10
+
 #define BUTTON_FOUR 4
 #define DEFAULT_TEXT_SMALL_SIZE 10
 
@@ -200,8 +202,6 @@ void game_start(void);
 
 // MARK: - Game vars
 
-#define ANIMATION_TIME 15
-
 GAME_STATE game_state;
 int game_colour;
 int game_board[8][8] = {};
@@ -217,6 +217,11 @@ int animation_counter = 0;
 int animation_time = 0;
 
 // MARK: - platform helpers
+
+static uint32_t platform_get_ticks(void) {
+    clock_t uptime = clock() / (CLOCKS_PER_SEC / 1000);
+    return (uint32_t)uptime;
+}
 
 void platform_init(char* name, int width, int height, int hz) {
     if (!rbxeStart("Chess", 400, 400, 1, 0)) return;
@@ -895,6 +900,17 @@ void game_stop(void) {
 }
 
 int game_frame() {
+    static uint32_t start = 0;
+    static uint32_t elapsed = 0;
+
+    elapsed = platform_get_ticks() - start;
+
+    if (elapsed < 16) {
+        return 1;
+    }
+
+    start = platform_get_ticks();
+
     platform_frame_begin();
 
     if (rbxeKeyDown(KEY_ESCAPE)) {
@@ -996,8 +1012,6 @@ int main() {
     game_start();
 
     for (;;) {
-//        rbxeClear(0);
-
         if (!game_frame()) {
             game_stop();
             return 0;
