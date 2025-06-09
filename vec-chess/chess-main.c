@@ -24,15 +24,15 @@ void game_handle_remote_request(char* request)  {}
 
 // MARK: - Graphic assets
 
-#define SCREEN_WIDTH    362
-#define SCREEN_HEIGHT   482
-#define TOPMARGIN       0 // (SCREEN_HEIGHT-SCREEN_WIDTH)/2+1
-#define LEFTMARGIN      1
-#define INFO_LINE_1     125
-#define INFO_LINE_2     105
-#define INFO_RIGHT      50
-#define INFO_CENTRE		90
-#define INFO_LEFT       128
+#define SCREEN_WIDTH    364
+#define SCREEN_HEIGHT   364
+#define TOPMARGIN       0
+#define LEFTMARGIN      16
+#define INFO_LINE_1     390
+#define INFO_LINE_2     380
+#define INFO_RIGHT      300
+#define INFO_CENTRE		200
+#define INFO_LEFT       16
 
 #define HSPACING SCREEN_WIDTH/8
 #define VSPACING SCREEN_WIDTH/8
@@ -42,14 +42,16 @@ void game_handle_remote_request(char* request)  {}
 #define BUTTON_FOUR 4
 #define DEFAULT_TEXT_SMALL_SIZE 10
 
-const pixel_info default_color = {255, 192, 0, 255};
-const pixel_info highlight_color = {255, 255, 255, 255};
-const pixel_info lowlight_color = {128, 192, 0, 255};
+const pixel_info default_color = {255, 174, 55, 255};       // Amber
+const pixel_info highlight_color = {255, 219, 165, 255};    // Cloudberry
+const pixel_info lowlight_color = {210, 125, 0, 255};       // Butterscotch
+const pixel_info text_color = {255, 255, 255, 255};         // White
 const pixel_info transparent = {0, 0, 0, 0};
 
 #define DEFAULT_COLOR           1
 #define HIGHLIGHT_COLOR         2
 #define LOWLIGHT_COLOR          3
+#define TEXT_COLOR              4
 
 #define WHITE 3
 #define BLACK 0
@@ -243,16 +245,19 @@ int platform_input_is_down(void) {
 }
 
 int platform_button_is_pressed(int number) {
-    if (number == 1 && rbxeKeyDown(KEY_1))
+    if (number == 1 && rbxeKeyPressed(KEY_1))
         return 1;
 
-    if (number == 2 && rbxeKeyDown(KEY_2))
+    if (number == 2 && rbxeKeyPressed(KEY_2))
         return 1;
 
-    if (number == 3 && rbxeKeyDown(KEY_3))
+    if (number == 3 && rbxeKeyPressed(KEY_3))
         return 1;
 
-    if (number == 4 && rbxeKeyDown(KEY_4))
+    if (number == 4 && rbxeKeyPressed(KEY_4))
+        return 1;
+
+    if (number == 4 && rbxeKeyPressed(KEY_SPACE))
         return 1;
 
     return 0;
@@ -267,6 +272,9 @@ void platform_draw_line(int x1, int y1, int x2, int y2, int color) {
             break;
         case HIGHLIGHT_COLOR:
             fg_color = highlight_color;
+            break;
+        case TEXT_COLOR:
+            fg_color = text_color;
             break;
         default:
             fg_color = default_color;
@@ -328,6 +336,9 @@ void platform_msg(char* msg, int x, int y, int size, int color) {
             break;
         case HIGHLIGHT_COLOR:
             fg_color = highlight_color;
+            break;
+        case TEXT_COLOR:
+            fg_color = text_color;
             break;
         default:
             fg_color = default_color;
@@ -622,24 +633,28 @@ void build_last_computer_position() {
 }
 
 void display_computer_info() {
-    platform_msg(comp_move_str, INFO_RIGHT, INFO_LINE_1, DEFAULT_TEXT_SMALL_SIZE, DEFAULT_COLOR);
-
+    if (strlen(comp_move_str) > 0) {
+        platform_msg(comp_move_str, INFO_RIGHT, INFO_LINE_1, DEFAULT_TEXT_SMALL_SIZE, TEXT_COLOR);
+    }
+    
     if (strlen(comp_info) > 0) {
-        platform_msg(comp_info, INFO_RIGHT, INFO_LINE_2, DEFAULT_TEXT_SMALL_SIZE, DEFAULT_COLOR);
+        platform_msg(comp_info, INFO_RIGHT, INFO_LINE_2, DEFAULT_TEXT_SMALL_SIZE, TEXT_COLOR);
     }
 }
 
 void display_user_info() {
-    platform_msg(player_move_str, INFO_LEFT, INFO_LINE_1, DEFAULT_TEXT_SMALL_SIZE, DEFAULT_COLOR);
-
+    if (strlen(player_move_str) > 0) {
+        platform_msg(player_move_str, INFO_LEFT, INFO_LINE_1, DEFAULT_TEXT_SMALL_SIZE, TEXT_COLOR);
+    }
+    
     if (strlen(player_info) > 0) {
-        platform_msg(player_info, INFO_LEFT, INFO_LINE_2, DEFAULT_TEXT_SMALL_SIZE, DEFAULT_COLOR);
+        platform_msg(player_info, INFO_LEFT, INFO_LINE_2, DEFAULT_TEXT_SMALL_SIZE, TEXT_COLOR);
     }
 }
 
 void display_msg(char* msg1, char* msg2) {
-    platform_msg(msg1, INFO_LEFT, INFO_LINE_1, DEFAULT_TEXT_SMALL_SIZE, DEFAULT_COLOR);
-    platform_msg(msg2, INFO_LEFT, INFO_LINE_2, DEFAULT_TEXT_SMALL_SIZE, DEFAULT_COLOR);
+    platform_msg(msg1, INFO_LEFT, INFO_LINE_1, DEFAULT_TEXT_SMALL_SIZE, TEXT_COLOR);
+    platform_msg(msg2, INFO_LEFT, INFO_LINE_2, DEFAULT_TEXT_SMALL_SIZE, TEXT_COLOR);
 }
 
 void end_game_screen() {
@@ -892,7 +907,7 @@ int game_frame() {
     switch (game_state) {
         case GAME_INITIALIZE:
             wait_for_begin();
-            display_msg(PRG_NAME, "PRESS BUTTON 4 TO START");
+            display_msg(PRG_NAME, "PRESS TO START");
             break;
         case GAME_START:
             computer_move();
