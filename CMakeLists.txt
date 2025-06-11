@@ -34,6 +34,15 @@ if(APPLE)
 else()
     find_package(glfw3 REQUIRED)
     target_link_libraries(CommonSettings INTERFACE glfw)
+
+    find_package(OpenGL REQUIRED)
+
+    # Link GLFW and GLEW
+    find_package(PkgConfig REQUIRED)
+    pkg_search_module(GLFW REQUIRED glfw3)
+    pkg_search_module(GLEW REQUIRED glew)
+
+    target_link_libraries(CommonSettings INTERFACE ${GLFW_LIBRARIES} ${GLEW_LIBRARIES} ${OPENGL_LIBRARIES} )
 endif()
 
 # RBXE Sources
