@@ -27,8 +27,8 @@
 //const char *romfile2 = "/Users/roger/Data/Projects-Retro/PixelEngine/bin/BLINKY.ch8";
 
 // Linux
-const char *romfile1 = "/home/roger/Data/rbxe/bin/BLINKY.ch8";
-const char *romfile2 = "/home/roger/Data/rbxe/bin/TETRIS.ch8";
+const char *romfile1 = "/home/roger/Data/rbxe/chip8/roms/BLINKY.ch8";
+const char *romfile2 = "/home/roger/Data/rbxe/chip8/roms/TETRIS.ch8";
 
 /* number of instructions to execute per second */
 static int speed = 1200;
