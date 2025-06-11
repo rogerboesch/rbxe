@@ -32,7 +32,7 @@ if(APPLE)
     target_link_libraries(CommonSettings INTERFACE "-framework IOKit")
     target_link_libraries(CommonSettings INTERFACE /opt/homebrew/Cellar/glfw/3.4/lib/libglfw3.a)
 else()
-    # TBD: target_link_libraries(CommonSettings INTERFACE m GL GLU GLEW)
+    target_link_libraries(CommonSettings INTERFACE m GL GLU GLEW)
 endif()
 
 # RBXE Sources

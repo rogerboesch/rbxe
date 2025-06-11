@@ -22,7 +22,8 @@
 #define SCALE 1
 #define FULLSCREEN FALSE
 
-const char *romfile = "/Users/roger/Data/Projects-Retro/PixelEngine/bin/TETRIS.ch8";
+const char *romfile1 = "/Users/roger/Data/Projects-Retro/PixelEngine/bin/TETRIS.ch8";
+const char *romfile2 = "/Users/roger/Data/Projects-Retro/PixelEngine/bin/BLINKY.ch8";
 
 /* number of instructions to execute per second */
 static int speed = 1200;
@@ -190,10 +191,10 @@ int rom_init(int argc, char *argv[]) {
 
     c8_sys_hook = example_sys_hook;
 
-    rlog("Loading %s...", romfile);
+    rlog("Loading %s...", romfile1);
 
-    if (!c8_load_file(romfile)) {
-        rerror("Unable to load '%s': %s\n", romfile, strerror(errno));
+    if (!c8_load_file(romfile1)) {
+        rerror("Unable to load '%s': %s\n", romfile1, strerror(errno));
         return 0;
     }
 
@@ -209,6 +210,17 @@ int rom_deinit() {
     rlog("Done.");
 
     return 1;
+}
+
+int rom_load(const char* filename) {
+    rlog("Loading %s...", filename);
+
+    c8_reset();
+    
+    if (!c8_load_file(filename)) {
+        rerror("Unable to load '%s': %s\n", filename, strerror(errno));
+        return 0;
+    }
 }
 
 static void draw_screen() {
@@ -287,6 +299,10 @@ int rom_render(double elapsedSeconds) {
 
     if (rbxeKeyPressed(KEY_F11)) {
         c8_disasm();
+    }
+
+    if (rbxeKeyPressed(KEY_F12)) {
+        rom_load(romfile2);
     }
 
     if (running) {
