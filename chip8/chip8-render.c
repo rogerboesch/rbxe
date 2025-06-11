@@ -22,8 +22,13 @@
 #define SCALE 1
 #define FULLSCREEN FALSE
 
-const char *romfile1 = "/Users/roger/Data/Projects-Retro/PixelEngine/bin/TETRIS.ch8";
-const char *romfile2 = "/Users/roger/Data/Projects-Retro/PixelEngine/bin/BLINKY.ch8";
+// Mac
+//const char *romfile1 = "/Users/roger/Data/Projects-Retro/PixelEngine/bin/TETRIS.ch8";
+//const char *romfile2 = "/Users/roger/Data/Projects-Retro/PixelEngine/bin/BLINKY.ch8";
+
+// Linux
+const char *romfile1 = "/home/roger/Data/rbxe/bin/BLINKY.ch8";
+const char *romfile2 = "/home/roger/Data/rbxe/bin/TETRIS.ch8";
 
 /* number of instructions to execute per second */
 static int speed = 1200;
