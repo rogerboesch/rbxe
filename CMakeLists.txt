@@ -33,7 +33,7 @@ if(APPLE)
     target_link_libraries(CommonSettings INTERFACE /opt/homebrew/Cellar/glfw/3.4/lib/libglfw3.a)
 else()
     find_package(glfw3 REQUIRED)
-    target_link_libraries(CommonSettings INTERFACE glfw)
+    target_link_libraries(CommonSettings INTERFACE glfw m)
 
     find_package(OpenGL REQUIRED)
 
