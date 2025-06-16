@@ -804,7 +804,7 @@ int user_move() {
     int to = game_to_y*8+game_to_x;
 
     int result = chess_user_move(from, to);
-    if (result == -2) {
+    if (result == -3) {
         // No move found anymore, mate?
         game_change_state(COMPUTER_WIN);
         return 0;
@@ -875,6 +875,7 @@ void game_change_state(int to_state) {
 
 int is_game_finished() {
     if (chess_is_mate()) {
+        sprintf(player_info, "MATE");
         return 1;
     }
     

@@ -43,7 +43,8 @@
 // Move results
 #define MOVE_OK              0
 #define MOVE_NOT_POSSIBLE   -1
-#define MOVE_NONE_AVAILABLE -2      // Mate
+#define MOVE_NOT_FOUND      -2
+#define MOVE_NONE           -3  // No possible move, mate?
 
 // Some useful squares
 #define A1 56
@@ -1503,7 +1504,10 @@ int chess_is_computer_in_check() {
 }
 
 int chess_is_mate() {
-    return 0;
+    MOVE moveBuf[200];
+    int movecnt = generate_moves(side, moveBuf);
+
+    return movecnt == 0 ? 1 : 0;
 }
 
 int chess_user_move(int from, int dest) {
@@ -1512,6 +1516,11 @@ int chess_user_move(int from, int dest) {
     MOVE moveBuf[200];
     int movecnt = generate_moves(side, moveBuf);
     int i = 0;
+    
+    if (movecnt == 0) {
+        // No possible move anymore
+        return MOVE_NONE;
+    }
     
     for (i = 0; i < movecnt; i++) {
         if (moveBuf[i].from == from && moveBuf[i].dest == dest) {
@@ -1524,15 +1533,15 @@ int chess_user_move(int from, int dest) {
                 take_back();
                 printf("Illegal move.\n");
                 
-                return -1;
+                return MOVE_NOT_POSSIBLE;
             }
             
-            return 0;
+            return MOVE_OK;
         }
     }
     
     // Move not found
-    return -2;
+    return MOVE_NOT_FOUND;
 }
 
 int chess_computer_move() {

@@ -303,7 +303,7 @@ int rom_render(double elapsedSeconds) {
     }
 
     if (rbxeKeyPressed(KEY_F11)) {
-        c8_disasm();
+        c8_disasm(ww);
     }
 
     if (rbxeKeyPressed(KEY_F12)) {
