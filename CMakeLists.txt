@@ -100,4 +100,9 @@ add_executable(bin/chip8 chip8/chip8-platform.c chip8/chip8-render.c chip8/chip8
 target_include_directories(bin/chip8 INTERFACE chip8)
 target_link_libraries(bin/chip8 PRIVATE CommonSettings)
 
+# GB Emulator
+add_executable(bin/gb gameboy/gameboy.c gameboy/platform.c gameboy/gameboy.h ${RBXE_SOURCES})
+target_include_directories(bin/gb INTERFACE gb)
+target_link_libraries(bin/gb PRIVATE CommonSettings)
+
 install(DIRECTORY ../assets/ DESTINATION ${CMAKE_BINARY_DIR}/bin)
