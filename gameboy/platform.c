@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <time.h>
+
+// Include main function if set
+#define STANDALONE 1
 
 #define RBXE_ENGINE
 #include "rbxe.h"
@@ -10,11 +14,6 @@
 #define SCALE 1
 #define FULLSCREEN FALSE
 
-u8 frames;
-u32 f0_ticks;
-u32 f1_ticks;
-u16 fps;
-
 u8* rom;
 u32 rom_size;
 FILE* rom_f;
@@ -23,8 +22,24 @@ u32 save_size;
 FILE* save_f;
 char save_file[260];
 
+pixel_info buf[LCD_HEIGHT][LCD_WIDTH];
+int i, x, y;
+u32 romread;
+
+double old_ticks;
+double delay;
+int run;
+
 void platform_delay(unsigned int ms) {
     usleep(ms * 1000); 
+}
+
+double platform_get_time() {
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    double time = (double)ts.tv_sec + (double)ts.tv_nsec / 1e9;
+
+    return time;
 }
 
 // Color schemes
@@ -48,24 +63,16 @@ pixel_info ColorToPixel(u16 cgb) {
     return p;
 }
 
-int main(void) {
-	int i, x, y;
-	u8 j;
-	u32 romread;
-	u32 old_ticks;
-	u32 new_ticks;
-	int delay;
-	u32* s;
-	int quit_seq;
-	pixel_info buf[LCD_HEIGHT][LCD_WIDTH];
+void game_init(void) {
+    run = 0;
 
-	if ((access(ROM_FILE, F_OK) != -1) && ((rom_f = fopen(ROM_FILE, "rb")) != NULL)) {
+    if ((access(ROM_FILE, F_OK) != -1) && ((rom_f = fopen(ROM_FILE, "rb")) != NULL)) {
 		printf("%s: Opening %s.\n", __func__, ROM_FILE);
 		rom_f = fopen(ROM_FILE, "rb");
 	}
 	else {
 		printf("%s: File \"%s\" not found.\n", __func__, ROM_FILE);
-		return -1;
+		return;
 	}
 
 	fseek(rom_f, 0, SEEK_END);
@@ -94,61 +101,68 @@ int main(void) {
 
 	LoadROM(rom, rom_size, save, save_size);
 
-	new_ticks= rbxeTime();
-	f1_ticks = new_ticks;
-
     if (!rbxeStart("GB", LCD_WIDTH, LCD_HEIGHT, SCALE, FULLSCREEN)) {
-        return EXIT_FAILURE;
+        return;
     }
 
-	while (rbxeRun()) {
-		old_ticks = rbxeTime();
-		usleep(16 - (new_ticks - old_ticks));
+	old_ticks = platform_get_time();
+    run = 1;
+}
 
-		RunFrame();
+void game_frame(void) {
+    run = rbxeRun();
+   
+    RunFrame();
 
-		if (gb_framecount == 0) {
-			if (cgb_enable) {
-				for (y = 0; y < LCD_HEIGHT; y++) {
-					for (x = 0; x < LCD_WIDTH; x++) {
-						buf[y][x] = ColorToPixel(cgb_fb[y][x]);
-                    }
-                }
-            }
-			else {
-				for (y = 0; y < LCD_HEIGHT; y++) {
-					for (x = 0; x < LCD_WIDTH; x++) {
-						buf[y][x] = pixel_map_o[gb_fb[y][x] & 3];
-                    }
-                }
-            }
-
+    if (gb_framecount == 0) {
+        if (cgb_enable) {
             for (y = 0; y < LCD_HEIGHT; y++) {
                 for (x = 0; x < LCD_WIDTH; x++) {
-                    rbxeSetPixel(x, LCD_HEIGHT-y, buf[y][x]);
+                    buf[y][x] = ColorToPixel(cgb_fb[y][x]);
                 }
             }
+        }
+        else {
+            for (y = 0; y < LCD_HEIGHT; y++) {
+                for (x = 0; x < LCD_WIDTH; x++) {
+                    buf[y][x] = pixel_map_y[gb_fb[y][x] & 3];
+                }
+            }
+        }
 
- 			new_ticks = rbxeTime();
-			frames++;
-			
-            if (frames % 0x80 == 0) {
-				f0_ticks = f1_ticks;
-				f1_ticks = new_ticks;
-				fps = (128*1000) / (f1_ticks - f0_ticks);
-			}
+        for (y = 0; y < LCD_HEIGHT; y++) {
+            for (x = 0; x < LCD_WIDTH; x++) {
+                rbxeSetPixel(x, LCD_HEIGHT-y, buf[y][x]);
+            }
+        }
+        
+        delay = 0.016 - (platform_get_time() - old_ticks);
+        if  (delay > 0) {
+            platform_delay(delay*1000);
+        }
 
-			// Cap at 60FPS
-            delay = 16 - (new_ticks - old_ticks);
-            platform_delay(delay);
-		}
+        old_ticks = platform_get_time();
+    }
+}
+
+void game_exit(void) {
+ 	free(rom);
+	free(save);
+}
+
+#ifdef STANDALONE
+
+int main(void) {
+    game_init();
+
+	while (run) {
+        game_frame();
 	}
 
     rbxeEnd();
-
-	free(rom);
-	free(save);
+    game_exit();
 
 	return 0;
 }
 
+#endif // STANDALONE
