@@ -1,3 +1,5 @@
+cmake_minimum_required(VERSION 3.9)
+
 # Set C++ standard for all targets
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -56,53 +58,58 @@ set(RBXE_SOURCES
 )
 
 # Examples
-add_executable(bin/hello examples/hello.c ${RBXE_SOURCES})
-target_link_libraries(bin/hello PRIVATE CommonSettings)
+add_executable(hello examples/hello.c ${RBXE_SOURCES})
+target_link_libraries(hello PRIVATE CommonSettings)
 
-add_executable(bin/font examples/font.c ${RBXE_SOURCES})
-target_link_libraries(bin/font PRIVATE CommonSettings)
+add_executable(font examples/font.c ${RBXE_SOURCES})
+target_link_libraries(font PRIVATE CommonSettings)
 
-add_executable(bin/sandsim examples/sandsim.c ${RBXE_SOURCES})
-target_link_libraries(bin/sandsim PRIVATE CommonSettings)
+add_executable(sandsim examples/sandsim.c ${RBXE_SOURCES})
+target_link_libraries(sandsim PRIVATE CommonSettings)
 
-add_executable(bin/mandelbrot examples/mandelbrot.c ${RBXE_SOURCES})
-target_link_libraries(bin/mandelbrot PRIVATE CommonSettings)
+add_executable(mandelbrot examples/mandelbrot.c ${RBXE_SOURCES})
+target_link_libraries(mandelbrot PRIVATE CommonSettings)
 
-add_executable(bin/gameoflife examples/gameoflife.c ${RBXE_SOURCES})
-target_link_libraries(bin/gameoflife PRIVATE CommonSettings)
+add_executable(gameoflife examples/gameoflife.c ${RBXE_SOURCES})
+target_link_libraries(gameoflife PRIVATE CommonSettings)
 
-add_executable(bin/gradient examples/gradient.c ${RBXE_SOURCES})
-target_link_libraries(bin/gradient PRIVATE CommonSettings)
+add_executable(gradient examples/gradient.c ${RBXE_SOURCES})
+target_link_libraries(gradient PRIVATE CommonSettings)
 
-add_executable(bin/pendulum examples/pendulum.c ${RBXE_SOURCES})
-target_link_libraries(bin/pendulum PRIVATE CommonSettings)
+add_executable(pendulum examples/pendulum.c ${RBXE_SOURCES})
+target_link_libraries(pendulum PRIVATE CommonSettings)
 
-add_executable(bin/sprite examples/sprite.c ${RBXE_SOURCES})
-target_link_libraries(bin/sprite PRIVATE CommonSettings)
+add_executable(sprite examples/sprite.c ${RBXE_SOURCES})
+target_link_libraries(sprite PRIVATE CommonSettings)
 
 # Game
-add_executable(bin/game game/game.c ${RBXE_SOURCES})
-target_include_directories(bin/game INTERFACE game)
-target_link_libraries(bin/game PRIVATE CommonSettings)
+add_executable(game game/game.c ${RBXE_SOURCES})
+target_include_directories(game INTERFACE game)
+target_link_libraries(game PRIVATE CommonSettings)
 
 # Voxel
-add_executable(bin/voxel voxel/voxel.c ${RBXE_SOURCES})
-target_include_directories(bin/voxel INTERFACE voxel)
-target_link_libraries(bin/voxel PRIVATE CommonSettings)
+add_executable(voxel voxel/voxel.c ${RBXE_SOURCES})
+target_include_directories(voxel INTERFACE voxel)
+target_link_libraries(voxel PRIVATE CommonSettings)
 
 # VecChess
-add_executable(bin/vec-chess vec-chess/chess-engine.c vec-chess/chess-main.c ${RBXE_SOURCES})
-target_include_directories(bin/vec-chess INTERFACE voxel)
-target_link_libraries(bin/vec-chess PRIVATE CommonSettings)
+add_executable(vec-chess vec-chess/chess-engine.c vec-chess/chess-main.c ${RBXE_SOURCES})
+target_include_directories(vec-chess INTERFACE voxel)
+target_link_libraries(vec-chess PRIVATE CommonSettings)
 
 # Chip8
-add_executable(bin/chip8 chip8/chip8-platform.c chip8/chip8-render.c chip8/chip8-dasm.c chip8/chip8-asm.c chip8/chip8.c chip8/chip8-platform.h chip8/chip8.h ${RBXE_SOURCES})
-target_include_directories(bin/chip8 INTERFACE chip8)
-target_link_libraries(bin/chip8 PRIVATE CommonSettings)
+add_executable(chip8 chip8/chip8-platform.c chip8/chip8-render.c chip8/chip8-dasm.c chip8/chip8-asm.c chip8/chip8.c chip8/chip8-platform.h chip8/chip8.h ${RBXE_SOURCES})
+target_include_directories(chip8 INTERFACE chip8)
+target_link_libraries(chip8 PRIVATE CommonSettings)
 
 # GB Emulator
-add_executable(bin/gb gameboy/gameboy.c gameboy/platform.c gameboy/gameboy.h ${RBXE_SOURCES})
-target_include_directories(bin/gb INTERFACE gb)
-target_link_libraries(bin/gb PRIVATE CommonSettings)
+add_executable(gb gameboy/gameboy.c gameboy/platform.c gameboy/gameboy.h ${RBXE_SOURCES})
+target_include_directories(gb INTERFACE gb)
+target_link_libraries(gb PRIVATE CommonSettings)
+
+# Jupiter Ace
+add_executable(jupiter ace/jupiter.c ace/z80.c ${RBXE_SOURCES})
+target_include_directories(jupiter INTERFACE jupiter)
+target_link_libraries(jupiter PRIVATE CommonSettings)
 
 install(DIRECTORY ../assets/ DESTINATION ${CMAKE_BINARY_DIR}/bin)

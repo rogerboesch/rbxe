@@ -5,6 +5,7 @@ bin/
 obj/
 build/
 xbuild/
+buildx/
 
 ### C++ ###
 # Prerequisites

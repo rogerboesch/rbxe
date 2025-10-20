@@ -20,11 +20,21 @@
 #ifndef RB_PIXEL_ENGINE_H
 #define RB_PIXEL_ENGINE_H
 
+#include <stdarg.h>
+
 #ifndef PIXEL_TYPE_DEFINED
 #define PIXEL_TYPE_DEFINED
 
 #define UNUSED(x) (void)(x)
 #define ABS(n) ((n) > 0 ? (n) : -(n))
+
+#ifndef BYTE
+    typedef unsigned char BYTE;
+#endif
+
+#ifndef BOOL
+    typedef int BOOL;
+#endif
 
 #define TRUE    1
 #define FALSE   0
@@ -69,6 +79,9 @@ int rbxeMouseDown(const int button);
 int rbxeMousePressed(const int button);
 int rbxeMouseReleased(const int button);
 void rbxeMouseVisible(const int visible);
+
+/* Logging */
+void rbxe_log(const char *fmt, ...);
 
 /* macro keyboard and mouse input values */
 #define KEY_SPACE           32
@@ -701,6 +714,22 @@ void rbxePlotCircle(int xc, int yc, int r, const pixel_info color) {
 		else
 			p += 4 * (x++ - y--) + 10;
 	}
+}
+
+/* Logging */
+static unsigned long counter = 0;
+
+void rbxe_log(const char *fmt, ...) {
+    char buf[1024];
+    va_list ap;
+
+    va_start(ap, fmt);
+    vsnprintf(buf, 1024, fmt, ap);
+    va_end(ap);
+    buf[1023] = 0;
+
+    counter++;
+    printf("%lu> %s\n", counter, buf);
 }
 
 #endif /* RBXE_ENGINE */
