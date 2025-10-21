@@ -107,9 +107,4 @@ add_executable(gb gameboy/gameboy.c gameboy/platform.c gameboy/gameboy.h ${RBXE_
 target_include_directories(gb INTERFACE gb)
 target_link_libraries(gb PRIVATE CommonSettings)
 
-# Jupiter Ace
-add_executable(jupiter ace/jupiter.c ace/z80.c ${RBXE_SOURCES})
-target_include_directories(jupiter INTERFACE jupiter)
-target_link_libraries(jupiter PRIVATE CommonSettings)
-
 install(DIRECTORY ../assets/ DESTINATION ${CMAKE_BINARY_DIR}/bin)
